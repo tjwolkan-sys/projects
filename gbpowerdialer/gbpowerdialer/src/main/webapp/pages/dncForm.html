@@ -1,0 +1,88 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'dnc.form' | i18n}}</h3>
+  </div>
+  <form name="dncForm" ng-submit="dncForm.$valid && dnc.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group" ng-class="{ 'has-error' : (dncForm.$submitted || dncForm.dncName.$touched) && dncForm.dncName.$invalid }">
+            <label for="dnc.name">
+              {{'label.name' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <input type="text" id="dnc.name" name="dncName" type="text" class="form-control input-sm" ng-model="dnc.item.name" ng-required="true" maxlength="255" ng-error-messages>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="dnc.description">{{'label.description' | i18n}}</label>
+            <input type="text" class="form-control input-sm" id="dnc.description" ng-model="dnc.item.description" maxlength="255">
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="dnc.expireDate">{{'dnc.expireDate' | i18n}}</label>
+            <div class="dropdown">
+              <a class="dropdown-toggle expireDate-select" id="dLabel" role="button" data-toggle="dropdown" data-target="javascript:void(0)" href="">
+                <div class="input-append">
+                  <input id="dnc.expireDate" name="dncExpireDate" type="text" class="form-control input-sm" data-ng-model="dnc.item.expireDate" ng-format-date="dd/MM/yyyy HH:mm" readonly
+                    ng-error-messages />
+                </div>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker data-ng-model="dnc.item.expireDate" data-datetimepicker-config="{ dropdownSelector: '.expireDate-select' }"></datetimepicker>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-controller="dncPhoneCtrl as dncphone">
+          <div ng-include="'pages/dncPhoneList'" ng-init="dncphone.dncList = dnc.item; dncphone.changedRows = dnc.changedRows;"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="dnc.global">{{'dnc.global' | i18n}}</label>
+                <input id="dnc.global" type="checkbox" ng-model="dnc.item.global" ng-disabled="dnc.item.campaign != null" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="dnc.enabled">{{'label.enabled' | i18n}}</label>
+                <input id="dnc.enabled" type="checkbox" ng-model="dnc.item.enabled" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="divider" ng-if="hasAnyRole(['ROLE_SUPERADMIN', 'ROLE_TENANT_ADMIN','ROLE_SUPERVISOR' ])" />
+      <div class="row" ng-if="hasAnyRole(['ROLE_SUPERADMIN', 'ROLE_TENANT_ADMIN','ROLE_SUPERVISOR' ])">
+        <div class="col-lg-3">
+          <div class="form-group" ng-class="{ 'has-error' : (dncForm.$submitted || dncForm.dncTenant.$touched) && dncForm.dncTenant.$invalid }">
+            <label for="dnc.tenant">
+              {{'common.tenant' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <select id="dnc.tenant" name="dncTenant" class="form-control input-sm" ng-model="dnc.item.tenant" ng-options="item.id as item.name for item in dnc.tenantList"
+              ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="dnc.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

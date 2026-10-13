@@ -1,0 +1,3 @@
+# 03.08.2026 Change/Fix Planları
+
+- [FIX-GLB90114534-URC-BACKFILL-PD-CDR-VE-CAMP-TABLOSU.sql](FIX-GLB90114534-URC-BACKFILL-PD-CDR-VE-CAMP-TABLOSU.sql): Webphone'da result code girilmiş ama `pd_cdr.user_result_code_id` NULL kalmış başarılı çağrılar (TRC 10/24) için satır satır backfill script'i. `pd_cdr` ve kampanya sonuç tablosunu birlikte tamamlar; kampanya tablosu adı/kolonları `pd_campaign` metadata'sından (`db_result_table`, `col_result_user_rc`, `col_unique_key`/`col_result_unique_key`) dinamik çözülür. Salt veri düzeltme; DDL ve kod değişikliği içermez. Guard'lar: idempotent `IS NULL`, retry olmuş kayıtta yalnız son çağrı, çok result code'lu satırların elle incelemeye ayrılması.

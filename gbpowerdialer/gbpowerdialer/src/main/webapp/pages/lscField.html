@@ -1,0 +1,40 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{lscField.header}}</h3>
+  </div>
+  <form name="lscFieldForm" ng-submit="lscFieldForm.$valid && lscField.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group" ng-class="{ 'has-error' : (lscFieldForm.$submitted || lscFieldForm.lscKey.$touched) && lscFieldForm.lscKey.$invalid }">
+            <label for="lsc.key">
+              {{'lsc.payload.key' | i18n}}: <span style="color: red;">*</span>
+            </label>
+            <input id="lsc.key" name="lscKey" type="text" class="form-control input-sm" ng-required="true" ng-model="lscField.selected.item.key" pattern="^[a-zA-Z0-9\-]+$"
+              ng-error-messages>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group" ng-class="{ 'has-error' : (lscFieldForm.$submitted || lscFieldForm.lscValue.$touched) && lscFieldForm.lscValue.$invalid }">
+            <label for="lsc.value">
+              {{'lsc.payload.value' | i18n}}: <span style="color: red;">*</span>
+            </label>
+            <input id="lsc.value" name="lscValue" type="text" class="form-control input-sm" ng-required="true" ng-model="lscField.selected.item.value"
+                   pattern="^[\x20-\x7E]+$"
+              ng-error-messages>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="lscField.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

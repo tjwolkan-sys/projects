@@ -1,0 +1,28 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'menu.feedback' | i18n}}</h3>
+  </div>
+  <form name="lscForm" ng-submit="lscForm.$valid && feedback.ok()" novalidate>
+    <div class="modal-body">
+      <div class="form-vertical">
+        <div class="form-group">
+          <select id="feedback.type" ng-init="feedback.item.type = feedback.types[0].value" class="form-control input-sm" ng-model="feedback.item.type"
+            ng-options="item.value as item.label for item in feedback.types" />
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.messageBox.$touched) && lscForm.messageBox.$invalid }">
+          <textarea ng-maxlength="255" maxlength="255" ng-model="feedback.item.message" ng-required="true" name="messageBox" class="form-control" rows="8" style="resize: none;"
+            ng-error-messages />
+        </div>
+        <span>{{255 - feedback.item.message.length}} {{'feedback.characters' | i18n}}</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="feedback.cancel()">
+        <i class="fa fa-close"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

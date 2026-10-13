@@ -1,0 +1,70 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'resultCodeScheduleAdvanced.form' | i18n}}</h3>
+  </div>
+  <form name="resultCodeScheduleAdvanced" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (resultCodeScheduleAdvanced.$submitted || resultCodeScheduleAdvanced.rcaDialAttempt.$touched) && resultCodeScheduleAdvanced.rcaDialAttempt.$invalid }">
+            <label for="rca.dialAttempt">
+              {{'resultCodeScheduleAdvanced.dialAttempt' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <input id="rca.dialAttempt" name="rcaDialAttempt" type="number" min="0" class="form-control input-sm" ng-model="rca.item.dialAttempt" ng-required="true"
+              ng-error-messages />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (resultCodeScheduleAdvanced.$submitted || resultCodeScheduleAdvanced.rcaRetryInterval.$touched) && resultCodeScheduleAdvanced.rcaRetryInterval.$invalid }">
+            <label for="rca.retryInterval">
+              {{'resultCodeScheduleAdvanced.retryInterval' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <input id="rca.retryInterval" name="rcaRetryInterval" type="number" min="0" class="form-control input-sm" ng-model="rca.item.retryInterval" ng-required="true"
+              ng-error-messages />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (resultCodeScheduleAdvanced.$submitted || resultCodeScheduleAdvanced.rcaNumberToTry.$touched) && resultCodeScheduleAdvanced.rcaNumberToTry.$invalid }">
+            <label for="rca.numberToTry">
+              {{'resultCodeScheduleAdvanced.numberToTry' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="rca.numberToTry" name="rcaNumberToTry" class="form-control input-sm" ng-model="rca.item.numberToTry"
+              ng-options="item.value as item.label for item in rca.numberToTryList" ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="rca.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="rca.enabled" type="checkbox" ng-model="rca.item.enabled" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group" uib-dropdown>
+        <button id="saveButton" type="submit" class="btn btn-primary" ng-click="resultCodeScheduleAdvanced.$valid && rca.save()">{{'label.save' | i18n}}</button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem"><button id="saveAndContinueButton" type="submit" ng-click="resultCodeScheduleAdvanced.$valid && rca.saveAndContinue()">{{'label.saveAndContinue'
+              | i18n}}</button></li>
+        </ul>
+      </div>
+      <button class="btn btn-warning" type="button" ng-click="rca.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

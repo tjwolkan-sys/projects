@@ -1,0 +1,190 @@
+<div>
+	<div class="modal-header">
+		<h3 class="modal-title">{{'scheduleAutomation.form' | i18n}}</h3>
+	</div>
+	<form id="campaignScheduleAutomationFormId" name="campaignScheduleAutomationForm"  ng-submit="campaignScheduleAutomationForm.$valid && scheduleAutomationForm.save()" novalidate>
+		<div class="modal-body" >
+			<div class="row">
+				<div class="col-lg-2-5">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.scheduleAutomationName.$touched) && campaignScheduleAutomationForm.scheduleAutomationName.$invalid }">
+						<label for="scheduleAutomation.name">
+							{{'scheduleAutomation.name' | i18n}}
+							<span style="color: red;">*</span>
+						</label>
+						<input id="scheduleAutomation.name" name="scheduleAutomationName" type="text" class="form-control input-sm" ng-model="scheduleAutomationForm.item.name"
+							   maxlength="255" ng-required="true"
+							   ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+					</div>
+				</div>
+				<div class="col-lg-2-5">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.scheduleAutomationDescription.$touched)
+					 && scheduleAutomationForm.scheduleAutomationDescription.$invalid }">
+						<label for="scheduleAutomation.description">{{'scheduleAutomation.description' | i18n}} </label>
+						<input id="scheduleAutomation.description" name="scheduleAutomationDescription" type="text" class="form-control input-sm" ng-model="scheduleAutomationForm.item.description" maxlength="255"
+									 ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2-5">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.startStopCondition.$touched)
+					&& campaignScheduleAutomationForm.startStopCondition.$invalid }">
+						<label for="scheduleAutomation.actionType">
+							{{'scheduleAutomation.actionType' | i18n}}
+							<span style="color: red;">*</span>
+						</label>
+						<select id="scheduleAutomation.actionType" name="startStopCondition"  class="form-control input-sm" ng-model="scheduleAutomationForm.item.actionType"
+										ng-options="item.value as item.label for item in scheduleAutomationForm.actionTypes"
+										ng-required="true" ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+							<option value="">{{'input.option.select' | i18n}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<hr class="divider"/>
+			<div class="row">
+				<div class="col-lg-2-5">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.scheduleAutomationGroups.$touched)
+					&& scheduleAutomationForm.scheduleAutomationGroups.$invalid }">
+						<label for="scheduleAutomation.groups">
+							{{'scheduleAutomation.group.select' | i18n}}
+						</label>
+						<multiselect id="scheduleAutomation.groups" ng-model="scheduleAutomationForm.item.groups" options="scheduleAutomationForm.groupList"
+												 show-search="true" search-limit="scheduleAutomationForm.groupList.length" show-unselect-all="true" id-prop="id" display-prop="name" placeholder="Group list">
+						</multiselect>
+					</div>
+				</div>
+			</div>
+            <div class="row" style="margin-bottom: 10px;">
+
+                <div class="col-md-3">
+                    <label for="scheduleAutomation.category">
+                        {{'scheduleAutomation.category' | i18n}}
+                    </label>
+                    <select class="form-control input-sm"
+                            ng-model="vm.formulaBuilder.category"
+                            ng-change="vm.onCategoryChange()">
+                        <option value="">{{'input.option.select' | i18n}}</option>
+                        <option value="agentStats">Group</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="scheduleAutomation.metric">
+                        {{'scheduleAutomation.metric' | i18n}}
+                    </label>
+                    <select class="form-control input-sm"
+                            ng-model="vm.formulaBuilder.metric"
+                            ng-options="m for m in vm.formulaBuilder.metrics">
+                        <option value="">{{'input.option.select' | i18n}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="scheduleAutomation.operator">
+                        {{'scheduleAutomation.operator' | i18n}}
+                    </label>
+                    <select class="form-control input-sm"
+                            ng-model="vm.formulaBuilder.operator">
+                        <option value=">">&gt;</option>
+                        <option value="<">&lt;</option>
+                        <option value="=">=</option>
+                        <option value=">=">&gt;=</option>
+                        <option value="<=">&lt;=</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="scheduleAutomation.value">
+                        {{'scheduleAutomation.value' | i18n}}
+                    </label>
+                    <input type="number"
+                           class="form-control input-sm"
+                           ng-model="vm.formulaBuilder.value"
+						   min="0">
+                </div>
+
+                <!-- Uygula Butonu -->
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <button type="button"
+                            class="btn btn-primary btn-sm btn-block"
+                            ng-click="vm.applyFormula()">
+                        Uygula
+                    </button>
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+				<div class="col-lg-12">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.scheduleAutomationCondition.$touched)
+					 && campaignScheduleAutomationForm.scheduleAutomationCondition.$invalid }">
+						<label for="scheduleAutomation.condition">
+							{{'scheduleAutomation.condition' | i18n}}
+							<span style="color: red;">*</span>
+						</label>
+						<textarea rows="3" placeholder="{{'scheduleAutomation.formula' | i18n}}" id="scheduleAutomation.condition" name="scheduleAutomationCondition"
+											style="height: auto !important; resize: none" class="form-control input-sm" ng-model="scheduleAutomationForm.item.formula" ng-required="true" maxlength="255"
+											ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div style="display: flex; align-items: center; justify-content: center; position:relative;">
+					<div class="form-group">
+						<style>
+							.tooltip {
+								white-space: pre-line !important;
+							}
+						</style>
+						<i id="scheduleAutomation.tip" tooltip="{{'scheduleAutomation.threshold.tooltip' | i18n}}" class="glyphicon glyphicon-info-sign" style="font-size: 25px"></i>
+					</div>
+					<label for="scheduleAutomation.tip" style="position: absolute; bottom:0px;">
+						{{'scheduleAutomation.tip' | i18n}}
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group" ng-class="{ 'has-error' : (campaignScheduleAutomationForm.$submitted || campaignScheduleAutomationForm.campaignAvailableThreshold.$touched)
+						 && campaignScheduleAutomationForm.campaignAvailableThreshold.$invalid }">
+						<label for="scheduleAutomation.threshold">{{'scheduleAutomation.threshold' | i18n}} </label>
+						<input id="scheduleAutomation.threshold" name="scheduleAutomationThreshold" type="number" min="0" class="form-control input-sm" ng-model="scheduleAutomationForm.item.threshold"
+									 ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+					</div>
+				</div>
+			</div>
+			</div>
+		<div class="modal-footer">
+				<input id="scheduleAutomationEnabled" type="checkbox" ng-disabled ="!scheduleAutomationForm.canEnableSelectedSchedule(scheduleAutomationForm.item)" ng-model="scheduleAutomationForm.item.enabled"/>
+				<label id="scheduleAutomationEnabledLabel" for="scheduleAutomationEnabled">{{'label.enabled' | i18n}} </label>
+			<button id="buttonSave" type="submit" ng-show="scheduleAutomationForm.isEditScheduleAutomation()" class="btn btn-primary saveButton"
+							ng-click="campaignScheduleAutomationForm.$valid && scheduleAutomationForm.save()">
+				<i class="fa fa-floppy-o"></i>
+				{{'label.save' | i18n}}
+			</button>
+			<div id class="btn-group" uib-dropdown ng-show="!scheduleAutomationForm.isEditScheduleAutomation()">
+				<button id="saveButton" type="submit" class="btn btn-primary"
+								ng-click="campaignScheduleAutomationForm.$valid && scheduleAutomationForm.save()">{{'label.save' | i18n}}
+				</button>
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+					<li role="menuitem">
+						<button id="saveAndContinueButton" type="submit"
+										ng-click="campaignScheduleAutomationForm.$valid && scheduleAutomationForm.saveAndContinue()">{{'label.saveAndContinue' |
+							i18n}}
+						</button>
+					</li>
+				</ul>
+			</div>
+			<button class="btn btn-warning" type="button" ng-click="scheduleAutomationForm.cancel()">
+				<i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+			</button>
+		</div>
+	</form>
+</div>

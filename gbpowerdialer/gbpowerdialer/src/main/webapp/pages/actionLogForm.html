@@ -1,0 +1,75 @@
+<div>
+	<div class="modal-header">
+		<h3 class="modal-title">{{'actionLog.form' | i18n}}</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group" style="word-wrap: break-word">
+					<label>{{'log.log' | i18n}}: </label>
+					<div bindhtml="{{actionLog.item.log | actionLogLink}}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'log.level' | i18n}}: </label> {{'log.level.' + actionLog.item.logLevel | i18n}}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'log.module' | i18n}}: </label> {{'log.module.' + actionLog.item.logModule | i18n}}
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="actionLog.item.campaign != null">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'campaign.label' | i18n}}: </label> {{actionLog.item.campaign.name}}
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="actionLog.item.lsc != null">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'lsc.label' | i18n}}: </label> {{actionLog.item.lsc.name}}
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="actionLog.item.dnc != null">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'dnc.label' | i18n}}: </label> {{actionLog.item.dnc.name}}
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="{{actionLog.item.user != null}}">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'admin.logs.user' | i18n}}: </label> {{actionLog.item.user.username}}
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="{{actionLog.item.tenant != null}}">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'common.tenant' | i18n}}: </label> {{actionLog.item.tenant.name}}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<label>{{'label.createDate' | i18n}}: </label> {{actionLog.item.createDate | date : 'dd/MM/yyyy HH:mm'}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="actionLog.close()">{{'label.ok' | i18n}}</button>
+	</div>
+</div>

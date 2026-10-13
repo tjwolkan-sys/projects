@@ -1,0 +1,89 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'attachedDataColumn.form' | i18n}}</h3>
+  </div>
+  <form name="attachedDataColumnForm" ng-submit="attachedDataColumnForm.$valid && attachedDataColumn.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (attachedDataColumnForm.$submitted || attachedDataColumnForm.attachedDataColumnField.$touched) && attachedDataColumnForm.attachedDataColumnField.$invalid }">
+            <label for="attachedDataColumn.field">
+              {{'attachedData.field' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <select id="attachedDataColumn.field" name="attachedDataColumnField" class="form-control input-sm"
+                    ng-model="attachedDataColumn.item.field" ng-required="true"
+                    ng-change="attachedDataColumn.onFieldChange()"
+                    ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in attachedDataColumn.listSourceColumns"
+                      ng-selected="{{attachedDataColumn.item.field == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (attachedDataColumnForm.$submitted || attachedDataColumnForm.attachedDataColumnFieldName.$touched) && attachedDataColumnForm.attachedDataColumnFieldName.$invalid }">
+            <label for="attachedDataColumn.fieldName">
+              {{'attachedData.fieldName' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <input id="attachedDataColumn.fieldName" name="attachedDataColumnFieldName" type="text" class="form-control input-sm" ng-model="attachedDataColumn.item.fieldName"
+              ng-required="true" maxlength="255" ng-error-messages />
+          </div>
+        </div>
+      </div>
+	  <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (attachedDataColumnForm.$submitted || attachedDataColumnForm.attachedDataColumnPopupName.$touched) && attachedDataColumnForm.attachedDataColumnPopupName.$invalid }">
+            <label for="attachedDataColumn.popupName">
+              {{'attachedData.popupName' | i18n}}
+              <span style="color: red;" ng-if="attachedDataColumn.item.popup">*</span>
+            </label>
+            <input id="attachedDataColumn.popupName" name="attachedDataColumnPopupName" type="text" class="form-control input-sm" ng-model="attachedDataColumn.item.popupName"
+              ng-required="attachedDataColumn.item.popup" maxlength="255" ng-error-messages />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="attachedDataColumn.popup">{{'attachedData.popup' | i18n}} </label>
+            <input id="attachedDataColumn.popup" type="checkbox" ng-model="attachedDataColumn.item.popup" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="attachedDataColumn.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="attachedDataColumn.enabled" type="checkbox" ng-model="attachedDataColumn.item.enabled" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="attachedDataColumn.saveLongTerm">{{'label.saveLongTerm' | i18n}} </label>
+            <input id="attachedDataColumn.saveLongTerm" type="checkbox" ng-model="attachedDataColumn.item.saveLongTerm" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="attachedDataColumn.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

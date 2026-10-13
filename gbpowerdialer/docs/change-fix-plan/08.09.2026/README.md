@@ -1,0 +1,3 @@
+# 08.09.2026 Change/Fix Planları
+
+- `FIX-GLB90114534-FCT-CALLERID-CONTEXT-VE-LIST-RETRY.md`: FCT routing akışında devralınan üç sorunun planı. (1) `obtainRouteDetailsCursor` QSS'e `retryCallerIdBehavior`/attempt/callType/utilizer context'ini göndermediği için caller ID seçim iş kuralının sessizce yok sayılması; (2) `getRouteDetails`'in gRPC hatasında da boş liste dönmesi nedeniyle geçici QSS kesintisinde çağrının retry'sız TRC 910 ile yakılması; (3) cause 34 in-call list-retry'ının PD tarafında sınırsız olması ve `originateCall=false` kolunun testsiz kalması. PR 23029 revert'i bağımlılık analiziyle reddedildi; düzeltmeler kapasite gate branch'i üzerinde yürür. Açık soru bekliyor.

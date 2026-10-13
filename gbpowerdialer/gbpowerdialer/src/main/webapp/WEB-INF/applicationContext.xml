@@ -1,0 +1,135 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+  http://www.springframework.org/schema/aop 
+  http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+  http://www.springframework.org/schema/mvc 
+  http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+  http://www.springframework.org/schema/task
+  http://www.springframework.org/schema/task/spring-task.xsd" default-lazy-init="true">
+
+  <mvc:annotation-driven>
+    <!-- <mvc:message-converters> <bean class="org.springframework.http.converter.StringHttpMessageConverter"
+      /> <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
+      /> </mvc:message-converters> -->
+    <mvc:async-support default-timeout="30000" task-executor="pollTaskExecutor"/>
+  </mvc:annotation-driven>
+
+  <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+    <property name="defaultLocale" value="en"/>
+  </bean>
+
+  <!-- Activates scanning of @Repository, @Service, @Component -->
+  <context:component-scan base-package="com.powerdialer"/>
+
+  <!-- Activates scanning of @Autowired -->
+  <context:annotation-config/>
+
+  <context:mbean-export default-domain="com.powerdialer"/>
+
+  <!-- Application properties load -->
+  <context:property-placeholder ignore-resource-not-found="true" ignore-unresolvable="true" location="classpath:application.properties,
+    classpath:oneaccess.properties,
+    classpath:redis.properties,
+    classpath:mail.properties,
+    classpath:eureka-client.properties,
+    classpath:gbpowerdialer.properties"/>
+
+  <!-- Data Source Declaration -->
+  <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${db.driverClass}"/>
+    <property name="url" value="${db.connectionURL}"/>
+    <property name="username" value="${db.username}"/>
+    <property name="password" value="${db.password}"/>
+    <property name="maxTotal" value="200"/>
+    <property name="maxOpenPreparedStatements" value="100"/>
+    <property name="maxWaitMillis" value="1000"/>
+    <property name="poolPreparedStatements" value="true"/>
+    <property name="defaultAutoCommit" value="true"/>
+  </bean>
+
+  <!-- Session Factory Declaration -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="packagesToScan" value="com.powerdialer.model"/>
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+        <prop key="hibernate.jdbc.batch_size">20</prop>
+        <prop key="hibernate.id.new_generator_mappings">false</prop>
+<!--        <prop key="hibernate.hbm2ddl.auto">update</prop>-->
+      </props>
+    </property>
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+  <!-- Transaction Manager is defined -->
+  <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+
+  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+    <constructor-arg>
+      <bean class="org.springframework.http.client.SimpleClientHttpRequestFactory" xsi:readTimeout="300" xsi:connectTimeout="300"/>
+    </constructor-arg>
+    <property name="messageConverters">
+      <list>
+        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+          <property name="supportedMediaTypes">
+            <list>
+              <value>text/plain</value>
+              <value>application/json</value>
+              <value>application/xml</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="dozerMapper" class="org.dozer.DozerBeanMapper">
+    <property name="customFieldMapper" ref="dozerCustomFieldMapper"/>
+    <property name="mappingFiles">
+      <list>
+        <value>dozer-global-configuration.xml</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="dozerCustomFieldMapper" class="com.powerdialer.util.DozerCustomFieldMapper"/>
+
+  <bean id="wroFilter" class="ro.isdc.wro.http.ConfigurableWroFilter"/>
+
+  <aop:aspectj-autoproxy/>
+
+  <bean id="actionLogAspect" class="com.powerdialer.aop.ActionLogAspect"/>
+
+  <task:annotation-driven executor="asyncTaskExecutor" proxy-target-class="true"/>
+
+  <task:executor id="asyncTaskExecutor" pool-size="10"/>
+
+  <task:executor id="pollTaskExecutor" pool-size="40" keep-alive="60000"/>
+
+  <bean id="agiMapping" class="org.asteriskjava.fastagi.SimpleMappingStrategy">
+    <property name="mappings">
+      <map>
+        <entry key="dialWithAbandonTimeout.agi" value-ref="dialWithAbandonTimeout"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="dialWithAbandonTimeout" class="com.powerdialer.engine.asterisk.fastagi.DialWithAbandonTimeoutScript">
+    <constructor-arg index="0" ref="loggerDecorator"/>
+  </bean>
+
+</beans>

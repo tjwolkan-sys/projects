@@ -1,0 +1,97 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "tomcat: build deploy debug",
+      "type": "shell",
+      "detail": "Güvenli tam başlangıç: Maven clean package alır, WAR deploy eder, Tomcat'i debug portuyla başlatır.",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.vscode\\scripts\\tomcat-debug.ps1"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "tomcat: restart existing deploy debug",
+      "type": "shell",
+      "detail": "Hızlı restart: Maven build ve WAR deploy yapmadan mevcut Tomcat webapps deploy'unu debug portuyla başlatır.",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.vscode\\scripts\\tomcat-debug.ps1",
+        "-NoBuild",
+        "-NoDeploy"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "tomcat: redeploy existing war debug",
+      "type": "shell",
+      "detail": "Hızlı redeploy: Maven build yapmadan target/gbpowerdialer.war dosyasını Tomcat'e deploy edip debug portuyla başlatır.",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.vscode\\scripts\\tomcat-debug.ps1",
+        "-NoBuild"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "tomcat: stop",
+      "type": "shell",
+      "detail": "VS Code tarafından yönetilen generated Tomcat base içindeki çalışan Tomcat'i durdurur.",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.vscode\\scripts\\tomcat-debug.ps1",
+        "-StopOnly"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "maven: package war",
+      "type": "shell",
+      "detail": "Yalnızca Maven package çalıştırır; Tomcat başlatmaz ve deploy yapmaz.",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\.vscode\\scripts\\tomcat-debug.ps1",
+        "-BuildOnly"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}

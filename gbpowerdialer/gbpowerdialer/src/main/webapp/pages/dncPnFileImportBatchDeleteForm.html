@@ -1,0 +1,69 @@
+<div>
+	<div class="modal-header">
+		<h3 class="modal-title">{{'dnc.pn.file.import.batch.delete.form' | i18n}}</h3>
+	</div>
+	<form name="dncImportForm" enctype="multipart/form-data" novalidate>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label for="file">
+							{{'dnc.import.file' | i18n}}
+							<span style="color: red;">*</span>
+						</label>
+						<input type="file" id="file" accept=".csv, .xls, .xlsx" ng-model="file"
+									 file-model="dncPnFileImportBatchDelete.file"/>
+						<span style="color: #15a589">{{'dnc.pn.file.valid.extensions.label' | i18n}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label for="headerInFile">
+							{{'dnc.pn.file.import.first.row' | i18n}}
+						</label>
+						<input type="checkbox" ng-init="check=false" ng-model="dncPnFileImportBatchDelete.check"
+									 ng-change="dncPnFileImportBatchDelete.isValidForm()" checked="" id="headerInFile">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label ng-show="dncPnFileImportBatchDelete.check === false" for="numberInput">
+							<span style="color: red">{{'dnc.pn.file.import.number.of.column' | i18n}}</span>
+							{{'dnc.pn.file.import.contain' | i18n}}
+						</label>
+						<label ng-show="dncPnFileImportBatchDelete.check === true" for="nameInput">
+							<span style="color: red">{{'dnc.pn.file.import.name.of.column' | i18n}}</span>
+							{{'dnc.pn.file.import.contain' | i18n}}
+						</label>
+						<input class="form-control input-sm" type="number" id="numberInput" name="numberInput"
+									 ng-change="dncPnFileImportBatchDelete.isValidForm()"
+									 ng-init="dncPnFileImportBatchDelete.isValidForm()"
+									 ng-model="dncPnFileImportBatchDelete.numberInput"
+									 ng-show="dncPnFileImportBatchDelete.check === false"
+									 onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1"/>
+						<input class="form-control input-sm" type="text" id="nameInput"
+									 ng-change="dncPnFileImportBatchDelete.isValidForm()"
+									 ng-init="dncPnFileImportBatchDelete.isValidForm()"
+									 name="nameInput" ng-model="dncPnFileImportBatchDelete.nameInput"
+									 ng-show="dncPnFileImportBatchDelete.check === true"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button id="saveButton" class="btn btn-primary" ng-disabled="!dncPnFileImportBatchDelete.isValidForm()"
+							type="submit"
+							ng-really-click="dncPnFileImportBatchDelete.save()"
+							ng-really-message="{{'dnc.pn.file.import.batch.delete.really.message' | i18n}}">
+				<i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+			</button>
+			<button class="btn btn-warning" type="button" ng-click="dncPnFileImportBatchDelete.cancel()">
+				<i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+			</button>
+		</div>
+	</form>
+</div>

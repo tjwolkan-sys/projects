@@ -1,0 +1,37 @@
+<div>
+  <form name="dbFieldForm" ng-submit="dbFieldForm.$valid && dbFieldCtrl.submit()" novalidate>
+    <div class="modal-header">
+      <h3 class="modal-title">{{'campaign.createColumn' | i18n}}</h3>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12 form-group" ng-class="{ 'has-error' : (dbFieldForm.$submitted || dbFieldForm.fieldName.$touched) && dbFieldForm.fieldName.$invalid }">
+          <label for="fieldName">
+            {{'campaign.columnName' | i18n}}
+            <span style="color: red;">*</span>
+          </label>
+          <input id="fieldName" name="fieldName" class="form-control input-sm" ng-model="dbFieldCtrl.fieldName"
+                 ng-required="true" ng-error-messages maxlength="64"/>
+        </div>
+        <div class="col-lg-12 form-group" ng-class="{ 'has-error' : (dbFieldForm.$submitted || dbFieldForm.fieldType.$touched) && dbFieldForm.fieldType.$invalid }">
+          <label for="fieldType">
+            {{'campaign.columnType' | i18n}}
+            <span style="color: red;">*</span>
+          </label>
+          <select id="fieldType" name="fieldType" class="form-control input-sm" ng-model="dbFieldCtrl.fieldType"
+                  ng-options="item.dbType as item.label for item in dbFieldCtrl.fieldTypes" ng-required="true" ng-error-messages>
+            <option value="">{{'input.option.select' | i18n}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="dbFieldCtrl.close()">
+        <i class="fa fa-close"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

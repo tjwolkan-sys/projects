@@ -1,0 +1,7 @@
+interface:
+  display_name: "GBPD Elastic DevTools Log Query"
+  short_description: "Elastic DevTools log sorgusu hazırlar"
+  default_prompt: "Use $gbpd-elastic-devtools-log-query to prepare a valid Elastic DevTools query for gbpowerdialer logs."
+
+policy:
+  allow_implicit_invocation: true

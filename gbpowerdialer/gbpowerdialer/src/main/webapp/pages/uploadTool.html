@@ -1,0 +1,122 @@
+<div>
+	<div class="modal-header">
+		<h3 class="modal-title">{{'menu.uploadTool' | i18n}}</h3>
+	</div>
+	<div id="upload-tool-modal" class="modal-body" dragndrop="uploadTool.uploadFile(file)">
+		<div class="row">
+			<div class="col-lg-6">
+				<label for="is-first-row-header">{{'uploadTool.startUploadParameters.firstRowColumnNames' | i18n}} </label>
+				<br/>
+				<input id="is-first-row-header" type="checkbox"
+							 ng-disabled="uploadTool.fileSelected || uploadTool.isUploadInProgress() || uploadTool.isFileUploaded()"
+							 ng-model="uploadTool.startUploadParameters.firstRowColumnNames"/>
+			</div>
+			<div class="col-lg-6">
+				<label for="update-data">{{'uploadTool.startUploadParameters.updateExistingData' | i18n}}</label>
+				<br/>
+				<input id="update-data"
+							 ng-disabled="uploadTool.fileSelected || uploadTool.isUploadInProgress() || uploadTool.isFileUploaded()"
+							 type="checkbox"
+							 ng-model="uploadTool.startUploadParameters.updateExistingData"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<label for="dbIdColumnName">{{'uploadTool.startUploadParameters.dbIdColumnName' | i18n}}</label>
+				<br/>
+				<input id="dbIdColumnName"
+							 class="form-control input-sm"
+							 ng-disabled="uploadTool.fileSelected || uploadTool.isUploadInProgress() || uploadTool.isFileUploaded()"
+							 type="text"
+							 ng-model="uploadTool.startUploadParameters.dbIdColumnName"/>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+					<label for="phone-numbers-anti-duplication">
+						{{'uploadTool.phoneNumbersAntiDuplication' | i18n}}
+					</label>
+					<br/>
+					<select id="phone-numbers-anti-duplication" class="form-control input-sm"
+									ng-disabled="uploadTool.isUploadInProgress() || uploadTool.isTerminated()"
+									name="phone-numbers-anti-duplication"
+									ng-model="uploadTool.processUploadParameters.antiDuplication">
+						<option value="0">{{'uploadTool.phoneNumbersAntiDuplication.disabled' | i18n}}</option>
+						<option value="1">{{'uploadTool.phoneNumbersAntiDuplication.inFile.excludeContact' | i18n}}</option>
+						<option value="2">{{'uploadTool.phoneNumbersAntiDuplication.inFile.excludeNumber' | i18n}}</option>
+						<option value="3">{{'uploadTool.phoneNumbersAntiDuplication.inDatabase.excludeContact' | i18n}}</option>
+						<option value="4">{{'uploadTool.phoneNumbersAntiDuplication.inDatabase.excludeNumber' | i18n}}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					<button for="upload-file-input" class="btn btn-info btn-sm navbar-btn" style="width: 100%"
+									ng-disabled="uploadTool.isFileUploaded()"
+									onclick="document.getElementById('upload-file-input').click()">
+						{{'uploadTool.uploadFileOrDrop' | i18n}}
+					</button>
+					<input id="upload-file-input" class="form-control-file" type="file"
+								 ng-disabled="uploadTool.isFileUploaded()"
+								 style="display: none"
+								 file-model="uploadTool.file"
+								 fileonload="uploadTool.uploadSelectedFile()"
+								 multiple="false"
+								 accept=".csv, .xls, .xlsx"/>
+				</div>
+			</div>
+		</div>
+		<hr class="divider"/>
+		<div id="upload-tool-preview-grid" ui-grid="uploadTool.gridOptions" ui-grid-cellNav ui-grid-resize-columns class="grid">
+		</div>
+		<div class="progress">
+			<div class="progress-bar progress-bar-success" role="progressbar"
+					 ng-if="uploadTool.lastProgressResponse.uploadedPercent >= 0"
+					 style="{{'width:' + uploadTool.lastProgressResponse.uploadedPercent + '%'}}" aria-valuenow="30"
+					 aria-valuemin="0"
+					 aria-valuemax="100">
+				{{uploadTool.lastProgressResponse.uploadedPercent + '%'}}
+			</div>
+			<div class="progress-bar progress-bar-danger" role="progressbar"
+					 ng-if="uploadTool.lastProgressResponse.failedPercent >= 0"
+					 style="{{'width:' + uploadTool.lastProgressResponse.failedPercent+ '%'}}" aria-valuenow="20"
+					 aria-valuemin="0"
+					 aria-valuemax="100">
+				{{uploadTool.lastProgressResponse.failedPercent+ '%'}}
+			</div>
+		</div>
+		<a class="btn btn-primary fa fa-download" style="width: 100%"
+			 ng-if="uploadTool.lastProgressResponse.failedRowsFilenameLink"
+			 target="_blank"
+			 href="{{uploadTool.lastProgressResponse.failedRowsFilenameLink}}" role="button">
+			{{'uploadTool.downloadFailedRows' | i18n}}
+		</a>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="uploadTool.processUpload()"
+						ng-disabled="!uploadTool.isFileUploaded() || uploadTool.isUploadInProgress() || uploadTool.isTerminated() || !uploadTool.isRemappedColumnsValid() || uploadTool.isFinished()">
+			<i class="fa fa-floppy-o"></i> {{'uploadTool.processUpload' | i18n}}
+		</button>
+		<div class="btn-group" uib-dropdown>
+			<button id="cancelUpload" type="button" class="btn btn-warning" uib-dropdown-toggle>
+				<i class="fa fa-close"></i>
+				<span class="btn-text">{{'label.cancel' | i18n}}</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="cancelUpload">
+				<li role="menuitem">
+					<a href="" ng-click="uploadTool.closeWindow()">
+						{{'uploadTool.closeWindow' | i18n}}
+					</a>
+				</li>
+				<li role="menuitem"
+						ng-if="(uploadTool.isFileUploaded() || uploadTool.isUploadInProgress()) && !uploadTool.isTerminated() && !uploadTool.isFinished()">
+					<a href="" ng-really-click="uploadTool.terminateUpload()" onclick="return false">
+						{{'uploadTool.terminateUpload'| i18n}}
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

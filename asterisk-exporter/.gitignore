@@ -1,0 +1,4 @@
+vendor
+asterisk-exporter*
+.vscode
+!cmd/*

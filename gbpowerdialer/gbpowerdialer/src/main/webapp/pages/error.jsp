@@ -1,0 +1,1 @@
+<h2>{{error.status}} - {{'error.' + error.status | i18n}}</h2>

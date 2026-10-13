@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
+
+	<!-- JS resources -->
+	<group name="global">
+		<js minimize="false">/js/util/jquery.min.js</js>
+		<js minimize="false">/js/util/bootstrap.min.js</js>
+		<js>/js/util/jquery.smartmenus.js</js>
+		<js>/js/util/jquery.smartmenus.bootstrap.js</js>
+		<js>/js/util/bootswatch.js</js>
+		<js>/js/util/ie10-viewport-bug-workaround.js</js>
+		<js minimize="false">/js/core/angular.min.js</js>
+		<js>/js/util/ui-bootstrap-tpls-0.14.3.min.js</js>
+		<js>/js/core/angular-route.js</js>
+		<js>/js/core/angular-block-ui.js</js>
+		<js minimize="false">/js/util/angular-translate.min.js</js>
+		<js>/js/util/angular-translate-loader-url.js</js>
+		<js>/js/services.js</js>
+		<js minimize="false">/js/util/pdfmake.min.js</js>
+		<js>/js/util/vfs_fonts.js</js>
+		<js minimize="false">/js/util/underscore-min.js</js>
+		<js minimize="false">/js/util/xlsx.core.min.js</js>
+		<js minimize="false">/js/util/filesaver.min.js</js>
+		<js>/js/util/cookie.js</js>
+		<js minimize="false">/js/util/angular-cookies.min.js</js>
+		<js minimize="false">/js/core/angular-messages.min.js</js>
+		<js minimize="false">/js/util/angular-local-storage.min.js</js>
+		<js>/js/app.js</js>
+		<js>/js/constants.js</js>
+		<js>/js/util/utils.js</js>
+		<js>/js/controllers/menuCtrl.js</js>
+		<js>/js/controllers/loginCtrl.js</js>
+		<js>/js/services/tenantFactory.js</js>
+		<js>/js/controllers/alertCtrl.js</js>
+		<js>/js/controllers/campaignFormCtrl.js</js>
+		<js>/js/services/baseFactory.js</js>
+		<js>/js/services/alertService.js</js>
+		<js>/js/services/campaignFactory.js</js>
+		<js>/js/controllers/locationCtrl.js</js>
+		<js>/js/services/locationFactory.js</js>
+		<js>/js/services/gridStateService.js</js>
+		<js>/js/services/skillFactory.js</js>
+		<js>/js/services/groupFactory.js</js>
+		<js>/js/services/resultCodeFactory.js</js>
+		<js>/js/controllers/campaignCtrl.js</js>
+		<js minimize="false">/js/util/ui-grid.min.js</js>
+		<js>/js/util/ui-i18n.js</js>
+		<js>/js/util/ua.js</js>
+		<js>/js/util/ru.js</js>
+		<js>/js/util/tr.js</js>
+		<js>/js/controllers/errorCtrl.js</js>
+		<js>/js/services/helpMenuFactory.js</js>
+		<js>/js/controllers/aboutApplicationCtrl.js</js>
+		<js>/js/controllers/feedbackFormCtrl.js</js>
+		<js>/js/controllers/serverCtrl.js</js>
+		<js>/js/services/serverFactory.js</js>
+		<js>/js/controllers/telephonyRcCtrl.js</js>
+		<js>/js/services/telephonyRcFactory.js</js>
+		<js>/js/controllers/actionLogFormCtrl.js</js>
+		<js>/js/controllers/actionLogCtrl.js</js>
+		<js>/js/controllers/dncCtrl.js</js>
+		<js>/js/controllers/campaignDataManipulationAndUpdateCtrl.js</js>
+		<js>/js/controllers/dncFormCtrl.js</js>
+		<js>/js/services/dncFactory.js</js>
+		<js>/js/services/dncPNFactory.js</js>
+		<js>/js/controllers/dncPhoneCtrl.js</js>
+		<js>/js/controllers/dncPhoneFormCtrl.js</js>
+		<js>/js/controllers/dncPnFileImportBatchProcessCtrl.js</js>
+		<js>/js/controllers/lscCtrl.js</js>
+		<js>/js/controllers/lscFormCtrl.js</js>
+		<js>/js/controllers/lscFieldCtrl.js</js>
+		<js>/js/services/lscFactory.js</js>
+		<js>/js/controllers/adminLogsCtrl.js</js>
+		<js>/js/controllers/adminLogsDetailsCtrl.js</js>
+		<js>/js/services/adminLogsFactory.js</js>
+		<js>/js/services/adminLogsDetailsFactory.js</js>
+		<js>/js/controllers/actionLogCacheCtrl.js</js>
+		<js>/js/services/actionLogFactory.js</js>
+		<js>/js/controllers/campaignScheduleCtrl.js</js>
+		<js>/js/controllers/campaignScheduleFormCtrl.js</js>
+		<js>/js/services/campaignScheduleFactory.js</js>
+		<js>/js/services/campaignLeaveDayFactory.js</js>
+		<js>/js/controllers/phoneNumberColumnCtrl.js</js>
+		<js>/js/controllers/sortFieldCtrl.js</js>
+		<js>/js/controllers/sortFieldValueCtrl.js</js>
+		<js>/js/services/sortFieldFactory.js</js>
+		<js>/js/services/sortFieldValueFactory.js</js>
+		<js>/js/controllers/filterColumnCtrl.js</js>
+		<js>/js/controllers/filterColumnTestFormCtrl.js</js>
+		<js>/js/controllers/phoneNumberColumnFormCtrl.js</js>
+		<js>/js/controllers/sortFieldFormCtrl.js</js>
+		<js>/js/controllers/sortFieldValueFormCtrl.js</js>
+		<js>/js/controllers/filterColumnFormCtrl.js</js>
+		<js>/js/services/phoneNumberColumnFactory.js</js>
+		<js>/js/services/filterFactory.js</js>
+		<js>/js/controllers/resultCodeScheduleCtrl.js</js>
+		<js>/js/controllers/resultCodeScheduleFormCtrl.js</js>
+		<js>/js/services/resultCodeScheduleFactory.js</js>
+		<js>/js/controllers/resultCodeScheduleAdvancedCtrl.js</js>
+		<js>/js/controllers/resultCodeScheduleAdvancedFormCtrl.js</js>
+		<js>/js/services/resultCodeScheduleAdvancedFactory.js</js>
+		<js>/js/controllers/campaignGroupCtrl.js</js>
+		<js>/js/controllers/campaignGroupFormCtrl.js</js>
+		<js>/js/controllers/dbTableFormCtrl.js</js>
+		<js>js/controllers/leaveDayFormCtrl.js</js>
+		<js>/js/controllers/dbCustomFieldFormCtrl.js</js>
+		<js>/js/controllers/uploadToolCtrl.js</js>
+		<js>/js/services/dbTableService.js</js>
+		<js>/js/services/commonResultStatusService.js</js>
+		<js>/js/services/campaignGroupFactory.js</js>
+		<js>/js/services/timeValidatorService.js</js>
+		<js>/js/services/ivrApplicationFactory.js</js>
+		<js minimize="false">/js/util/moment-with-locales.min.js</js>
+		<js>/js/util/datetimepicker.js</js>
+		<js>/js/util/picklist.js</js>
+		<js>/js/util/duration.js</js>
+		<js>/js/controllers/attachedDataColumnCtrl.js</js>
+		<js>/js/controllers/attachedDataColumnFormCtrl.js</js>
+		<js>/js/controllers/serviceStatusesCtrl.js</js>
+		<js>/js/controllers/campaignCloneFormCtrl.js</js>
+		<js>/js/controllers/scheduleLeaveDaysCtrl.js</js>
+		<js>/js/services/attachedDataFactory.js</js>
+		<js>/js/services/numberFactory.js</js>
+		<js>/js/services/predefinedValuesFactory.js</js>
+		<js>/js/controllers/rangePredefinedValueCtrl.js</js>
+		<js>/js/util/eventListeners.js</js>
+		<js>/js/controllers/campaignScheduleAutomationCtrl.js</js>
+		<js>/js/controllers/campaignScheduleAutomationFormCtrl.js</js>
+		<js>/js/services/campaignScheduleAutomationFactory.js</js>
+		<js>/js/services/queueFactory.js</js>
+		<js>/js/services/routingGroupFactory.js</js>
+		<js minimize="false">/js/util/angular-bootstrap-multiselect.min.js</js>
+		<js>/js/util/angular-uuid.js</js>
+		<js>/js/services/fctChannelFactory.js</js>
+		<js>/js/controllers/fctChannelMonitorCtrl.js</js>
+	</group>
+
+</groups>

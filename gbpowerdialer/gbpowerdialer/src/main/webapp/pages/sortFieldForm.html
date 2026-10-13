@@ -1,0 +1,84 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'sortField.form' | i18n}}</h3>
+  </div>
+  <form name="sortFieldForm" ng-submit="sortFieldForm.$valid && sortField.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (sortFieldForm.$submitted || sortFieldForm.columnName.$touched) && sortFieldForm.columnName.$invalid }">
+            <label for="sortField.colName">
+              {{'sortField.columnName' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="sortField.colName" name="columnName" class="form-control input-sm"
+                    ng-model="sortField.item.name"
+                    ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in sortField.listSourceColumns" ng-selected="{{sortField.item.name == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (sortFieldForm.$submitted || sortFieldForm.priority.$touched) && sortFieldForm.priority.$invalid }">
+            <label for="sortField.priority">
+              {{'sortField.priority' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <input id="sortField.priority" name="priority" type="number" min="0" class="form-control input-sm" ng-model="sortField.item.priority"
+              ng-required="true" ng-error-messages />
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="sortField.sortDirection">
+              {{'sortField.sortDirection' | i18n}}
+            </label>
+            <select id="sortField.sortDirection" name="sortDirection" class="form-control input-sm" ng-model="sortField.item.sortDirection"
+                    ng-options="item.value as item.label for item in sortField.sortDirections">
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="form-group"
+               ng-class="{ 'has-error' : (sortFieldForm.$submitted || sortFieldForm.sortMethod.$touched) && sortFieldForm.sortMethod.$invalid }">
+            <label for="sortField.sortMethod">
+              {{'sortField.sortMethod' | i18n}}
+            </label>
+            <span style="color: red;">*</span>
+            <select id="sortField.sortMethod" name="sortMethod" class="form-control input-sm" ng-model="sortField.item.sortMethod"
+                    ng-options="item.value as item.label for item in sortField.sortMethods"
+                    ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2">
+	        <div class="form-group">
+            <label for="sortField.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="sortField.enabled" type="checkbox" ng-model="sortField.item.enabled" />
+          </div>
+	      </div>
+      </div>
+      <div class="row" style="height: 270px" ng-if="sortField.item.sortMethod == 1">
+        <div class="col-lg-12" ng-controller="sortFieldValueCtrl as sortFieldValue">
+          <div ng-include="'pages/sortFieldValueList'"
+               ng-init="sortFieldValue.sortField = sortField.item; sortFieldValue.sortFieldInitial = sortField.itemInitial; sortFieldValue.campaignInitial = sortField.campaignInitial;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="sortField.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

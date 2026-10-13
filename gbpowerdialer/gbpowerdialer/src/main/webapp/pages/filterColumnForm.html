@@ -1,0 +1,189 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'filterColumn.form' | i18n}}</h3>
+  </div>
+  <form name="filterColumnForm" ng-submit="filterColumnForm.$valid && filterColumn.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnType.$touched) && filterColumnForm.filterColumnType.$invalid }">
+            <label for="filterColumn.type">
+              {{'filter.type' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="filterColumn.type" name="filterColumnType" class="form-control input-sm" ng-model="filterColumn.item.type" ng-required="true"
+              ng-options="item.value as item.label for item in filterColumn.filterTypes" ng-change="filterColumn.onSelectType()"
+              ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-if="filterColumn.item.type == 0">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnField.$touched) && filterColumnForm.filterColumnField.$invalid }">
+            <label for="filterColumn.targetTable">
+              {{'filter.targetTable' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="filterColumn.targetTable" name="filterColumnTargetTable" class="form-control input-sm"
+                    ng-model="filterColumn.item.targetTable" ng-required="true"
+                    ng-change="filterColumn.onSelectTargetTable()"
+                    ng-options="item.value as item.label for item in filterColumn.filterTargetTables"
+                    ng-disabled="filterColumn.campaign.dbListTable === filterColumn.campaign.dbResultTable
+                      || !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech')
+                      || (isTechnicalFilter(filterColumn.item) && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))"
+                    ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-if="filterColumn.item.type == 0">
+          <div class="form-group"
+               ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnField.$touched) && filterColumnForm.filterColumnField.$invalid }">
+            <label for="filterColumn.field">
+              {{'filter.field' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="filterColumn.field" name="filterColumnField" class="form-control input-sm"
+                    ng-model="filterColumn.item.field" ng-required="true"
+                    ng-change="filterColumn.columnSelect()"
+                    ng-options="item.fieldName for item in filterColumn.getColumns() track by item.fieldName"
+                    ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech')) || filterColumn.item.targetTable === undefined"
+                    ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-if="filterColumn.item.type == 0">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnCondition.$touched) && filterColumnForm.filterColumnCondition.$invalid }">
+            <label for="filterColumn.condition">
+              {{'filter.condition' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="filterColumn.condition" name="filterColumnCondition" class="form-control input-sm" ng-model="filterColumn.item.condition" ng-required="true"
+              ng-options="item.value as item.label for item in filterColumn.filterConditions"
+              ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-if="filterColumn.item.type == 0 && (filterColumn.item.field.simpleDbType != 'DATE' || filterColumn.item.field.simpleDbType == undefined)">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnValue1.$touched) && filterColumnForm.filterColumnValue1.$invalid }">
+            <label for="filterColumn.value1">
+              {{'filter.value' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <input id="filterColumn.value1" name="filterColumnValue1" type="text" class="form-control input-sm" ng-model="filterColumn.item.value" ng-required="true"
+              maxlength="255" databasecolumn="filterColumn.item"
+             ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      &&  !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))" ng-error-messages />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-if="filterColumn.item.type == 0 && filterColumn.item.field.simpleDbType == 'DATE'">
+          <div class="form-group"
+               ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.valueDate.$touched) && filterColumnForm.valueDate.$invalid }">
+            <label for="filterColumn.valueDate">
+              {{'filter.value' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <div class="dropdown">
+              <a class="dropdown-toggle startDate-select" id="dLabel" role="button" data-toggle="dropdown" data-target="javascript:void(0)" href="">
+                <div class="input-append">
+                  <input id="filterColumn.valueDate" name="valueDate" type="text" class="form-control input-sm" ng-required="true"
+                         data-ng-model="filterColumn.item.value"
+                         ng-format-date="yyyy-MM-dd HH:mm"
+                         ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                            && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))"
+                         ng-error-messages />
+                </div>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker data-ng-model="filterColumn.item.value" data-datetimepicker-config="{ dropdownSelector: '.startDate-select', minView: 'minute', startView: 'year' }"></datetimepicker>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="filterColumn.item.type == 1">
+        <div class="col-lg-12">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.filterColumnValue2.$touched) && filterColumnForm.filterColumnValue2.$invalid }">
+            <label for="filterColumn.value2">
+              {{'filter.query' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <textarea rows="4" cols="100" class="input-xxlarge form-control" id="filterColumn.value2" name="filterColumnValue2" ng-model="filterColumn.item.value"
+              ng-attr-uib-tooltip="{{filterColumn.campaign.dbListTable !== filterColumn.campaign.dbResultTable && ('filter.query.tooltip' | i18n) || '' }}"
+              ng-required="true" ng-change="filterColumnForm.filterColumnValue2.$setValidity('validatefilter', true)"
+              ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))" ng-error-messages> </textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="technical">{{'campaign.technical' | i18n}}</label>
+            <input id="technical" type="checkbox" ng-model="filterColumn.item.technical" ng-disabled = "!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech')"/>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="segmentation">{{'filter.segmentation' | i18n}}</label>
+            <input id="segmentation" type="checkbox" ng-model="filterColumn.item.segmentation"
+                   ng-disabled="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech')" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="filterColumn.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="filterColumn.enabled" type="checkbox" ng-model="filterColumn.item.enabled"
+                   ng-disabled ="!canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech') || (isTechnicalFilter(filterColumn.item)
+                      && !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignTech'))"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group"
+               ng-class="{ 'has-error' : (filterColumnForm.$submitted || filterColumnForm.ratio.$touched) && filterColumnForm.ratio.$invalid }">
+            <label for="ratio">
+              {{'filter.ratio' | i18n}}
+              <span style="color: red;" ng-if="filterColumn.item.segmentation">*</span>
+            </label>
+            <input id="ratio" name="ratio" type="number" class="form-control input-sm"
+                   ng-model="filterColumn.item.ratio"
+                   uib-tooltip="{{'filter.incorrect.ratio.sum' | i18n}}"
+                   ng-required="filterColumn.item.segmentation"
+                   ng-disabled="!filterColumn.item.segmentation || !canEditSelectedCampaignByPermission(filterColumn.campaign, 'EditCampaignNonTech')"
+                   min="1" max="99" step="1" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="filterColumn.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,67 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:sec="http://www.springframework.org/schema/security" xmlns="http://www.springframework.org/schema/beans"
+	   xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<bean id="csrfTokenRepository"
+		  class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository" />
+
+	<!-- Basic authentication for REST -->
+	<sec:authentication-manager id="basicAuthenticationManager">
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user name="${rest.username}" password="${rest.password}" authorities="ROLE_SUPERADMIN"/>
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<sec:global-method-security
+			pre-post-annotations="enabled" />
+
+	<sec:http pattern="(\/api\/.*|\/data\/.*)" request-matcher="regex"
+			  authentication-manager-ref="basicAuthenticationManager" create-session="stateless">
+		<sec:intercept-url pattern="\/data\/.*" access="hasRole('ROLE_SUPERADMIN')"/>
+		<sec:intercept-url pattern="\/api\/.*" access="hasRole('ROLE_SUPERADMIN')"/>
+		<sec:http-basic />
+		<sec:csrf disabled="true" />
+	</sec:http>
+
+	<sec:http use-expressions="true">
+		<sec:intercept-url pattern="/campaign/** "/>
+		<sec:intercept-url pattern="/server/**"/>
+		<sec:intercept-url pattern="/dncpn/**" />
+		<sec:intercept-url pattern="/dnc/**"
+						   access="hasAnyRole('ROLE_TENANT_ADMIN', 'ROLE_SUPERVISOR','ROLE_SUPERADMIN')"/>
+		<sec:intercept-url pattern="/tenant/**" />
+		<sec:intercept-url pattern="/serviceStatuses/**"/>
+		<sec:intercept-url pattern="/fctChannel/**"/>
+		<sec:intercept-url pattern="/schedule/**"  />
+		<sec:intercept-url pattern="/scheduleAutomation/**"  />
+		<sec:intercept-url pattern="/scheduleBlackoutAutomation/**"  />
+		<sec:intercept-url pattern="/telephonyRc/**" />
+		<sec:intercept-url pattern="/phoneNumberColumn/**"  />
+		<sec:intercept-url pattern="/filter/**" />
+		<sec:intercept-url pattern="/attachedData/**" />
+		<sec:intercept-url pattern="/resultCodeSchedule/**" />
+		<sec:intercept-url pattern="/campaignGroup/**"  />
+		<sec:intercept-url pattern="/resultCode/**" />
+		<sec:intercept-url pattern="/location/**" />
+		<sec:intercept-url pattern="/adminLogs/** "
+						   access='hasAuthority("DialerAdministration")' method="GET" />
+		<sec:intercept-url pattern="/adminLogs/**"
+						   access="hasAnyRole('ROLE_USER','ROLE_SUPERADMIN','ROLE_TENANT_ADMIN','ROLE_SUPERVISOR', 'ROLE_TEAMLEAD')"
+						   method="POST" />
+		<sec:intercept-url pattern="/actionLog/**"
+						   access="hasAnyRole('ROLE_USER','ROLE_SUPERADMIN','ROLE_TENANT_ADMIN','ROLE_SUPERVISOR', 'ROLE_TEAMLEAD')" method="POST" />
+		<sec:form-login login-page="/index.jsp#/login" />
+		<sec:http-basic />
+		<sec:csrf disabled="false" token-repository-ref="csrfTokenRepository" />
+		<sec:headers>
+			<sec:frame-options disabled="true" />
+		</sec:headers>
+	</sec:http>
+
+</beans>

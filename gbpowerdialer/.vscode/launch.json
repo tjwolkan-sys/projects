@@ -1,0 +1,86 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // İlk açılış veya emin olunmayan durumda kullanılır.
+    // Maven clean package alır, WAR deploy eder, Tomcat'i başlatır ve debugger attach eder.
+    {
+      "type": "java",
+      "name": "Tomcat: Build Deploy Debug",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "gbpowerdialer",
+      "preLaunchTask": "tomcat: build deploy debug",
+      "presentation": {
+        "group": "Tomcat",
+        "order": 1
+      }
+    },
+    // Bilgisayar yeniden açıldıktan sonra da kullanılabilir.
+    // Maven build ve WAR deploy yapmadan mevcut webapps deploy'unu debug portuyla başlatır.
+    {
+      "type": "java",
+      "name": "Tomcat: Restart Existing Deploy Debug",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "gbpowerdialer",
+      "preLaunchTask": "tomcat: restart existing deploy debug",
+      "presentation": {
+        "group": "Tomcat",
+        "order": 2
+      }
+    },
+    // Maven build'i önceden alınmışsa kullanılır.
+    // target/gbpowerdialer.war dosyasını tekrar deploy eder, Maven çalıştırmaz.
+    {
+      "type": "java",
+      "name": "Tomcat: Redeploy Existing WAR Debug",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "gbpowerdialer",
+      "preLaunchTask": "tomcat: redeploy existing war debug",
+      "presentation": {
+        "group": "Tomcat",
+        "order": 3
+      }
+    },
+    // Tomcat zaten debug portuyla çalışıyorsa kullanılır.
+    // Build, deploy veya restart yapmaz; yalnızca local JVM'e attach olur.
+    {
+      "type": "java",
+      "name": "Tomcat: Attach Only",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "gbpowerdialer",
+      "presentation": {
+        "group": "Tomcat",
+        "order": 4
+      }
+    },
+    // Remote dev/staging JVM'e attach için kullanılır.
+    // Tercih edilen kullanım SSH tunnel ile local 5005 portunu remote debug portuna bağlamaktır.
+    {
+      "type": "java",
+      "name": "Tomcat: Remote Attach",
+      "request": "attach",
+      "hostName": "${input:tomcatRemoteDebugHost}",
+      "port": 5005,
+      "projectName": "gbpowerdialer",
+      "presentation": {
+        "group": "Tomcat",
+        "order": 5
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "tomcatRemoteDebugHost",
+      "type": "promptString",
+      "description": "Remote Tomcat debug host. SSH tunnel kullanıyorsan localhost bırak.",
+      "default": "localhost"
+    }
+  ]
+}

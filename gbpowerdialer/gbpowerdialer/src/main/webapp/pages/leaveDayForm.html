@@ -1,0 +1,114 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">{{ 'campaign.leaveDay.form' | i18n }}</h3>
+    </div>
+
+    <form name="leaveDayModalForm" novalidate ng-submit="leaveDayForm.save()">
+        <div class="modal-body">
+            <div class="row">
+                <!-- Start date -->
+                <div class="col-lg-6">
+                    <div class="form-group"
+                         ng-class="{'has-error': leaveDayModalForm.$submitted && leaveDayModalForm.startDate.$invalid}">
+                        <label for="leaveDay.startDate">{{ 'campaign.leaveDay.startDate' | i18n }}</label>
+
+                        <!-- Use is-open bound to the controller -->
+                        <div class="dropdown" uib-dropdown is-open="leaveDayForm.ddStartOpen">
+                            <a class="dropdown-toggle" id="startDateLabel" uib-dropdown-toggle>
+                                <input id="leaveDay.startDate"
+                                       name="startDate"
+                                       type="text"
+                                       class="form-control"
+                                       ng-value="leaveDayForm.selected.item.startDate | date:'dd/MM/yyyy HH:mm'"
+                                       readonly
+                                       required />
+                            </a>
+
+                            <span class="help-block"
+                                  ng-show="leaveDayModalForm.$submitted && leaveDayModalForm.startDate.$invalid">
+                {{ 'form.required' | i18n }}
+              </span>
+
+                            <ul class="dropdown-menu dropdown-menu-left" uib-dropdown-menu role="menu" aria-labelledby="startDateLabel">
+                                <datetimepicker
+                                        data-ng-model="leaveDayForm.selected.item.startDate"
+                                        data-on-set-time="leaveDayForm.onStartDateSet(newDate, oldDate)">
+                                </datetimepicker>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End date -->
+                <div class="col-lg-6">
+                    <div class="form-group"
+                         ng-class="{'has-error': leaveDayModalForm.$submitted && leaveDayModalForm.endDate.$invalid}">
+                        <label for="leaveDay.endDate">{{ 'campaign.leaveDay.endDate' | i18n }}</label>
+
+                        <div class="dropdown" uib-dropdown is-open="leaveDayForm.ddEndOpen">
+                            <a class="dropdown-toggle" id="endDateLabel" uib-dropdown-toggle>
+                                <input id="leaveDay.endDate"
+                                       name="endDate"
+                                       type="text"
+                                       class="form-control"
+                                       ng-value="leaveDayForm.selected.item.endDate | date:'dd/MM/yyyy HH:mm'"
+                                       readonly
+                                       required />
+                            </a>
+
+                            <span class="help-block"
+                                  ng-show="leaveDayModalForm.$submitted && leaveDayModalForm.endDate.$invalid">
+                {{ 'form.required' | i18n }}
+              </span>
+
+                            <ul class="dropdown-menu dropdown-menu-left" uib-dropdown-menu role="menu" aria-labelledby="endDateLabel">
+                                <datetimepicker
+                                        data-ng-model="leaveDayForm.selected.item.endDate"
+                                        data-on-set-time="leaveDayForm.onEndDateSet(newDate, oldDate)">
+                                </datetimepicker>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group"
+                 ng-class="{'has-error': leaveDayModalForm.$submitted && leaveDayModalForm.description.$invalid}">
+                <label for="leaveDay.description">{{ 'campaign.leaveDay.description' | i18n }}</label>
+                <input id="leaveDay.description"
+                       name="description"
+                       type="text"
+                       class="form-control"
+                       ng-model="leaveDayForm.selected.item.description"
+                       required />
+                <span class="help-block"
+                      ng-show="leaveDayModalForm.$submitted && leaveDayModalForm.description.$invalid">
+          {{ 'form.required' | i18n }}
+        </span>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div class="btn-group" uib-dropdown>
+                <button id="saveButton" type="submit" class="btn btn-primary">
+                    {{ 'label.save' | i18n }}
+                </button>
+                <button type="button" class="btn btn-primary dropdown-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li role="menuitem">
+                        <button id="saveAndContinueButton" type="button" class="btn btn-link" ng-click="leaveDayForm.saveAndContinue()">
+                            {{ 'label.saveAndContinue' | i18n }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn btn-warning" type="button" ng-click="leaveDayForm.cancel()">
+                <i class="fa fa-times"></i> {{ 'label.cancel' | i18n }}
+            </button>
+        </div>
+    </form>
+</div>

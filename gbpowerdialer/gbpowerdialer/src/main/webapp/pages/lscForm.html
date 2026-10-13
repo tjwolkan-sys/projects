@@ -1,0 +1,327 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'lsc.form' | i18n}}</h3>
+  </div>
+  <form name="lscForm" ng-submit="lscForm.$valid && lsc.save()" novalidate>
+    <div class="modal-body">
+      <tabset> <tab heading="{{'lsc.tab.general' | i18n}}" active="lsc.tabs[0].active">
+        <div id="general">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscName.$touched) && lscForm.lscName.$invalid }">
+                <label for="lsc.name">
+                  {{'label.name' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <input id="lsc.name" name="lscName" type="text" class="form-control input-sm" ng-model="lsc.selected.item.name" ng-required="true" ng-error-messages>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="lsc.description">{{'label.description' | i18n}}</label>
+                <input id="lsc.description" type="text" class="form-control input-sm" ng-model="lsc.selected.item.description">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscUrl.$touched) && lscForm.lscUrl.$invalid }">
+                <label for="lsc.url">
+                  {{'lsc.url' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <input id="lsc.url" name="lscUrl" type="text" class="form-control input-sm" ng-model="lsc.selected.item.url" ng-required="true"
+                       ng-error-messages tooltip="{{'lsc.url.tooltip' | i18n}}">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscHttpMethod.$touched) && lscForm.lscHttpMethod.$invalid }">
+                <label for="lsc.httpMethod">
+                  {{'lsc.httpMethod' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="lsc.httpMethod" name="lscHttpMethod" class="form-control input-sm ng-pristine ng-untouched ng-invalid ng-invalid-required"
+                        ng-model="lsc.selected.item.httpMethod" ng-required="true" ng-options="item.value as item.label for item in lsc.httpMethods" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscReplyType.$touched) && lscForm.lscReplyType.$invalid }">
+                <label for="lsc.replyType">
+                  {{'lsc.replyType' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="lsc.replyType" name="lscReplyType" class="form-control input-sm ng-pristine ng-untouched ng-invalid ng-invalid-required"
+                        ng-model="lsc.selected.item.replyType" ng-required="true" ng-options="item.value as item.label for item in lsc.replyTypes" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscReplyKey.$touched) && lscForm.lscReplyKey.$invalid }">
+                <label for="lsc.replyKey">
+                  {{'lsc.replyKey' | i18n}}
+                  <span ng-hide="lsc.selected.item.replyType == 2" style="color: red;">*</span>
+                </label>
+                <input id="lsc.replyKey" name="lscReplyKey" type="text" class="form-control input-sm" ng-model="lsc.selected.item.replyKey"
+                       ng-required="!lsc.selected.item.replyType || lsc.selected.item.replyType != 2" ng-error-messages>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscReplyResult.$touched) && lscForm.lscReplyResult.$invalid }">
+                <label for="lsc.replyResult">
+                  {{'lsc.replyResult' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <input id="lsc.replyResult" name="lscReplyResult" type="text" class="form-control input-sm" ng-model="lsc.selected.item.replyResult" ng-required="true"
+                       ng-error-messages>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscReplyResult.$touched) && lscForm.lscRequestTimeout.$invalid }">
+                <label for="lsc.requestTimeout"> {{'lsc.requestTimeout' | i18n}} </label>
+                <input id="lsc.requestTimeout" name="lscRequestTimeout" type="number" class="form-control input-sm" min="-1" ng-model="lsc.selected.item.requestTimeout"
+                       ng-error-messages>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscReplyResult.$touched) && lscForm.lscResponseKeys.$invalid }">
+                <label for="lsc.responseKeys"> {{'lsc.responseKeys' | i18n}} </label>
+                <input id="lsc.responseKeys" name="lscResponseKeys" type="text" class="form-control input-sm" ng-model="lsc.selected.item.responseKeys"
+                       ng-error-messages>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="lsc.global">{{'lsc.global' | i18n}}</label>
+                    <input id="lsc.global" type="checkbox" ng-model="lsc.selected.item.global" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="lsc.enabled">{{'label.enabled' | i18n}}</label>
+                    <input id="lsc.enabled" type="checkbox" ng-model="lsc.selected.item.enabled" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="lsc.isTokenRequired">{{'lsc.isTokenRequired' | i18n}}</label>
+                    <input id="lsc.isTokenRequired" type="checkbox" ng-model="lsc.selected.item.tokenRequired" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="lsc.startsWithZero">{{'lsc.startsWithZero' | i18n}}</label>
+                    <input id="lsc.startsWithZero" type="checkbox" ng-model="lsc.selected.item.startsWithZero" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="divider" ng-if="hasAnyRole(['ROLE_SUPERADMIN', 'ROLE_TENANT_ADMIN' ])" />
+          <div class="row" ng-if="hasAnyRole(['ROLE_SUPERADMIN', 'ROLE_TENANT_ADMIN' ])">
+            <div class="col-lg-4">
+              <div class="form-group" ng-class="{ 'has-error' : (lscForm.$submitted || lscForm.lscTenant.$touched) && lscForm.lscTenant.$invalid }">
+                <label for="lsc.tenant">
+                  {{'common.tenant' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="lsc.tenant" name="lscTenant" class="form-control input-sm" ng-model="lsc.selected.item.tenant" ng-options="item.id as item.name for item in lsc.tenants"
+                        ng-required="true" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+        <tab heading="{{'lsc.tab.payload' | i18n}}" active="lsc.tabs[1].active">
+          <div class="form-group">
+            <label for="lsc.freePayloadEnabled">{{'lsc.tab.payload.freePayloadEnabled' | i18n}}</label>
+            <input id="lsc.freePayloadEnabled" type="checkbox" ng-model="lsc.freePayloadEnabled"
+                   ng-really-message="{{'label.confirm.deletePayload' | i18n}}" ng-really-click="lsc.clearPayload()"
+                   ng-really-cancel-click="lsc.resetFreePayloadFlagToPreviousValue()"/>
+          </div>
+          <div>
+            <div class="form-group"  ng-style="{ 'display' : (lsc.freePayloadEnabled) ? 'block' : 'none' }">
+              <textarea ng-model="lsc.payload" class="form-control" rows="8" style="resize: none;" />
+            </div>
+            <div id="payload" class="panel panel-primary" ng-style="{ 'display' : (!lsc.freePayloadEnabled) ? 'block' : 'none' }">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{'lsc.payload.fields' | i18n}}</h3>
+                <div class="panel-buttons pull-right">
+                  <button class="btn btn-default btn-sm" type="button" ng-click="lsc.open('sm', {})" tooltip="{{'tooltip.add' | i18n}}">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                  <button class="btn btn-default btn-sm" type="button" ng-disabled="lsc.selectedItems.length != 1" ng-click="lsc.open('sm', lsc.selectedItems[0])"
+                          tooltip="{{'tooltip.edit' | i18n}}">
+                    <i class="fa fa-pencil-square-o"></i>
+                  </button>
+                  <button class="btn btn-default btn-sm" ng-disabled="lsc.selectedItems.length == 0 || lsc.selectedItems == undefined" type="button"
+                          ng-really-message="{{'label.confirm' | i18n}}" ng-really-click="lsc.remove()" tooltip="{{'tooltip.delete' | i18n}}">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div id="lscPayloadGrid" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ng-style="{'height': '150px'}" ui-grid="lsc.lscPayloadGridOptions"></div>
+            </div>
+          </div>
+        </tab>
+        <tab heading="{{'lsc.tab.headers' | i18n}}">
+          <div id="headers" class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{'lsc.headers' | i18n}}</h3>
+              <div class="panel-buttons pull-right">
+                <button class="btn btn-default btn-sm" type="button" tooltip="{{'tooltip.add' | i18n}}" ng-click="lsc.openHeadersDialog('sm', {})">
+                  <i class="fa fa-plus"></i>
+                </button>
+                <button class="btn btn-default btn-sm" type="button" ng-disabled="lsc.selectedItems.length != 1" ng-click="lsc.openHeadersDialog('sm', lsc.selectedItems[0])" tooltip="{{'tooltip.edit' | i18n}}">
+                  <i class="fa fa-pencil-square-o"></i>
+                </button>
+                <button class="btn btn-default btn-sm" ng-disabled="lsc.selectedItems.length == 0 || lsc.selectedItems == undefined" type="button"
+                        ng-really-message="{{'label.confirm' | i18n}}" ng-really-click="lsc.removeHeader()" tooltip="{{'tooltip.delete' | i18n}}">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div id="lscHeadersGrid" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ng-style="{'height': '150px'}" ui-grid="lsc.lscHeadersGridOptions"></div>
+          </div>
+          <div ng-if="lsc.selected.item.tokenRequired">
+            <label for="auth.tokenName">{{'authorization.tokenName' | i18n}} <span style="color: red;">*</span> </label>
+            <input id="auth.tokenName" type="text" class="form-control input-sm"
+                   placeholder="Token Name"
+                   ng-model="lsc.authorization.tokenHeaderName" required />
+          </div>
+        </tab>
+        <tab id="auth" heading="{{'lsc.tab.authorization' | i18n}}"
+             ng-if="lsc.selected.item.tokenRequired">
+          <div>
+            <div class="form-group">
+              <label for="rest.url">{{'authorization.url' | i18n}} <span style="color: red;">*</span></label>
+              <input id="rest.url" type="text" class="form-control input-sm"
+                     placeholder="https://api.example.com/endpoint"
+                     ng-model="lsc.authorization.url" ng-required="true" />
+            </div>
+
+            <div class="form-group">
+              <label for="rest.method">{{'authorization.method' | i18n}} <span style="color: red;">*</span></label>
+              <select id="rest.method" class="form-control input-sm" ng-model="lsc.authorization.method" ng-required="true">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="rest.bodyType">{{'authorization.bodyType' | i18n}}</label>
+              <select id="rest.bodyType" class="form-control input-sm" ng-model="lsc.authorization.bodyType" ng-change="lsc.onBodyTypeChange()">
+                <option value="FORM_URLENCODED">FORM_URLENCODED</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+                <option value="RAW">RAW</option>
+              </select>
+              <small class="help-block">
+                {{'authorization.bodyType.help' | i18n}}
+              </small>
+            </div>
+
+            <!-- Conditionally show form inputs if bodyType is FORM_URLENCODED -->
+            <div ng-if="lsc.authorization.bodyType === 'FORM_URLENCODED'">
+              <div id="formData" class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">{{'authorization.formData' | i18n}}</h3>
+                  <div class="panel-buttons pull-right">
+                    <button class="btn btn-default btn-sm" type="button" tooltip="{{'tooltip.add' | i18n}}" ng-click="lsc.openAuthFormDialog('sm', {})">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm" type="button" ng-disabled="lsc.selectedItems.length != 1" ng-click="lsc.openAuthFormDialog('sm', lsc.selectedItems[0])" tooltip="{{'tooltip.edit' | i18n}}">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm" ng-disabled="lsc.selectedItems.length == 0 || lsc.selectedItems == undefined" type="button"
+                            ng-really-message="{{'label.confirm' | i18n}}" ng-really-click="lsc.removeAuth()" tooltip="{{'tooltip.delete' | i18n}}">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div id="formDataGrid" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ng-style="{'height': '150px'}" ui-grid="lsc.lscAuthGridOptions"></div>
+              </div>
+            </div>
+
+            <!-- Show textarea if bodyType is not FORM_URLENCODED -->
+            <div class="form-group" ng-if="lsc.authorization.bodyType !== 'FORM_URLENCODED'">
+              <label for="rest.body">{{'authorization.body' | i18n}}</label>
+              <textarea id="rest.body" ng-model="lsc.authorization.body" class="form-control" rows="8" style="resize: none;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="auth.headers">{{'authorization.headers' | i18n}}</label>
+              <div id="auth.headers" class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">{{'authorization.headers' | i18n}}</h3>
+                  <div class="panel-buttons pull-right">
+                    <button class="btn btn-default btn-sm" type="button" tooltip="{{'tooltip.add' | i18n}}" ng-click="lsc.openAuthHeadersFormDialog('sm', {})">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm" type="button" ng-disabled="lsc.selectedItems.length != 1" ng-click="lsc.openAuthHeadersFormDialog('sm', lsc.selectedItems[0])" tooltip="{{'tooltip.edit' | i18n}}">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm" ng-disabled="lsc.selectedItems.length == 0 || lsc.selectedItems == undefined" type="button"
+                            ng-really-message="{{'label.confirm' | i18n}}" ng-really-click="lsc.removeAuthHeader()" tooltip="{{'tooltip.delete' | i18n}}">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div id="authHeaders" ui-grid-selection ui-grid-resize-columns ui-grid-auto-resize ng-style="{'height': '150px'}" ui-grid="lsc.lscAuthHeadersGridOptions"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="rest.responseKey">{{'authorization.responseKey' | i18n}} <span style="color: red;">*</span></label>
+              <input id="rest.responseKey" type="text" class="form-control input-sm"
+                     placeholder="$.access_token"
+                     ng-model="lsc.authorization.responseKey" ng-required="true" />
+            </div>
+
+            <div class="form-group">
+              <label for="rest.responseType">{{'authorization.responseType' | i18n}}</label>
+              <select id="rest.responseType" class="form-control input-sm" ng-model="lsc.authorization.responseType">
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+              </select>
+            </div>
+
+            <div class="form-group text-right">
+              <!-- Önemli: Buton tipini "button" olarak ayarlayın ki dış form submit’i tetiklenmesin -->
+              <button class="btn btn-info" type="button" ng-click="lsc.callRestClient()">
+                <i class="fa fa-send"></i> {{'authorization.sendRequest' | i18n}}
+              </button>
+            </div>
+
+            <hr />
+
+            <div class="form-group">
+              <label>{{'authorization.response' | i18n}}</label>
+              <pre style="max-height: 200px; overflow: auto;">{{lsc.restResponse}}</pre>
+            </div>
+          </div>
+        </tab>
+
+
+      </tabset>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="lsc.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+    "redhat.vscode-xml",
+    "redhat.vscode-community-server-connector",
+    "ms-vscode.PowerShell",
+    "vscjava.vscode-lombok"
+  ]
+}

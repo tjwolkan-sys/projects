@@ -1,0 +1,69 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.globalbilgi.gbqueueselectionservice.grpc;
+import "google/protobuf/struct.proto";
+
+message RoutingRequest {
+  int64 routingGroupId = 1;
+  string subjectId = 2;
+  google.protobuf.Struct routingContext = 3;
+  reserved 4;
+  repeated string attributes = 5;
+  Uniqueness unique = 6;
+  string utilizer = 7;
+}
+
+message RoutingResponse {
+  int64 targetId = 1;
+  string targetName = 2;
+}
+
+message TargetsRequest {
+  int64 routingGroupId = 1;
+}
+
+message TargetsResponse {
+  repeated int64 targetIds = 1;
+}
+
+message DeleteProvisionHistoryRequest {
+  int64 routingGroupId = 1;
+  string subjectId = 2;
+}
+
+message DeleteProvisionHistoryResponse {
+}
+
+message RouteDetailsRequest {
+  int64 groupId = 1;
+}
+
+message RouteDetailEntry {
+  string phoneNumber = 1;
+  string type = 2;
+  string attempts = 3;
+  // Numara başına eş zamanlı çıkış çağrısı limiti. 0 = limit tanımsız (limitsiz).
+  // Limit, bu endpoint'i tüketen dialer tarafından uygulanır.
+  int32 capacity = 4;
+  // Asterisk trunk/endpoint adı; numara başına sabittir ve call type'tan bağımsızdır.
+  // Tanımsızsa boş string döner (null veya "0" değil); tüketici boş değeri "varsayılan trunk" sayar.
+  // Değer QSS tarafından yorumlanmaz, olduğu gibi iletilir. Format: ^[A-Za-z0-9_.-]{0,64}$
+  string trunk = 5;
+}
+
+message RouteDetailsResponse {
+  repeated RouteDetailEntry entries = 1;
+}
+
+service QueueSelectionService {
+  rpc route(RoutingRequest) returns (RoutingResponse);
+  rpc getTargets(TargetsRequest) returns (TargetsResponse);
+  rpc deleteProvisionHistory(DeleteProvisionHistoryRequest) returns (DeleteProvisionHistoryResponse);
+  rpc getRouteDetails(RouteDetailsRequest) returns (RouteDetailsResponse);
+}
+
+enum Uniqueness {
+  ANY = 0;
+  UNIQUE = 1;
+  SAME = 2;
+}

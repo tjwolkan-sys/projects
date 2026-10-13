@@ -1,0 +1,68 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'campaign.schedule.form' | i18n}}</h3>
+  </div>
+  <form id="fooForm" name="campaignScheduleForm" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group" ng-class="{ 'has-error' : (campaignScheduleForm.$submitted || campaignScheduleForm.day.$touched) && campaignScheduleForm.day.$invalid }">
+            <label for="campaign.schedule.day">
+              {{'campaign.schedule.day' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="campaign.schedule.day" name="day" class="form-control input-sm ng-pristine ng-untouched ng-invalid ng-invalid-required"
+              ng-model="scheduleForm.selected.item.day" ng-required="true" ng-options="item.value as item.label for item in scheduleForm.days" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="campaign.schedule.from">{{'campaign.schedule.from' | i18n}}</label>
+            <uib-timepicker id="campaign.schedule.from" ng-model="scheduleForm.selected.item.from" show-meridian="false" class="timepicker-sm"></uib-timepicker>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="campaign.schedule.till">{{'campaign.schedule.till' | i18n}}</label>
+            <uib-timepicker id="campaign.schedule.till" ng-model="scheduleForm.selected.item.till" show-meridian="false" class="timepicker-sm"></uib-timepicker>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="campaign.schedule.enabled">{{'label.enabled' | i18n}}:</label>
+            <input id="campaign.schedule.enabled" type="checkbox" ng-model="scheduleForm.selected.item.enabled" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="campaign.schedule.resetEnabled">{{'label.reset_enabled' | i18n}}:</label>
+            <input id="campaign.schedule.resetEnabled" type="checkbox" ng-model="scheduleForm.selected.item.resetEnabled" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group" uib-dropdown>
+        <button id="saveButton" type="submit" class="btn btn-primary"
+                ng-click="campaignScheduleForm.$valid && scheduleForm.save()">{{'label.save' | i18n}}</button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem"><button id="saveAndContinueButton" type="submit" ng-click="campaignScheduleForm.$valid && scheduleForm.saveAndContinue()">{{'label.saveAndContinue'
+              | i18n}}</button></li>
+        </ul>
+      </div>
+      <button class="btn btn-warning" type="button" ng-click="scheduleForm.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

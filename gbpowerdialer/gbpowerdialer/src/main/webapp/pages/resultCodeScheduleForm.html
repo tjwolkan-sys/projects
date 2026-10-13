@@ -1,0 +1,128 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'resultCodeSchedule.form' | i18n}}</h3>
+  </div>
+  <form name="rcSchedulePhone" ng-submit="rcSchedulePhone.$valid && resultCodeSchedule.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-2-5">
+          <div class="form-group" ng-class="{ 'has-error' : (rcSchedulePhone.$submitted || rcSchedulePhone.rcScheduleRC.$touched) && rcSchedulePhone.rcScheduleRC.$invalid }">
+            <label for="resultCodeSchedule.resultCode">
+              {{'resultCodeSchedule.resultCode' | i18n}}
+              <span style="color: red;" ng-if="resultCodeSchedule.item.telephonyResultCode == null && resultCodeSchedule.campaign.type != 4">*</span>
+            </label>
+            <select id="resultCodeSchedule.resultCode" name="rcScheduleRC" class="form-control input-sm" ng-model="resultCodeSchedule.item.resultCode"
+              ng-options="item as item.name for item in resultCodeSchedule.resultCodeList track by item.id"
+              ng-required="resultCodeSchedule.item.telephonyResultCode == null && resultCodeSchedule.campaign.type != 4"
+              ng-disabled="resultCodeSchedule.item.telephonyResultCode != null || resultCodeSchedule.campaign.type == 4" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group" ng-class="{ 'has-error' : (rcSchedulePhone.$submitted || rcSchedulePhone.rcScheduleTRC.$touched) && rcSchedulePhone.rcScheduleTRC.$invalid }">
+            <label for="resultCodeSchedule.telephonyResultCode">
+              {{'resultCodeSchedule.telephonyResultCode' | i18n}}
+              <span style="color: red;" ng-if="resultCodeSchedule.item.resultCode == null">*</span>
+            </label>
+            <select id="resultCodeSchedule.telephonyResultCode" name="rcScheduleTRC" class="form-control input-sm" ng-model="resultCodeSchedule.item.telephonyResultCode"
+              ng-options="item as item.name for item in resultCodeSchedule.telephonyRcList track by item.id" ng-required="resultCodeSchedule.item.resultCode == null"
+              ng-disabled="resultCodeSchedule.item.resultCode != null" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (rcSchedulePhone.$submitted || rcSchedulePhone.rcScheduleApplyTo.$touched) && rcSchedulePhone.rcScheduleApplyTo.$invalid }">
+            <label for="resultCodeSchedule.applyTo">
+              {{'resultCodeSchedule.applyTo' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <select id="resultCodeSchedule.applyTo" name="rcScheduleApplyTo" class="form-control input-sm" ng-model="resultCodeSchedule.item.applyTo"
+              ng-options="item.value as item.label for item in resultCodeSchedule.applyToList" ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group" ng-class="{ 'has-error' : (rcSchedulePhone.$submitted || rcSchedulePhone.rcRetryAmount.$touched) && rcSchedulePhone.rcRetryAmount.$invalid }">
+            <label for="resultCodeSchedule.retryAmount">
+              {{'resultCodeSchedule.retryAmount' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <input id="resultCodeSchedule.retryAmount" name="rcRetryAmount" type="number" min="0" class="form-control input-sm" ng-model="resultCodeSchedule.item.retryAmount"
+              ng-required="true" ng-error-messages />
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (rcSchedulePhone.$submitted || rcSchedulePhone.rcScheduleRetryInterval.$touched) && rcSchedulePhone.rcScheduleRetryInterval.$invalid }">
+            <label for="resultCodeSchedule.retryInterval">
+              {{'resultCodeSchedule.retryInterval' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <input id="resultCodeSchedule.retryInterval" name="rcScheduleRetryInterval" type="number" min="0" class="form-control input-sm"
+              ng-model="resultCodeSchedule.item.retryInterval" ng-required="true" ng-error-messages />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2-5">
+          <div class="form-group">
+            <label for="resultCodeSchedule.minScheduleTime">
+              {{'resultCodeSchedule.minScheduleTime' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <uib-timepicker id="resultCodeSchedule.minScheduleTime" ng-model="resultCodeSchedule.item.minScheduleTime" hour-step="1" minute-step="5" show-meridian="false"
+              ng-required="true" class="timepicker-sm" />
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group">
+            <label for="resultCodeSchedule.maxScheduleTime">
+              {{'resultCodeSchedule.maxScheduleTime' | i18n}}
+              <span style="color: red;">*</span>
+            </label>
+            <uib-timepicker id="resultCodeSchedule.maxScheduleTime" ng-model="resultCodeSchedule.item.maxScheduleTime" hour-step="1" minute-step="5" show-meridian="false"
+              ng-required="true" class="timepicker-sm" />
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group">
+            <label for="resultCodeSchedule.macroCycle">{{'resultCodeSchedule.macroCycle' | i18n}} </label>
+            <input id="resultCodeSchedule.macroCycle" type="checkbox" ng-model="resultCodeSchedule.item.macroCycle" />
+          </div>
+        </div>
+        <div class="col-lg-2-5">
+          <div class="form-group">
+            <label for="resultCodeSchedule.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="resultCodeSchedule.enabled" type="checkbox" ng-model="resultCodeSchedule.item.enabled" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12" ng-controller="resultCodeScheduleAdvancedCtrl as resultCodeScheduleAdvanced">
+          <div ng-include="'pages/resultCodeScheduleAdvancedList'"
+            ng-init="resultCodeScheduleAdvanced.campaign = resultCodeSchedule.campaign;resultCodeScheduleAdvanced.resultCodeSchedule = resultCodeSchedule.item;resultCodeScheduleAdvanced.resultCodeScheduleInitial = resultCodeSchedule.itemInitial"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="resultCodeSchedule.advancedIntervalEnabled">{{'resultCodeSchedule.advancedIntervalEnabled' | i18n}} </label>
+            <input id="resultCodeSchedule.advancedIntervalEnabled" type="checkbox" ng-model="resultCodeSchedule.item.advancedIntervalEnabled" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="resultCodeSchedule.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

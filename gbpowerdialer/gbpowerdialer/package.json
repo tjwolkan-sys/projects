@@ -1,0 +1,16 @@
+{
+  "name": "gbpowerdialer-frontend-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "gbpowerdialer AngularJS 1.x test altyapısı",
+  "scripts": {
+    "test:angular": "karma start karma.conf.js --single-run"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.4.4",
+    "jasmine-core": "4.6.1",
+    "karma": "6.4.4",
+    "karma-chrome-launcher": "3.2.0",
+    "karma-jasmine": "5.1.0"
+  }
+}

@@ -1,0 +1,421 @@
+>>dl-48706a12-444e-4581-ab45-c7fca9701382
+
+--GIVXBSTRGRP01-1781248506.889210 GIVXBSTRGRP01-1781248845.889881
+
+[Jun 12 10:15:06] VERBOSE[1896][C-0004b53d] netsock2.c: Using SIP RTP TOS bits 184
+[Jun 12 10:15:06] VERBOSE[1896][C-0004b53d] netsock2.c: Using SIP RTP CoS mark 6
+[Jun 12 10:15:06] VERBOSE[1896][C-0004b53d] res_rtp_asterisk.c: 0x7fb11b8b5f30 -- Strict RTP learning after remote address set to: 10.14.124.44:11758
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:1] NoOp("SIP/10.14.124.44-00086000", "********** Got incoming callback for supervisor 81949") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:2] Set("SIP/10.14.124.44-00086000", "CUSTOMHINT=81949") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:3] Set("SIP/10.14.124.44-00086000", "__FROMREGISTRARUNIQUEID=GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:4] Set("SIP/10.14.124.44-00086000", "AGENTID=9877") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:5] NoOp("SIP/10.14.124.44-00086000", "Campaign-Type - PREDICTIVE") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:6] ExecIf("SIP/10.14.124.44-00086000", "1?Set(CDR(call_type)=12)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:7] ExecIf("SIP/10.14.124.44-00086000", "0?NoCDR()") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:8] Gosub("SIP/10.14.124.44-00086000", "parentid,s,1") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:1] NoOp("SIP/10.14.124.44-00086000", "********** PARENTID =  and CHANNELTYPE = SIP") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:2] Set("SIP/10.14.124.44-00086000", "TIMEOUT(absolute)=36000") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] func_timeout.c: Channel will hangup at 2026-06-12 20:15:06.094 +03.
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:3] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__PARENTID=GIVXBSTRGRP28-17812484801247454)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:4] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__PARENTID=dl-48706a12-444e-4581-ab45-c7fca9701382)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:5] Set("SIP/10.14.124.44-00086000", "CDR(parentid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:6] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-ParentID:dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:7] Set("SIP/10.14.124.44-00086000", "__PARENTID=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@parentid:8] Return("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:9] Set("SIP/10.14.124.44-00086000", "CALLERID(num)=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:10] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__ORIGINID=GIVXBSTRGRP28-1781248480.1247454)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:11] ExecIf("SIP/10.14.124.44-00086000", "1?Set(CDR(originid)=GIVXBSTRGRP28-1781248480.1247454)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:12] ExecIf("SIP/10.14.124.44-00086000", "0?UserEvent(SuperviseCallback,EventChannel: SIP/10.14.124.44-00086000,Supervisor: 81949)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:13] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-SupervisorACTION:") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:14] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-SupervisorAGENT:") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:15] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-UniqueID:GIVXBSTRGRP28-1781248480.1247454") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:16] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-ParentID:dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:17] ExecIf("SIP/10.14.124.44-00086000", "1?SIPAddHeader(X-Asterisk-PP-QueueName:GUVENCELL_AKG_PCTBYENI)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:18] SIPAddHeader("SIP/10.14.124.44-00086000", "Call-Info: answer-after=0") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:19] ExecIf("SIP/10.14.124.44-00086000", "1?SIPAddHeader(X-Asterisk-Allow-Callback:true") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:20] ExecIf("SIP/10.14.124.44-00086000", "1?SIPAddHeader(X-Asterisk-Allow-Custom-Callback:true") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:21] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__ALLOW_CALLBACK=true)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:22] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__ALLOW_CUSTOM_CALLBACK=true)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:23] Gosub("SIP/10.14.124.44-00086000", "add_auto_answer_headers,s,1") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:1] SIPAddHeader("SIP/10.14.124.44-00086000", "Answer-Mode:Auto") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:2] SIPAddHeader("SIP/10.14.124.44-00086000", "p-auto-answer:normal") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:3] SIPAddHeader("SIP/10.14.124.44-00086000", "x-p-auto-answer:normal") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:4] SIPAddHeader("SIP/10.14.124.44-00086000", "x-answer-mode:auto") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:5] Set("SIP/10.14.124.44-00086000", "__AUTOANSWER=normal") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@add_auto_answer_headers:6] Return("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:24] Set("SIP/10.14.124.44-00086000", "CDR(sessionid)=17812475098559877") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:25] Set("SIP/10.14.124.44-00086000", "CDR(agentid)=9877") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:26] Set("SIP/10.14.124.44-00086000", "CDR(groupid)=10173") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:27] Set("SIP/10.14.124.44-00086000", "CDR(teamid)=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:28] Set("SIP/10.14.124.44-00086000", "CDR(tenantid)=10016") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:29] Set("SIP/10.14.124.44-00086000", "__AGENTIDTRANSFER=9877") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:30] Set("SIP/10.14.124.44-00086000", "__TENANTIDTRANSFER=10016") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:31] Set("SIP/10.14.124.44-00086000", "__GROUPIDTRANSFER=10173") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:32] Set("SIP/10.14.124.44-00086000", "__TEAMIDTRANSFER=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:33] Set("SIP/10.14.124.44-00086000", "__TENANTIDTRANSFER=10016") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:34] Set("SIP/10.14.124.44-00086000", "__SESSIONIDTRANSFER=17812475098559877") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:35] ExecIf("SIP/10.14.124.44-00086000", "1?Set(CALLERID(num)=05079487459)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:36] Set("SIP/10.14.124.44-00086000", "__ORIGINNUM=05079487459") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:37] ExecIf("SIP/10.14.124.44-00086000", "1?Gosub(user_event_dialer_call_to_agent,agent,1)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [agent@user_event_dialer_call_to_agent:1] NoOp("SIP/10.14.124.44-00086000", "********** Generating user event") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [agent@user_event_dialer_call_to_agent:2] UserEvent("SIP/10.14.124.44-00086000", "DialerCall,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382,EventChannel: SIP/10.14.124.44-00086000") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [agent@user_event_dialer_call_to_agent:3] Return("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:38] ExecIf("SIP/10.14.124.44-00086000", "1?SIPAddHeader(X-Asterisk-PP-Campaign-Type:PREDICTIVE)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:39] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__CAMPAIGN_TYPE=PREDICTIVE)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:40] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__CONTACTID=8099)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:41] Set("SIP/10.14.124.44-00086000", "__FROMNUM=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:42] Set("SIP/10.14.124.44-00086000", "__SUPERVISOR_ACTION=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:43] Set("SIP/10.14.124.44-00086000", "__LISTEN_CHANNEL=") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:44] Set("SIP/10.14.124.44-00086000", "__INTERACTION_ID=GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:45] Set("SIP/10.14.124.44-00086000", "__RESERVATION_INTERACTION_ID=GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:46] SIPAddHeader("SIP/10.14.124.44-00086000", "X-Asterisk-InteractionID:GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:47] GotoIf("SIP/10.14.124.44-00086000", "0?supervisor:progressive") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx_builtins.c: Goto (from_registrar,81949,51)
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:51] Set("SIP/10.14.124.44-00086000", "__TYPE=PROGRESSIVE") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:52] Set("SIP/10.14.124.44-00086000", "_DYNAMIC_FEATURES=HoldByCallee") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:53] Set("SIP/10.14.124.44-00086000", "__QUEUE_NAME=GUVENCELL_AKG_PCTBYENI") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:54] Set("SIP/10.14.124.44-00086000", "__QUEUE_ID=107") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:55] Goto("SIP/10.14.124.44-00086000", "end_of_interaction_handling") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx_builtins.c: Goto (from_registrar,81949,56)
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:56] NoOp("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:57] Set("SIP/10.14.124.44-00086000", "__DNIS=05079487459") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:58] Gosub("SIP/10.14.124.44-00086000", "agent_reservation,s,1(81949)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:1] NoOp("SIP/10.14.124.44-00086000", "Trying to reserve user 81949 for call GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:2] GotoIf("SIP/10.14.124.44-00086000", "0?nourl") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:3] UserEvent("SIP/10.14.124.44-00086000", "CallReservation,Username: 81949,EventChannel: SIP/10.14.124.44-00086000,InteractionId: GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:4] ExecIf("SIP/10.14.124.44-00086000", "0?Set(TYPE=INBOUND_CONFERENCE)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:5] ExecIf("SIP/10.14.124.44-00086000", "0?Set(TYPE=OUTBOUND_CONFERENCE)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:6] Set("SIP/10.14.124.44-00086000", "URL=10.14.146.72/gbwebphone/api/userInteraction/addCall/81949") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:7] Set("SIP/10.14.124.44-00086000", "POST_DATA={"uniqueId":"GIVXBSTRGRP01-1781248506.889210","parentId":"dl-48706a12-444e-4581-ab45-c7fca9701382","originId":"GIVXBSTRGRP28-1781248480.1247454","type":"PROGRESSIVE","ani":"","dnis":"05079487459","queueName":"GUVENCELL_AKG_PCTBYENI","queueId":"107","superviseActionType":"","callerName":"","allowCallBack":"true","allowCustomCallBack":"true","resultCodeTimer":"null","resultCodeTimerStatus":"","campaignType":"PREDICTIVE","autoAnswer":"normal","contactId":"8099","queueCallId":"","ivrIteration":""}") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:8] Set("SIP/10.14.124.44-00086000", "CURL_PARAMS= -kL --post302 --connect-timeout 2 --noproxy "*" --user A35Hhd9oDs1M:5Mt4ejjVi09en12k --header 'Content-Type:application/json; charset=utf-8' --data '{"uniqueId":"GIVXBSTRGRP01-1781248506.889210","parentId":"dl-48706a12-444e-4581-ab45-c7fca9701382","originId":"GIVXBSTRGRP28-1781248480.1247454","type":"PROGRESSIVE","ani":"","dnis":"05079487459","queueName":"GUVENCELL_AKG_PCTBYENI","queueId":"107","superviseActionType":"","callerName":"","allowCallBack":"true","allowCustomCallBack":"true","resultCodeTimer":"null","resultCodeTimerStatus":"","campaignType":"PREDICTIVE","autoAnswer":"normal","contactId":"8099","queueCallId":"","ivrIteration":""}'") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:9] NoOp("SIP/10.14.124.44-00086000", "Checking: /usr/bin/curl  -kL --post302 --connect-timeout 2 --noproxy "*" --user A35Hhd9oDs1M:5Mt4ejjVi09en12k --header 'Content-Type:application/json; charset=utf-8' --data '{"uniqueId":"GIVXBSTRGRP01-1781248506.889210","parentId":"dl-48706a12-444e-4581-ab45-c7fca9701382","originId":"GIVXBSTRGRP28-1781248480.1247454","type":"PROGRESSIVE","ani":"","dnis":"05079487459","queueName":"GUVENCELL_AKG_PCTBYENI","queueId":"107","superviseActionType":"","callerName":"","allowCallBack":"true","allowCustomCallBack":"true","resultCodeTimer":"null","resultCodeTimerStatus":"","campaignType":"PREDICTIVE","autoAnswer":"normal","contactId":"8099","queueCallId":"","ivrIteration":""}' "10.14.146.72/gbwebphone/api/userInteraction/addCall/81949"") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:10] Set("SIP/10.14.124.44-00086000", "RESPONSE=true") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [s@agent_reservation:11] ExecIf("SIP/10.14.124.44-00086000", "1?Return()") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:59] ExecIf("SIP/10.14.124.44-00086000", "0?SIPAddHeader(X-Asterisk-Result-Code-Timer-Status:)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:60] ExecIf("SIP/10.14.124.44-00086000", "1?SIPAddHeader(X-Asterisk-Result-Code-Timer:null)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:61] Set("SIP/10.14.124.44-00086000", "LIMIT_PLAYAUDIO_CALLEE=yes") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:62] Set("SIP/10.14.124.44-00086000", "LIMIT_PLAYAUDIO_CALLER=no") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:63] Set("SIP/10.14.124.44-00086000", "LIMIT_WARNING_FILE=beeperr") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:64] Set("SIP/10.14.124.44-00086000", "LIMIT_CONNECT_FILE=beep") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:65] Set("SIP/10.14.124.44-00086000", "DISCONNECT_INITIATOR=2") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:66] Set("SIP/10.14.124.44-00086000", "MONITOR_FILENAME=/var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:67] Set("SIP/10.14.124.44-00086000", "MONITOR_COMMAND_SOX=/etc/asterisk/common/scripts/sox_monitor.sh /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:68] Set("SIP/10.14.124.44-00086000", "MONITOR_COMMAND_CHOWN=chown root:root /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210.wav") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:69] ExecIf("SIP/10.14.124.44-00086000", "1?MixMonitor(/var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210-mono.wav,a t(/var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210-out.wav) r(/var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210-in.wav) S b,/etc/asterisk/common/scripts/sox_monitor.sh /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210 && chown root:root /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210.wav)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [81949@from_registrar:70] Dial("SIP/10.14.124.44-00086000", "SIP/81949,60,tgL(36000000:10000)") in new stack
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: Limit Data for this call:
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: timelimit      = 36000000 ms (36000.000 s)
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: play_warning   = 10000 ms (10.000 s)
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: play_to_caller = no
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: play_to_callee = yes
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: warning_freq   = 0 ms (0.000 s)
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: start_sound    = beep
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: warning_sound  = beeperr
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] features.c: end_sound      =
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] netsock2.c: Using SIP RTP TOS bits 184
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] netsock2.c: Using SIP RTP CoS mark 6
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] app_dial.c: Called SIP/81949
+[Jun 12 10:15:06] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: Begin MixMonitor Recording SIP/10.14.124.44-00086000
+[Jun 12 10:15:06] VERBOSE[1896][C-0004b53d] res_rtp_asterisk.c: 0x7fb1140677a0 -- Strict RTP learning after remote address set to: 10.13.169.218:10012
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] app_dial.c: SIP/81949-00086001 answered SIP/10.14.124.44-00086000
+[Jun 12 10:15:06] VERBOSE[3139665][C-0004b53d] bridge_channel.c: Channel SIP/81949-00086001 joined 'simple_bridge' basic-bridge <387a6ae3-1800-4458-9d3f-b3910d8d232f>
+[Jun 12 10:15:06] VERBOSE[3139665][C-0004b53d] file.c: <SIP/81949-00086001> Playing 'beep.slin' (language 'en')
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.44-00086000 joined 'simple_bridge' basic-bridge <387a6ae3-1800-4458-9d3f-b3910d8d232f>
+[Jun 12 10:15:06] VERBOSE[3139662][C-0004b53d] res_rtp_asterisk.c: 0x7fb11b8b5f30 -- Strict RTP switching to RTP target address 10.14.124.44:11758 as source
+[Jun 12 10:15:06] VERBOSE[3139665][C-0004b53d] res_rtp_asterisk.c: 0x7fb1140677a0 -- Strict RTP switching to RTP target address 10.13.169.218:10012 as source
+[Jun 12 10:15:11] VERBOSE[3139662][C-0004b53d] res_rtp_asterisk.c: 0x7fb11b8b5f30 -- Strict RTP learning complete - Locking on source address 10.14.124.44:11758
+[Jun 12 10:15:11] VERBOSE[3139665][C-0004b53d] res_rtp_asterisk.c: 0x7fb1140677a0 -- Strict RTP learning complete - Locking on source address 10.13.169.218:10012
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.44-00086000 left 'simple_bridge' basic-bridge <387a6ae3-1800-4458-9d3f-b3910d8d232f>
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:1] NoOp("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:2] DumpChan("SIP/10.14.124.44-00086000", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] app_dumpchan.c:
+[Jun 12 10:20:45] VERBOSE[3139665][C-0004b53d] bridge_channel.c: Channel SIP/81949-00086001 left 'simple_bridge' basic-bridge <387a6ae3-1800-4458-9d3f-b3910d8d232f>
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:3] Set("SIP/10.14.124.44-00086000", "__AGENT_ID=9877") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:4] Set("SIP/10.14.124.44-00086000", "CALLERID(all)=") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:5] Set("SIP/10.14.124.44-00086000", "CDR(parentid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:6] Set("SIP/10.14.124.44-00086000", "CDR(call_type)=10") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:7] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__AGENTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:8] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:9] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__GROUPIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:10] ExecIf("SIP/10.14.124.44-00086000", "1?Set(__TEAMIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:11] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:12] ExecIf("SIP/10.14.124.44-00086000", "0?Set(__SESSIONIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:13] ExecIf("SIP/10.14.124.44-00086000", "0?StopMixMonitor()") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] pbx.c: Executing [55343@blind-transfer:14] Dial("SIP/10.14.124.44-00086000", "Local/55343@ontransfer/n,30,t") in new stack
+[Jun 12 10:20:45] VERBOSE[3139662][C-0004b53d] app_dial.c: Called Local/55343@ontransfer/n
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:1] NoOp("Local/55343@ontransfer-00007d67;2", "********** Got transfer request for call GIVXBSTRGRP01-1781248506.889210 to exten 55343 from "" <>") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:2] DumpChan("Local/55343@ontransfer-00007d67;2", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] app_dumpchan.c:
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:3] Set("Local/55343@ontransfer-00007d67;2", "CDR_PROP(party_a)=1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:4] NoOp("Local/55343@ontransfer-00007d67;2", "********** Transferred call UNIQUEID: GIVXBSTRGRP01-1781248845.889881 LINKEDID: GIVXBSTRGRP01-1781248506.889210 CDR(uniqueid): GIVXBSTRGRP01-1781248845.889881") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:5] Set("Local/55343@ontransfer-00007d67;2", "MESSAGE(body)="uniqueid=GIVXBSTRGRP01-1781248845.889881"") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:6] Set("Local/55343@ontransfer-00007d67;2", "CDR(originid)=GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:7] Set("Local/55343@ontransfer-00007d67;2", "CDR(call_type)=11") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:8] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__AGENTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:9] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:10] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__GROUPIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:11] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(__TEAMIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:12] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:13] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__SESSIONIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:14] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__AGENTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:15] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:16] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__GROUPIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:17] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(__TEAMIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:18] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__TENANTIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:19] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__SESSIONIDTRANSFER=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:20] Set("Local/55343@ontransfer-00007d67;2", "CDR(parentid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:21] Set("Local/55343@ontransfer-00007d67;2", "__ISTRANSFER=1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:22] Set("Local/55343@ontransfer-00007d67;2", "__CAMPAIGN_TYPE=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:23] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(TRANSFER_TYPE=TRANSFER)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:24] Set("Local/55343@ontransfer-00007d67;2", "ODBC_LOG_TRANSFER()=GIVXBSTRGRP01-1781248506.889210,GIVXBSTRGRP01-1781248845.889881,BLIND_TRANSFER") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:25] UserEvent("Local/55343@ontransfer-00007d67;2", "NewTransferChannel,EventChannel: Local/55343@ontransfer-00007d67;2,Target: 55343,LinkedChannel: GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:26] Set("Local/55343@ontransfer-00007d67;2", "GROUPID=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:27] Set("Local/55343@ontransfer-00007d67;2", "ALLOW_CUSTOM_CALLBACK=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:28] Set("Local/55343@ontransfer-00007d67;2", "ALLOW_CALLBACK=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:29] SIPRemoveHeader("Local/55343@ontransfer-00007d67;2", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:30] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Dial(Local/55343@outbound/n,30,t)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@ontransfer:31] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Goto(outbound,55343,1)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx_builtins.c: Goto (outbound,55343,1)
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound:1] NoOp("Local/55343@ontransfer-00007d67;2", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound:2] NoOp("Local/55343@ontransfer-00007d67;2", "Guvencell_Transfer") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound:3] Gosub("Local/55343@ontransfer-00007d67;2", "outbound-to-media,55343,1(55343)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:1] NoOp("Local/55343@ontransfer-00007d67;2", "********** Outbound call to the media server <6> at exten 55343 from "" <>") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:2] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(ARG1=55343)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:3] NoOp("Local/55343@ontransfer-00007d67;2", "originnum - 05079487459 and is transfer - 1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:4] Set("Local/55343@ontransfer-00007d67;2", "CUSTOMHINT=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:5] Gosub("Local/55343@ontransfer-00007d67;2", "parentid,s,1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:1] NoOp("Local/55343@ontransfer-00007d67;2", "********** PARENTID = dl-48706a12-444e-4581-ab45-c7fca9701382 and CHANNELTYPE = Local") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:2] Set("Local/55343@ontransfer-00007d67;2", "TIMEOUT(absolute)=36000") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] func_timeout.c: Channel will hangup at 2026-06-12 20:20:45.659 +03.
+[Jun 12 10:20:45] WARNING[3142300][C-0004b53d] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:20:45] WARNING[3142300][C-0004b53d] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:3] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__PARENTID=)") in new stack
+[Jun 12 10:20:45] WARNING[3142300][C-0004b53d] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:20:45] WARNING[3142300][C-0004b53d] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:4] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(__PARENTID=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:5] Set("Local/55343@ontransfer-00007d67;2", "CDR(parentid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:6] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-ParentID:dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:7] Set("Local/55343@ontransfer-00007d67;2", "__PARENTID=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@parentid:8] Return("Local/55343@ontransfer-00007d67;2", "") in new stack
+[Jun 12 10:20:45] WARNING[3142300][C-0004b53d] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:6] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(CDR(originid)=):Set(CDR(originid)=GIVXBSTRGRP28-1781248480.1247454)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:7] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(CDR(originid)=GIVXBSTRGRP01-1781248845.889881)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:8] Set("Local/55343@ontransfer-00007d67;2", "CDR(call_type)=6") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:9] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(CDR(call_type)=8)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:10] Set("Local/55343@ontransfer-00007d67;2", "CDR(agentid)=9877") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:11] Set("Local/55343@ontransfer-00007d67;2", "CDR(sessionid)=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:12] Set("Local/55343@ontransfer-00007d67;2", "CDR(tenantid)=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:13] Set("Local/55343@ontransfer-00007d67;2", "CDR(groupid)=") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:14] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-WebPhone-OriginID:GIVXBSTRGRP28-1781248480.1247454") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:15] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-IVR-OriginID:") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:16] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-IVR-Data:") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:17] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(__LASTAGENT=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:18] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-PP-PopupInfo:<hr>Agent: ") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:19] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-PP-QueueName:GUVENCELL_AKG_PCTBYENI") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:20] SIPAddHeader("Local/55343@ontransfer-00007d67;2", "X-Asterisk-PP-Campaign-Name:") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:21] Set("Local/55343@ontransfer-00007d67;2", "DISCONNECT_INITIATOR=1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:22] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(CALLERID(all)=05079487459)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:23] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(__ORIGINNUM="" <05079487459>)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:24] ExecIf("Local/55343@ontransfer-00007d67;2", "1?Set(line=1)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:25] ExecIf("Local/55343@ontransfer-00007d67;2", "0?SIPAddHeader(X-Asterisk-RT-Username:)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:26] ExecIf("Local/55343@ontransfer-00007d67;2", "0?SIPAddHeader(X-Asterisk-RT-Line:1)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:27] ExecIf("Local/55343@ontransfer-00007d67;2", "0?SIPAddHeader(X-Asterisk-RT-InteractionId:GIVXBSTRGRP01-1781248506.889210)") in new stack
+[Jun 12 10:20:45] ERROR[3142300][C-0004b53d] func_global.c: Channel 'Local/55343@ontransfer-00007d' not found!  Variable 'MONITOR_TRANSFER_FILENAME' will be blank.
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:28] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(MONITOR_FILENAME=)") in new stack
+[Jun 12 10:20:45] ERROR[3142300][C-0004b53d] func_global.c: Channel 'Local/55343@ontransfer-00007d' not found!  Variable 'MONITORIDVAR_SHARED' will be blank.
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:29] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(MONITOR_ID=)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:30] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(MONITOR_FILENAME=/var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248845.889881)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:31] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(MONITOR_COMMAND_SOX=/etc/asterisk/common/scripts/sox_monitor.sh )") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:32] ExecIf("Local/55343@ontransfer-00007d67;2", "0?Set(MONITOR_COMMAND_CHOWN=chown root:root .wav)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:33] ExecIf("Local/55343@ontransfer-00007d67;2", "0?MixMonitor(-mono.wav,a t(-out.wav) r(-in.wav) S b, && )") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:34] ExecIf("Local/55343@ontransfer-00007d67;2", "0?StopMixMonitor()") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [55343@outbound-to-media:35] Dial("Local/55343@ontransfer-00007d67;2", "SIP/10.14.124.19/55343,60,gU(user_event_client_answer)b(user_event_reverse_call,remote,1)") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] netsock2.c: Using SIP RTP TOS bits 184
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] netsock2.c: Using SIP RTP CoS mark 6
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] app_stack.c: SIP/10.14.124.19-0008616f Internal Gosub(user_event_reverse_call,remote,1) start
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [remote@user_event_reverse_call:1] NoOp("SIP/10.14.124.19-0008616f", "Generating user event") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [remote@user_event_reverse_call:2] Set("SIP/10.14.124.19-0008616f", "OWNER=remote") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [remote@user_event_reverse_call:3] Goto("SIP/10.14.124.19-0008616f", "event,1") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx_builtins.c: Goto (user_event_reverse_call,event,1)
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [event@user_event_reverse_call:1] UserEvent("SIP/10.14.124.19-0008616f", "ReverseCall,InteractionAgent: ,ChannelOwner: remote,EventChannel: SIP/10.14.124.19-0008616f,InteractionId: GIVXBSTRGRP01-1781248506.889210") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [event@user_event_reverse_call:2] Return("SIP/10.14.124.19-0008616f", "") in new stack
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] app_stack.c: Spawn extension (from_media, 55343, 1) exited non-zero on 'SIP/10.14.124.19-0008616f'
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] app_stack.c: SIP/10.14.124.19-0008616f Internal Gosub(user_event_reverse_call,remote,1) complete GOSUB_RETVAL=
+[Jun 12 10:20:45] VERBOSE[3142300][C-0004b53d] app_dial.c: Called SIP/10.14.124.19/55343
+[Jun 12 10:20:46] VERBOSE[1896][C-0004b53d] res_rtp_asterisk.c: 0x7fb0f4059f90 -- Strict RTP learning after remote address set to: 10.14.124.19:11384
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] app_dial.c: SIP/10.14.124.19-0008616f answered Local/55343@ontransfer-00007d67;2
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] app_stack.c: SIP/10.14.124.19-0008616f Internal Gosub(user_event_client_answer,s,1) start
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@user_event_client_answer:1] NoOp("SIP/10.14.124.19-0008616f", "********** Generating user event") in new stack
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@user_event_client_answer:2] UserEvent("SIP/10.14.124.19-0008616f", "ClientAnswer,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382,ClientChannel: SIP/10.14.124.19-0008616f") in new stack
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [s@user_event_client_answer:3] Return("SIP/10.14.124.19-0008616f", "") in new stack
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] app_stack.c: Spawn extension (from_media, , 1) exited non-zero on 'SIP/10.14.124.19-0008616f'
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] app_stack.c: SIP/10.14.124.19-0008616f Internal Gosub(user_event_client_answer,s,1) complete GOSUB_RETVAL=
+[Jun 12 10:20:46] VERBOSE[3139662][C-0004b53d] app_dial.c: Local/55343@ontransfer-00007d67;1 answered SIP/10.14.124.44-00086000
+[Jun 12 10:20:46] VERBOSE[3142306][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.19-0008616f joined 'simple_bridge' basic-bridge <8a11dfeb-112d-4351-ab30-8ed46fb38afa>
+[Jun 12 10:20:46] VERBOSE[3142300][C-0004b53d] bridge_channel.c: Channel Local/55343@ontransfer-00007d67;2 joined 'simple_bridge' basic-bridge <8a11dfeb-112d-4351-ab30-8ed46fb38afa>
+[Jun 12 10:20:46] VERBOSE[3142307][C-0004b53d] bridge_channel.c: Channel Local/55343@ontransfer-00007d67;1 joined 'simple_bridge' basic-bridge <2a3bf846-bd7f-4bf1-9142-3f8f6c23f57e>
+[Jun 12 10:20:46] VERBOSE[3139662][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.44-00086000 joined 'simple_bridge' basic-bridge <2a3bf846-bd7f-4bf1-9142-3f8f6c23f57e>
+[Jun 12 10:20:48] VERBOSE[3142306][C-0004b53d] res_rtp_asterisk.c: 0x7fb0f4059f90 -- Strict RTP switching to RTP target address 10.14.124.19:11384 as source
+[Jun 12 10:20:51] VERBOSE[3142306][C-0004b53d] res_rtp_asterisk.c: 0x7fb0f4059f90 -- Strict RTP learning complete - Locking on source address 10.14.124.19:11384
+[Jun 12 10:20:59] VERBOSE[3139662][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.44-00086000 left 'simple_bridge' basic-bridge <2a3bf846-bd7f-4bf1-9142-3f8f6c23f57e>
+[Jun 12 10:20:59] VERBOSE[3139662][C-0004b53d] pbx.c: Spawn extension (blind-transfer, 55343, 14) exited non-zero on 'SIP/10.14.124.44-00086000'
+[Jun 12 10:20:59] VERBOSE[3142307][C-0004b53d] bridge_channel.c: Channel Local/55343@ontransfer-00007d67;1 left 'simple_bridge' basic-bridge <2a3bf846-bd7f-4bf1-9142-3f8f6c23f57e>
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] bridge_channel.c: Channel Local/55343@ontransfer-00007d67;2 left 'simple_bridge' basic-bridge <8a11dfeb-112d-4351-ab30-8ed46fb38afa>
+[Jun 12 10:20:59] VERBOSE[3142306][C-0004b53d] bridge_channel.c: Channel SIP/10.14.124.19-0008616f left 'simple_bridge' basic-bridge <8a11dfeb-112d-4351-ab30-8ed46fb38afa>
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Spawn extension (outbound-to-media, 55343, 35) exited non-zero on 'Local/55343@ontransfer-00007d67;2'
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:1] NoOp("Local/55343@ontransfer-00007d67;2", "********* Hangup at GIVXBSTRGRP01-1781248845.889881 cause : 16 initiator : 1") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:2] NoCDR("Local/55343@ontransfer-00007d67;2", "") in new stack
+[Jun 12 10:20:59] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[Jun 12 10:20:59] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: MixMonitor close filestream (read)
+[Jun 12 10:20:59] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: MixMonitor close filestream (write)
+[Jun 12 10:20:59] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: Executing [/etc/asterisk/common/scripts/sox_monitor.sh /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210 && chown root:root /var/spool/asterisk/monitor/GIVXBSTRGRP01-1781248506.889210.wav]
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:3] UserEvent("Local/55343@ontransfer-00007d67;2", "Disconnect,Initiator: 1,InteractionId: GIVXBSTRGRP01-1781248506.889210,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:4] Set("Local/55343@ontransfer-00007d67;2", "ODBC_CDR_HANGUP_UPD(GIVXBSTRGRP01-1781248845.889881)=16,1") in new stack
+[Jun 12 10:20:59] VERBOSE[3139664][C-0004b53d] app_mixmonitor.c: End MixMonitor Recording SIP/10.14.124.44-00086000
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:5] System("Local/55343@ontransfer-00007d67;2", "echo "INSERT INTO ast_registrar_cdr_hangup_data(uniqueid, disconnect_initiator, hangupcause) VALUES ('GIVXBSTRGRP01-1781248845.889881', 16, 1);" >> /var/log/asterisk/hangup_data.log") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@outbound-to-media:6] Gosub("Local/55343@ontransfer-00007d67;2", "ast_qos_log,h,1") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@ast_qos_log:1] NoOp("Local/55343@ontransfer-00007d67;2", "'QOS_LOG'") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@ast_qos_log:2] Set("Local/55343@ontransfer-00007d67;2", "ODBC_QOS_LOG(GIVXBSTRGRP01-1781248845.889881)=,,,,,,,,,,,,") in new stack
+[Jun 12 10:20:59] VERBOSE[3142300][C-0004b53d] pbx.c: Executing [h@ast_qos_log:3] Return("Local/55343@ontransfer-00007d67;2", "") in new stack
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+GIVXBSTRGRP28-1781248480.1247454 GIVXBSTRGRP28-1781248480.1247455
+
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:1] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "********** Call from "" <> groupid ") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:2] GotoIfTime("Local/05079487459@out-dialer-amd-0003bd76;2", "23:00-23:59,*,*,*?closed") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:3] GotoIfTime("Local/05079487459@out-dialer-amd-0003bd76;2", "00:00-08:00,*,*,*?closed") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:4] SIPAddHeader("Local/05079487459@out-dialer-amd-0003bd76;2", "KAMPANYAID:107") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:5] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "DD=05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:6] SIPAddHeader("Local/05079487459@out-dialer-amd-0003bd76;2", "P-Asserted-Identity: sip:05327572233@10.14.124.50") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:7] GotoIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?camp127") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:8] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "1?Set(EE=99)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:9] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(EE=97)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:10] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CALLER_FORMAT=05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:11] Goto("Local/05079487459@out-dialer-amd-0003bd76;2", "dial") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx_builtins.c: Goto (out-dialer-amd,05079487459,15)
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:15] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "CampaignID:107 and return DD: 05327572233, EE: 99, CALLER_FORMAT: 05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@out-dialer-amd:16] Gosub("Local/05079487459@out-dialer-amd-0003bd76;2", "outbound-predictive-amd,05079487459,1,(SIP/GLOBAL_SBC_ININ,05079487459,05327572233)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:1] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "********** Outbound predictive call <5> to the SIP/GLOBAL_SBC_ININ/05079487459 from "" <>") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:2] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "********** UNIQUEID: GIVXBSTRGRP28-1781248480.1247455") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:3] Gosub("Local/05079487459@out-dialer-amd-0003bd76;2", "parentid,s,1") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:1] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "********** PARENTID = dl-48706a12-444e-4581-ab45-c7fca9701382 and CHANNELTYPE = Local") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:2] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "TIMEOUT(absolute)=36000") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] func_timeout.c: Channel will hangup at 2026-06-12 20:14:40.669 +03.
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:3] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(__PARENTID=)") in new stack
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:4] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(__PARENTID=)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:5] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(parentid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:6] SIPAddHeader("Local/05079487459@out-dialer-amd-0003bd76;2", "X-Asterisk-ParentID:dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:7] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "__PARENTID=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@parentid:8] Return("Local/05079487459@out-dialer-amd-0003bd76;2", "") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:4] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(originid)=dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:5] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(CDR(originid)=)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:6] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(call_type)=5") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:7] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(tenantid)=") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:8] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(campaign_id)=107") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:9] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(campaign_name)=GUVENCELL_AKG_PCTBYENI") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:10] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(contact_id)=8099") in new stack
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:11] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CDR(sessionid)= ") in new stack
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: This function can only be used on SIP channels.
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:12] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "SID, 05079487459, , ") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:13] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(CDR(provider_id)=)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:14] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "DISCONNECT_INITIATOR=1") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:15] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "__ORIGINNUM=") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:16] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "__ATTACHED_DATA=") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:17] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CALLERID(num)=05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:18] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "CALLERID(name)=05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:19] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "__DIALED_NUMBER=05079487459") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:20] GotoIf("Local/05079487459@out-dialer-amd-0003bd76;2", "1?end_of_interaction_handling") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx_builtins.c: Goto (outbound-predictive-amd,05079487459,25)
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:25] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:26] UserEvent("Local/05079487459@out-dialer-amd-0003bd76;2", "AniDefinition,InteractionId: ,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382,Ani: 05327572233") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:27] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "LIMIT_PLAYAUDIO_CALLEE=no") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:28] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "1?Set(LIMIT_CONNECT_FILE=beep)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:29] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "LIMIT_WARNING_FILE=beep") in new stack
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] func_math.c: '' is not a valid number
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:30] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "1?Set(CLIENT_DIAL_TIMEOUT=60):Set(CLIENT_DIAL_TIMEOUT=)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:31] Dial("Local/05079487459@out-dialer-amd-0003bd76;2", "SIP/GLOBAL_SBC_ININ/05079487459,60,b(amh_predial^s^1(Local/05079487459@out-dialer-amd-0003bd76;2))TgU(user_event_predictive_client_answer)L(36000000:5000)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: Limit Data for this call:
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: timelimit      = 36000000 ms (36000.000 s)
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: play_warning   = 5000 ms (5.000 s)
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: play_to_caller = yes
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: play_to_callee = no
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: warning_freq   = 0 ms (0.000 s)
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: start_sound    = beep
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: warning_sound  = beep
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] features.c: end_sound      =
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] netsock2.c: Using SIP RTP TOS bits 184
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] netsock2.c: Using SIP RTP CoS mark 6
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(amh_predial,s,1(Local/05079487459@out-dialer-amd-0003bd76;2)) start
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:1] NoOp("SIP/GLOBAL_SBC_ININ-000416b5", ">>> Predial - Ses Dinleme Basliyor <<<") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:2] Set("SIP/GLOBAL_SBC_ININ-000416b5", "_REC_FILE=/var/spool/asterisk/monitor/GIVXBSTRGRP28-1781248480.1247456.sln") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:3] Set("SIP/GLOBAL_SBC_ININ-000416b5", "CHANNEL(hangup_handler_push)=amh_cleanup,s,1(Local/05079487459@out-dialer-amd-0003bd76;2)") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:4] Progress("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:14:40] WARNING[1066330][C-00041a6b] chan_sip.c: Unable to get seqno from ''
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:5] MixMonitor("SIP/GLOBAL_SBC_ININ-000416b5", "/var/spool/asterisk/monitor/GIVXBSTRGRP28-1781248480.1247456.sln") in new stack
+[Jun 12 10:14:40] VERBOSE[1066331][C-00041a6b] app_mixmonitor.c: Begin MixMonitor Recording SIP/GLOBAL_SBC_ININ-000416b5
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:6] Set("SIP/GLOBAL_SBC_ININ-000416b5", "SONUC="Analiz Baslatildi"") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_predial:7] Return("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] app_stack.c: Spawn extension (from_kamailio, 05079487459, 1) exited non-zero on 'SIP/GLOBAL_SBC_ININ-000416b5'
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(amh_predial,s,1(Local/05079487459@out-dialer-amd-0003bd76;2)) complete GOSUB_RETVAL=
+[Jun 12 10:14:40] VERBOSE[1066330][C-00041a6b] app_dial.c: Called SIP/GLOBAL_SBC_ININ/05079487459
+[Jun 12 10:14:41] VERBOSE[2087][C-00041a6b] res_rtp_asterisk.c: 0x7fca0802c7e0 -- Strict RTP learning after remote address set to: 10.12.99.80:38558
+[Jun 12 10:14:41] VERBOSE[1066330][C-00041a6b] app_dial.c: SIP/GLOBAL_SBC_ININ-000416b5 is making progress passing it to Local/05079487459@out-dialer-amd-0003bd76;2
+[Jun 12 10:14:42] VERBOSE[1066330][C-00041a6b] app_dial.c: SIP/GLOBAL_SBC_ININ-000416b5 is ringing
+[Jun 12 10:14:42] VERBOSE[1066330][C-00041a6b] res_rtp_asterisk.c: 0x7fca0802c7e0 -- Strict RTP switching to RTP target address 10.12.99.80:38558 as source
+[Jun 12 10:14:46] VERBOSE[1066330][C-00041a6b] res_rtp_asterisk.c: 0x7fca0802c7e0 -- Strict RTP learning complete - Locking on source address 10.12.99.80:38558
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] app_dial.c: SIP/GLOBAL_SBC_ININ-000416b5 answered Local/05079487459@out-dialer-amd-0003bd76;2
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(user_event_predictive_client_answer,s,1) start
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@user_event_predictive_client_answer:1] NoOp("SIP/GLOBAL_SBC_ININ-000416b5", "********** Generating user event") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@user_event_predictive_client_answer:2] UserEvent("SIP/GLOBAL_SBC_ININ-000416b5", "ClientPredictiveAnswer,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382,ClientChannel: SIP/GLOBAL_SBC_ININ-000416b5,CampaignId: ") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@user_event_predictive_client_answer:3] Gosub("SIP/GLOBAL_SBC_ININ-000416b5", "amh_postdial,s,1(SIP/GLOBAL_SBC_ININ-000416b5)") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_postdial:1] NoOp("SIP/GLOBAL_SBC_ININ-000416b5", ">>> Telefon Acildi - Analiz Iptal Ediliyor <<<") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_postdial:2] Set("SIP/GLOBAL_SBC_ININ-000416b5", "SONUC="Bulunamadi"") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_postdial:3] StopMixMonitor("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] app_mixmonitor.c: MixMonitor close filestream (mixed)
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@amh_postdial:4] Return("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [s@user_event_predictive_client_answer:4] Return("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] app_stack.c: Spawn extension (from_kamailio, , 1) exited non-zero on 'SIP/GLOBAL_SBC_ININ-000416b5'
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(user_event_predictive_client_answer,s,1) complete GOSUB_RETVAL=
+[Jun 12 10:15:06] VERBOSE[1067072][C-00041a6b] bridge_channel.c: Channel SIP/GLOBAL_SBC_ININ-000416b5 joined 'simple_bridge' basic-bridge <8e47da8a-9fe8-4c8d-aef9-4fde1abade48>
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] bridge_channel.c: Channel Local/05079487459@out-dialer-amd-0003bd76;2 joined 'simple_bridge' basic-bridge <8e47da8a-9fe8-4c8d-aef9-4fde1abade48>
+[Jun 12 10:15:06] VERBOSE[1066330][C-00041a6b] file.c: <Local/05079487459@out-dialer-amd-0003bd76;2> Playing 'beep.slin' (language 'en')
+[Jun 12 10:15:06] VERBOSE[1066331][C-00041a6b] app_mixmonitor.c: End MixMonitor Recording SIP/GLOBAL_SBC_ININ-000416b5
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] bridge_channel.c: Channel SIP/GLOBAL_SBC_ININ-000416b5 left 'simple_bridge' basic-bridge <8e47da8a-9fe8-4c8d-aef9-4fde1abade48>
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] bridge_channel.c: Channel Local/05079487459@out-dialer-amd-0003bd76;2 left 'simple_bridge' basic-bridge <8e47da8a-9fe8-4c8d-aef9-4fde1abade48>
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(amh_cleanup,s,1(Local/05079487459@out-dialer-amd-0003bd76;2)) start
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] pbx.c: Executing [s@amh_cleanup:1] NoOp("SIP/GLOBAL_SBC_ININ-000416b5", ">>> Cagri Bitti - Temizlik <<<") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:32] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "DISCONNECT_INITIATOR=2") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [05079487459@outbound-predictive-amd:33] Hangup("Local/05079487459@out-dialer-amd-0003bd76;2", "") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Spawn extension (outbound-predictive-amd, 05079487459, 33) exited non-zero on 'Local/05079487459@out-dialer-amd-0003bd76;2'
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:1] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "********* Hangup at GIVXBSTRGRP28-1781248480.1247455 cause : 16 initiator : 2") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:2] NoCDR("Local/05079487459@out-dialer-amd-0003bd76;2", "") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:3] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(MODIFIEDHANGUPCAUSE=19):Set(MODIFIEDHANGUPCAUSE=16)") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:4] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(MODIFIEDHANGUPCAUSE=900)") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:5] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?Set(HANGUPCAUSE=900)") in new stack
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] pbx.c: Executing [s@amh_cleanup:2] Set("SIP/GLOBAL_SBC_ININ-000416b5", "SONUC="Bulunamadi"") in new stack
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] pbx.c: Executing [s@amh_cleanup:3] System("SIP/GLOBAL_SBC_ININ-000416b5", "mv /var/spool/asterisk/monitor/GIVXBSTRGRP28-1781248480.1247456.sln /var/spool/asterisk/monitor/debug_amd/GIVXBSTRGRP28-1781248480.1247456.raw") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:6] UserEvent("Local/05079487459@out-dialer-amd-0003bd76;2", "DialerHangup,OriginId: dl-48706a12-444e-4581-ab45-c7fca9701382,HangupCause: 16,EventChannel: Local/05079487459@out-dialer-amd-0003bd76;2") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:7] UserEvent("Local/05079487459@out-dialer-amd-0003bd76;2", "Disconnect,Initiator: 2,InteractionId: ,ParentId: dl-48706a12-444e-4581-ab45-c7fca9701382") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:8] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "ODBC_CDR_HANGUP_UPD(GIVXBSTRGRP28-1781248480.1247455)=16,2") in new stack
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] pbx.c: Executing [s@amh_cleanup:4] Return("SIP/GLOBAL_SBC_ININ-000416b5", "") in new stack
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] app_stack.c: Spawn extension (from_kamailio, , 1) exited non-zero on 'SIP/GLOBAL_SBC_ININ-000416b5'
+[Jun 12 10:20:59] VERBOSE[1067072][C-00041a6b] app_stack.c: SIP/GLOBAL_SBC_ININ-000416b5 Internal Gosub(amh_cleanup,s,1(Local/05079487459@out-dialer-amd-0003bd76;2)) complete GOSUB_RETVAL=
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:9] System("Local/05079487459@out-dialer-amd-0003bd76;2", "echo "INSERT INTO ast_registrar_cdr_hangup_data(uniqueid, disconnect_initiator, hangupcause) VALUES ('GIVXBSTRGRP28-1781248480.1247455', 16, 2);" >> /var/log/asterisk/hangup_data.log") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:10] ExecIf("Local/05079487459@out-dialer-amd-0003bd76;2", "0?:Noop()") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@outbound-predictive-amd:11] Gosub("Local/05079487459@out-dialer-amd-0003bd76;2", "ast_qos_log,h,1") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@ast_qos_log:1] NoOp("Local/05079487459@out-dialer-amd-0003bd76;2", "'QOS_LOG'") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@ast_qos_log:2] Set("Local/05079487459@out-dialer-amd-0003bd76;2", "ODBC_QOS_LOG(GIVXBSTRGRP28-1781248480.1247455)=,,,,,,,,,,,,") in new stack
+[Jun 12 10:20:59] VERBOSE[1066330][C-00041a6b] pbx.c: Executing [h@ast_qos_log:3] Return("Local/05079487459@out-dialer-amd-0003bd76;2", "") in new stack

@@ -1,0 +1,5 @@
+#Example of file with development properties
+#For start using you should create file with name dev.properties (in this directory)
+
+agi.server.ip={your_ip_goes_here}
+campaign.scheduler.disabled=true

@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/security/oauth2
+http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--define an oauth 2 resource for server -->
+    <oauth:resource id="oneaccess" type="authorization_code"
+        client-id="${oneaccess.clientId}" client-secret="${oneaccess.password}" access-token-uri="${oneaccess.accessTokenUri}"
+        user-authorization-uri="${oneaccess.userAuthorizationUri}" scope="username" />
+
+    <bean id="conversionService"
+        class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.powerdialer.oauth.AccessTokenRequestConverter" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="oneAccessService" class="com.powerdialer.oauth.services.OneAccessServiceImpl">
+        <property name="oneAccessUsernameURL" value="${oneaccess.usernameURL}" />
+        <property name="oneAccessRestTemplate">
+            <oauth:rest-template resource="oneaccess" />
+        </property>
+    </bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/style/**" location="/style/" />
+	<mvc:resources mapping="/pages/**" location="/pages/" />
+
+	<mvc:view-controller path="/pages/campaignList"
+		view-name="campaignList" />
+	<mvc:view-controller path="/pages/serverList"
+		view-name="serverList" />
+	<mvc:view-controller path="/pages/locationList"
+		view-name="locationList" />
+	<mvc:view-controller path="/pages/dncList"
+		view-name="dncList" />
+	<mvc:view-controller path="/pages/dncPhoneList"
+		view-name="dncPhoneList" />
+	<mvc:view-controller path="/pages/lscList"
+		view-name="lscList" />
+	<mvc:view-controller path="/pages/telephonyRcList"
+		view-name="telephonyRcList" />
+	<mvc:view-controller path="/pages/phoneNumberColumnList"
+		view-name="phoneNumberColumnList" />
+	<mvc:view-controller path="/pages/sortFieldList"
+		view-name="sortFieldList" />
+	<mvc:view-controller path="/pages/sortFieldValueList"
+		view-name="sortFieldValueList" />
+	<mvc:view-controller path="/pages/resultCodeScheduleList"
+		view-name="resultCodeScheduleList" />
+	<mvc:view-controller path="/pages/resultCodeScheduleAdvancedList"
+		view-name="resultCodeScheduleAdvancedList" />
+	<mvc:view-controller path="/pages/campaignGroupList"
+		view-name="campaignGroupList" />
+	<mvc:view-controller path="/pages/resultCodeList"
+		view-name="resultCodeScheduleList" />
+	<mvc:view-controller path="/pages/filterColumnList"
+		view-name="filterColumnList" />
+	<mvc:view-controller path="/pages/attachedDataColumnList"
+		view-name="attachedDataColumnList" />
+	<mvc:view-controller path="/pages/campaignSchedule"
+		view-name="campaignSchedule" />
+	<mvc:view-controller path="/pages/scheduleLeaveDaysPanel"
+		view-name="scheduleLeaveDaysPanel" />
+	<mvc:view-controller path="/pages/adminLogs"
+		view-name="adminLogs" />
+	<mvc:view-controller path="/pages/actionLogCache"
+		view-name="actionLogCache" />
+	<mvc:view-controller path="/pages/actionLog"
+		view-name="actionLogList" />
+	<mvc:view-controller path="/pages/login" view-name="login" />
+	<mvc:view-controller path="/pages/error" view-name="error" />
+	<mvc:view-controller path="/pages/campaignScheduleAutomationList"
+											 view-name="campaignScheduleAutomationList"/>
+
+</beans>

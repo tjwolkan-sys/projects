@@ -1,0 +1,3 @@
+# 23.06.2026 Change/Fix Planları
+
+- `FIX-321876-SCHEDULER-MANUEL-PAUSE-RESTART.md`: Schedule penceresi içinde manuel pause yapılan kampanyanın `ScheduledCampaignRunner` tarafından dakikada bir tekrar START edilmesini engelleme planı. Kök neden: yeni chain scheduler `shouldStartCampaign`'a PAUSED'ı startable olarak ekledi (eski dormant `AutomaticCampaignExecutor` dışlıyordu) ve `CampaignService.action` PAUSE case'i UI'dan gelen `MANUAL` sinyalini düşürüyor. Çözüm (Yaklaşım A): type-safe `manuallyPaused` işareti; scheduler PAUSED'ı yalnız otomasyon pause'da başlatır; işaret unpause/stop'ta temizlenir. Otomasyon-pause auto-resume korunur. Uygulandı; hedefli testler yeşil (18 test).

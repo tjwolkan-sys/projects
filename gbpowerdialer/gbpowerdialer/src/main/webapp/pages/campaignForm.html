@@ -1,0 +1,2082 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'campaign.form' | i18n}}</h3>
+  </div>
+  <form name="campaignForm" ng-submit="campaign.save(campaignForm.$valid)" novalidate>
+    <div class="modal-body">
+      {{campaign.listSource.expended}}
+      <tabset> <tab heading="{{'campaign.tab.general' | i18n}}" ng-click="campaign.updateCommonResultStatuses()" active="campaign.tabs[0].active">
+      <div class="tab-pane fade active in" id="general">
+        <div class="row">
+          <div class="col-lg-2-5">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignName.$touched) && campaignForm.campaignName.$invalid }">
+              <label for="campaign.name">
+                {{'campaign.name' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <input id="campaign.name" name="campaignName" type="text" class="form-control input-sm" ng-model="campaign.item.name" ng-required="true" maxlength="255"
+                ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group">
+              <label for="campaign.description">{{'campaign.description' | i18n}} </label>
+              <input id="campaign.description" type="text" class="form-control input-sm" ng-model="campaign.item.description" maxlength="255"
+                     ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignStartDate.$touched) && campaignForm.campaignStartDate.$invalid }">
+              <label for="campaign.startDate">
+                {{'campaign.startDate' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <div class="dropdown">
+                <a class="dropdown-toggle startDate-select" id="dLabel" role="button"
+                   ng-attr-data-toggle="{{canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign') && 'dropdown' || undefined}}"
+                   data-target="javascript:void(0)" href="">
+                  <div class="input-append">
+                    <input id="campaign.startDate" name="campaignStartDate" type="text" class="form-control input-sm" ng-required="true" data-ng-model="campaign.item.startDate"
+                      ng-format-date="dd/MM/yyyy HH:mm" ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages />
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="campaign.item.startDate" data-datetimepicker-config="{ dropdownSelector: '.startDate-select' }"></datetimepicker>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignEndDate.$touched) && campaignForm.campaignEndDate.$invalid }">
+              <label for="campaign.endDate">
+                {{'campaign.endDate' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <div class="dropdown">
+                <a class="dropdown-toggle endDate-select" id="dLabel" role="button"
+                   ng-attr-data-toggle="{{canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign') && 'dropdown' || undefined}}"
+                   data-target="javascript:void(0)" href="">
+                  <div class="input-append">
+                    <input id="campaign.endDate" name="campaignEndDate" type="text" class="form-control input-sm" ng-required="true" data-ng-model="campaign.item.endDate"
+                      ng-format-date="dd/MM/yyyy HH:mm" ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="campaign.item.endDate" data-datetimepicker-config="{ dropdownSelector: '.endDate-select' }"></datetimepicker>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignType.$touched) && campaignForm.campaignType.$invalid }">
+              <label for="campaign.type">
+                {{'campaign.type' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <select id="campaign.type" name="campaignType" class="form-control input-sm" ng-model="campaign.item.type"
+                ng-change="campaign.loadAvailableIvrApplications(); campaign.clearOrSetDefaultValues()" ng-options="item.value as item.label for item in campaign.types"
+                ng-required="true" ng-error-messages ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+                <option value="">{{'input.option.select' | i18n}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2-5">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.ivrApplication.$touched) && campaignForm.ivrApplication.$invalid }">
+              <label for="campaign.ivrApplication">
+                {{'campaign.ivrApplication' | i18n}}
+                <span ng-if="campaign.item.type == 4" style="color: red;">*</span>
+              </label>
+              <select id="campaign.ivrApplication" name="ivrApplication" class="form-control input-sm" ng-model="campaign.item.ivrApplication"
+                ng-change="campaign.loadAvailableIvrApplicationNumbers()" ng-options="item.id as item.name for item in campaign.ivrApplicationList"
+                ng-required="campaign.item.type == 4" ng-disabled="campaign.item.type != 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                <option value="">{{'input.option.select' | i18n}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.ivrApplicationNumber.$touched) && campaignForm.ivrApplicationNumber.$invalid }">
+              <label for="campaign.ivrApplicationNumber">
+                {{'campaign.ivrApplicationNumber' | i18n}}
+                <span ng-if="campaign.item.type == 4" style="color: red;">*</span>
+              </label>
+              <select id="campaign.ivrApplicationNumber" name="ivrApplicationNumber" class="form-control input-sm" ng-model="campaign.item.ivrApplicationNumber"
+                ng-options="item.id as item.name for item in campaign.ivrApplicationNumberList" ng-required="campaign.item.type == 4"
+                ng-disabled="campaign.item.type != 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                <option value="">{{'input.option.select' | i18n}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignPreviewTimeout.$touched) && campaignForm.campaignPreviewTimeout.$invalid }">
+              <label for="campaign.previewTimeout">{{'campaign.previewTimeout' | i18n}} </label>
+              <input id="campaign.previewTimeout" name="campaignPreviewTimeout" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.previewTimeout"
+                     ng-disabled="(campaign.item.type !== 2 && campaign.item.type !== 3) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"                     ng-error-messages>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignPreviewRelax.$touched) && campaignForm.campaignPreviewRelax.$invalid }">
+              <label for="campaign.previewRelax">{{'campaign.previewRelax' | i18n}} </label>
+              <input id="campaign.previewRelax" name="campaignPreviewRelax" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.previewRelax"
+                     ng-disabled="(campaign.item.type !== 2 && campaign.item.type !== 3) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-error-messages>
+            </div>
+          </div>
+          <div class="col-lg-2-5">
+            <div class="form-group"
+                 ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignAvailableThreshold.$touched) && campaignForm.campaignAvailableThreshold.$invalid }">
+              <label for="campaign.availableThreshold">{{'campaign.availableThreshold' | i18n}} </label>
+              <input id="campaign.availableThreshold" name="campaignAvailableThreshold" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.availableThreshold"
+              ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign') || campaign.isAvailableThresholdDisabled()">
+            </div>
+          </div>
+        </div>
+
+
+        <hr class="divider" />
+        <div style="display:flex;flex-wrap:wrap;align-items:stretch;margin:4px -8px 0;">
+
+          <!-- ===== OPTIONS ===== -->
+          <div style="flex:1 1 48%;min-width:280px;padding:0 8px 12px;display:flex;">
+            <div style="flex:1;border:1px solid #e1e6ec;border-radius:6px;background:#fff;padding:13px 16px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7b8a9a;margin-bottom:8px;">{{'campaign.group.options' | i18n}}</div>
+              <label style="display:flex;align-items:center;font-weight:500;font-size:13px;margin:0;padding:7px 0;border-bottom:1px solid #f0f2f5;cursor:pointer;">
+                <input type="checkbox" id="campaign.allowUrcWithoutMt" style="margin:0 9px 0 0;flex:none;" ng-model="campaign.item.allowUrcWithoutMt"
+                       ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                <span>{{'campaign.allowUrcWithoutMt' | i18n}}</span>
+              </label>
+              <label style="display:flex;align-items:center;font-weight:500;font-size:13px;margin:0;padding:7px 0;border-bottom:1px solid #f0f2f5;cursor:pointer;">
+                <input type="checkbox" id="campaign.allowPreviewBeep" style="margin:0 9px 0 0;flex:none;" ng-model="campaign.item.allowPreviewBeep"
+                       ng-disabled="(campaign.item.type !== 2 && campaign.item.type !== 3) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                <span>{{'campaign.allowPreviewBeep' | i18n}}</span>
+              </label>
+              <label style="display:flex;align-items:center;font-weight:500;font-size:13px;margin:0;padding:7px 0 0;cursor:pointer;">
+                <input type="checkbox" id="startupDbCheck" style="margin:0 9px 0 0;flex:none;" ng-model="campaign.item.startupDbCheck"
+                       ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                <span>{{'label.startupDbCheck' | i18n}}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- ===== API ===== -->
+          <div style="flex:1 1 48%;min-width:300px;padding:0 8px 12px;display:flex;">
+            <div style="flex:1;border:1px solid #e1e6ec;border-radius:6px;background:#fff;padding:13px 16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <span style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7b8a9a;">{{'campaign.group.api' | i18n}}</span>
+                <label style="display:flex;align-items:center;font-weight:500;font-size:13px;margin:0;cursor:pointer;">
+                  <input type="checkbox" id="campaign.allowApiControl" name="allowApiControl" style="margin:0 7px 0 0;flex:none;" ng-model="campaign.item.allowApiControl"/>
+                  <span>{{'campaign.allowApiControl' | i18n}}</span>
+                </label>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label for="campaign.apiToken" style="font-weight:400;font-size:12px;color:#5a6a7a;margin-bottom:4px;">{{'campaign.apiToken' | i18n}}</label>
+                <div class="input-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.apiToken.$touched) && campaignForm.apiToken.$invalid }">
+                  <input style="width: 95%;" id="campaign.apiToken" name="apiToken" type="text" class="form-control input-sm" ng-model="campaign.item.apiToken"
+                         ng-disabled="!campaign.item.allowApiControl || !canEditSelectedCampaignByPermission(campaign.item.id, 'EditCampaign')"
+                         ng-pattern="campaign.apiTokenRegex" ng-required="campaign.item.allowApiControl" ng-error-messages>
+                  <span class="input-group-btn" style="vertical-align: top;">
+                      <button class="btn btn-default btn-sm" ng-disabled="!campaign.item.allowApiControl || !canEditSelectedCampaignByPermission(campaign.id, 'EditCampaign')" tooltip="{{'tooltip.generate.token' | i18n}}"
+                              type="button" ng-click="campaign.generateToken()">
+                          <i class="fa fa-plus-circle"></i>
+                      </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="divider" />
+        <div class="row">
+          <div class="col-lg-3" ng-if="hasAnyRole(['ROLE_SUPERADMIN', 'ROLE_TENANT_ADMIN'])">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignTenant.$touched) && campaignForm.campaignTenant.$invalid }">
+              <label for="campaign.tenant">
+                {{'common.tenant' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <select id="campaign.tenant" name="campaignTenant" class="form-control input-sm" ng-model="campaign.item.tenant"
+                ng-options="item.id as item.name for item in campaign.tenantList" ng-required="true" ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                      ng-error-messages>
+                <option value="">{{'input.option.select' | i18n}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label style="display:block;margin-bottom:5px;">&nbsp;</label>
+            <label style="display:flex;align-items:center;font-weight:500;font-size:13px;margin:0;cursor:pointer;">
+              <input id="enabled" type="checkbox" style="margin:0 8px 0 0;flex:none;" ng-model="campaign.item.enabled" ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+              <span>{{'label.enabled' | i18n}}</span>
+            </label>
+          </div>
+        </div>
+
+
+      </div>
+      </tab> <tab heading="{{'campaign.tab.callback' | i18n}}" active="campaign.tabs[11].active" disable="campaign.item.type == 4">
+      <div id="callback">
+        <div style="display:flex;flex-wrap:wrap;align-items:stretch;margin:4px -8px 0;">
+
+          <!-- ===== Callback Configuration ===== -->
+          <div style="flex:1 1 40%;min-width:280px;padding:0 8px 12px;display:flex;">
+            <div style="flex:1;border:1px solid #e1e6ec;border-radius:6px;background:#fff;">
+              <div style="padding:11px 16px;border-bottom:1px solid #eef1f5;font-weight:700;font-size:14px;color:#3c4858;">{{'campaign.callback.configTitle' | i18n}}</div>
+              <div style="padding:15px 16px;">
+                <label style="display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:13px;margin:0 0 15px;cursor:pointer;">
+                  <span>{{'campaign.allowCallback' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.allowCallback' | i18n}}"></i></span>
+                  <input type="checkbox" id="campaign.allowCallback" style="margin:0;flex:none;" ng-model="campaign.item.allowCallback"
+                         ng-disabled="campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                </label>
+                <label style="display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:13px;margin:0 0 15px;cursor:pointer;">
+                  <span>{{'campaign.allowCallbackCustom' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.allowCallbackCustom' | i18n}}"></i></span>
+                  <input type="checkbox" id="campaign.allowCallbackCustom" style="margin:0;flex:none;" ng-model="campaign.item.allowCallbackCustom"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback)) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                </label>
+                <label style="display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:13px;margin:0 0 15px;cursor:pointer;">
+                  <span>{{'campaign.callbackToAppointer' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.callbackToAppointer' | i18n}}"></i></span>
+                  <input type="checkbox" id="campaign.callbackToAppointer" style="margin:0;flex:none;" ng-model="campaign.item.callbackToAppointer"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && (!campaign.item.allowCallback || campaign.item.allowOverwriteByWebphone))) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                </label>
+                <label style="display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:13px;margin:0;cursor:pointer;">
+                  <span>{{'campaign.allowOverwriteByWebphone' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.allowOverwriteByWebphone' | i18n}}"></i></span>
+                  <input type="checkbox" id="campaign.allowOverwriteByWebphone" style="margin:0;flex:none;" ng-model="campaign.item.allowOverwriteByWebphone"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && (!campaign.item.allowCallback || campaign.item.callbackToAppointer))) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Reset Strategy ===== -->
+          <div style="flex:1 1 55%;min-width:300px;padding:0 8px 12px;display:flex;"
+               ng-init="campaign.item.appointerResetStrategy = (campaign.item.appointerResetStrategy == null ? campaign.constants.APPOINTER_RESET_STRATEGY.TIMER : campaign.item.appointerResetStrategy)">
+            <div style="flex:1;border:1px solid #e1e6ec;border-radius:6px;background:#fff;">
+              <div style="padding:11px 16px;border-bottom:1px solid #eef1f5;font-weight:700;font-size:14px;color:#3c4858;">{{'campaign.appointerResetStrategy' | i18n}}</div>
+              <div style="padding:15px 16px;">
+                <label style="display:flex;align-items:center;font-weight:400;font-size:13px;margin:0 0 9px;cursor:pointer;">
+                  <input type="radio" name="appointerResetStrategy" style="margin:0 8px 0 0;flex:none;" ng-model="campaign.item.appointerResetStrategy"
+                         ng-value="campaign.constants.APPOINTER_RESET_STRATEGY.TIMER"
+                         ng-change="campaign.item.appointerReset = true"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback) || (!campaign.item.callbackToAppointer && !campaign.item.allowOverwriteByWebphone))
+          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                  <span>{{'campaign.appointerResetStrategy.timer' | i18n}}</span>
+                </label>
+                <label style="display:flex;align-items:center;font-weight:400;font-size:13px;margin:0 0 14px;cursor:pointer;">
+                  <input type="radio" name="appointerResetStrategy" style="margin:0 8px 0 0;flex:none;" ng-model="campaign.item.appointerResetStrategy"
+                         ng-value="campaign.constants.APPOINTER_RESET_STRATEGY.ATTEMPT_COUNT"
+                         ng-change="campaign.item.appointerReset = false"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback) || (!campaign.item.callbackToAppointer && !campaign.item.allowOverwriteByWebphone))
+          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                  <span>{{'campaign.appointerResetStrategy.attempt' | i18n}}</span>
+                </label>
+
+                <div class="form-group" style="margin:10px 0 0;"
+                     ng-show="campaign.item.appointerResetStrategy == campaign.constants.APPOINTER_RESET_STRATEGY.TIMER"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.appointerResetTimeout.$touched) && campaignForm.appointerResetTimeout.$invalid }">
+                  <label for="campaign.appointerResetTimeout" style="display:inline-block;width:210px;font-weight:400;font-size:13px;color:#5a6a7a;margin:0;vertical-align:middle;">{{'campaign.appointerResetTimeout' | i18n}}</label>
+                  <input id="campaign.appointerResetTimeout" name="appointerResetTimeout" type="number" min="0" max="2147483647" style="display:inline-block;width:90px;vertical-align:middle;" class="form-control input-sm" ng-model="campaign.item.appointerResetTimeout"
+                         ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback) || (!campaign.item.callbackToAppointer && !campaign.item.allowOverwriteByWebphone)
+          || campaign.item.appointerResetStrategy != campaign.constants.APPOINTER_RESET_STRATEGY.TIMER)
+          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                </div>
+
+                <div style="margin-top:10px;" ng-show="campaign.item.appointerResetStrategy == campaign.constants.APPOINTER_RESET_STRATEGY.ATTEMPT_COUNT">
+                  <div class="form-group" style="margin:0 0 12px;"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.agentCbRescheduleDelayMin.$touched) && campaignForm.agentCbRescheduleDelayMin.$invalid }">
+                    <label for="campaign.agentCbRescheduleDelayMin" style="display:inline-block;width:210px;font-weight:400;font-size:13px;color:#5a6a7a;margin:0;vertical-align:middle;">{{'campaign.agentCbRescheduleDelayMin' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.agentCbRescheduleDelayMin' | i18n}}"></i></label>
+                    <input id="campaign.agentCbRescheduleDelayMin" name="agentCbRescheduleDelayMin" type="number" min="0" max="2147483647" style="display:inline-block;width:90px;vertical-align:middle;" class="form-control input-sm" ng-model="campaign.item.agentCbRescheduleDelayMin"
+                           ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback) || (!campaign.item.callbackToAppointer && !campaign.item.allowOverwriteByWebphone)
+          || campaign.item.appointerResetStrategy != campaign.constants.APPOINTER_RESET_STRATEGY.ATTEMPT_COUNT)
+          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                  </div>
+                  <div class="form-group" style="margin:0;"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.agentCbConvertAfterAttempts.$touched) && campaignForm.agentCbConvertAfterAttempts.$invalid }">
+                    <label for="campaign.agentCbConvertAfterAttempts" style="display:inline-block;width:210px;font-weight:400;font-size:13px;color:#5a6a7a;margin:0;vertical-align:middle;">{{'campaign.agentCbConvertAfterAttempts' | i18n}}<i class="fa fa-question-circle-o" style="color:#b3bcc6;margin-left:6px;font-size:12px;cursor:help;" tooltip="{{'campaign.help.agentCbConvertAfterAttempts' | i18n}}"></i></label>
+                    <input id="campaign.agentCbConvertAfterAttempts" name="agentCbConvertAfterAttempts" type="number" min="0" max="2147483647" style="display:inline-block;width:90px;vertical-align:middle;" class="form-control input-sm" ng-model="campaign.item.agentCbConvertAfterAttempts"
+                           ng-disabled="(campaign.item.type == 4 || (campaign.item.type != 4 && !campaign.item.allowCallback) || (!campaign.item.callbackToAppointer && !campaign.item.allowOverwriteByWebphone)
+          || campaign.item.appointerResetStrategy != campaign.constants.APPOINTER_RESET_STRATEGY.ATTEMPT_COUNT)
+          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                  </div>
+                  <div class="text-danger" style="font-size:12px;line-height:1.4;margin:14px 0 0;display:flex;align-items:flex-start;"
+                       ng-show="!campaign.item.colResultCallbackAttempts">
+                    <i class="fa fa-exclamation-circle" style="margin:2px 7px 0 0;"></i> <span>{{'campaign.attemptStrategy.callbackAttemptsRequired' | i18n}}</span>
+                  </div>
+                  <div class="text-warning" style="font-size:12px;line-height:1.4;margin:8px 0 0;display:flex;align-items:flex-start;"
+                       ng-show="!campaign.item.schedules || campaign.item.schedules.length == 0">
+                    <i class="fa fa-exclamation-triangle" style="margin:2px 7px 0 0;"></i> <span>{{'campaign.attemptStrategy.scheduleEndTimeRequired' | i18n}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.listSource' | i18n}}" ng-click="campaign.accordions[0].active=true;campaign.checkDBConnection();" active="campaign.tabs[1].active">
+      <div id="listSource">
+        <uib-accordion> <uib-accordion-group heading="{{'campaign.tab.listSource.0' | i18n}}" is-open="campaign.accordions[0].active">
+        <div id="dbConnection">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDBConnectionString.$touched) && campaignForm.campaignDBConnectionString.$invalid }">
+                <label for="campaign.dbConnectionString">
+                  {{'campaign.dbConnectionString' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <input id="campaign.dbConnectionString" name="campaignDBConnectionString" type="text" class="form-control input-sm" ng-model="campaign.item.dbConnectionString"
+                  maxlength="255" ng-required="!campaign.item.connectedToDB" ng-disabled="campaign.item.connectedToDB || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                       ng-error-messages />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="campaign.dbUsername">{{'campaign.dbUsername' | i18n}} </label>
+                <input id="campaign.dbUsername" name="campaignDBUsername" type="text" class="form-control input-sm" ng-model="campaign.item.dbUsername" maxlength="255"
+                  ng-disabled="campaign.item.connectedToDB || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="campaign.dbPassword">{{'campaign.dbPassword' | i18n}} </label>
+                <input id="campaign.dbPassword" type="password" class="form-control input-sm" ng-model="campaign.item.dbPassword" maxlength="255"
+                  ng-disabled="campaign.item.connectedToDB || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <button class="btn btn-success" ng-click="campaign.connectToDB()" style="margin-top: 5px; width: 100%;" type="button" ng-show="!campaign.item.connectedToDB"
+                        ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+                  <i class="fa fa-plug"></i> {{'label.connect' | i18n}}
+                </button>
+                <button class="btn btn-danger" ng-click="campaign.disconnectFromDB()" style="margin-top: 5px; width: 100%;" type="button" ng-show="campaign.item.connectedToDB"
+                        ng-disabled = "campaign.item.state === 3 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+                  <i class="fa fa-times"></i> {{'label.disconnect' | i18n}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> <uib-accordion-group ng-click="loadPhoneNumberColumnList = true; campaign.refreshDBTables(); campaign.showCreateSourceDialog = false; campaign.loadTelephonyRcs(); campaign.loadResultCodes();"
+                                                    heading="{{'campaign.tab.listSource.1' | i18n}}" is-open="campaign.accordions[1].active">
+        <div id="source" ng-if="!campaign.showCreateSourceDialog">
+          <div class="row">
+            <div class="col-lg-3">
+              <label for="campaign.dbListTable">
+                {{'campaign.dbListTable' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <div class="row" style="padding-right: inherit; padding-left: inherit">
+                <div class="form-group"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDBListTable.$touched) && campaignForm.campaignDBListTable.$invalid }">
+                  <div style="padding-left: 0; padding-right: 0"
+                       ng-class="{'col-lg-9 col-xs-11' : campaign.item.connectedToDB, 'col-lg-12' : !campaign.item.connectedToDB}">
+                    <select id="campaign.dbListTable" name="campaignDBListTable" class="form-control input-sm"
+                            ng-model="campaign.item.dbListTable"
+                            ng-change="campaign.getTableColumnsAndSetDefaultValuesByListTable(campaign.item.dbListTable,campaign.listSourceColumns)"
+                            ng-options="item as item for item in campaign.listSourceTables" ng-required="true" ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                            ng-error-messages>
+                      <option value="">{{'input.option.select' | i18n}}</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-success btn-sm pull-right add-source-table-button"
+                          ng-click="campaign.openCreateSourceTableDialog()"
+                          ng-show="campaign.item.connectedToDB"
+                          ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          tooltip-append-to-body="true"
+                          uib-tooltip="{{'campaign.createSourceTable' | i18n}}"
+                          type="button">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColUniqueKey.$touched) && campaignForm.campaignColUniqueKey.$invalid }">
+                <label for="campaign.colUniqueKey">
+                  {{'campaign.colUniqueKey' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="campaign.colUniqueKey" name="campaignColUniqueKey" class="form-control input-sm"
+                        ng-model="campaign.item.colUniqueKey" ng-required="!(campaign.item.dbListTable == null)"
+                        ng-disabled="campaign.item.dbListTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.item.colSortBy = campaign.item.colUniqueKey; campaign.item.dbListSortDirection = 0; campaign.setActualSourceColumns('{{campaign.item.colUniqueKey}}', campaign.item.colUniqueKey)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.listSourceColumns | restrictByType : 'ANY_TYPE':campaign.item.colUniqueKey"
+                          ng-selected="{{campaign.item.colUniqueKey == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignCacheLimit.$touched) && campaignForm.campaignCacheLimit.$invalid }">
+                <label for="campaign.cacheLimit">
+                  {{'campaign.cacheLimit' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <input id="campaign.cacheLimit" name="campaignCacheLimit" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.cacheLimit" ng-required="true"
+                       ng-error-messages ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignEndListBehaviour.$touched) && campaignForm.campaignEndListBehaviour.$invalid }">
+                <label for="campaign.endListBehaviour">
+                  {{'campaign.endListBehaviour' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="campaign.endListBehaviour" name="campaignEndListBehaviour" class="form-control input-sm" ng-model="campaign.item.endListBehaviour"
+                        ng-options="item.value as item.label for item in campaign.endListBehaviours" ng-required="true" ng-error-messages ng-disabled =
+                          "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.lowCacheSelectInterval.$touched) && campaignForm.lowCacheSelectInterval.$invalid }">
+                <label for="campaign.lowCacheSelectInterval">
+                  {{'campaign.lowCacheSelectInterval' | i18n}}
+                </label>
+                <input id="campaign.lowCacheSelectInterval" name="lowCacheSelectInterval" type="number"
+                       class="form-control input-sm" min="5" ng-model="campaign.item.lowCacheSelectInterval"
+                       ng-error-messages ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label></label>
+              <div class="row" style="padding-right: inherit; padding-left: inherit">
+                <div class="form-group">
+                  <button class="btn btn-success btn-sm btn-sm-single btn-add-column"
+                          ng-click="campaign.openAddColumnDialog()"
+                          ng-show="campaign.item.connectedToDB && campaign.item.dbListTable !== undefined"
+                          ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          type="button">
+                    <i class="fa fa-plus"></i> {{'label.addColumn' | i18n}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="divider" />
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="campaign.stopConditionEnabled">{{'campaign.stopCondition.enabled' | i18n}} </label>
+                <input id="campaign.stopConditionEnabled" type="checkbox" ng-model="campaign.item.stopConditionEnabled"
+                       ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.stopConditionParameter.$touched) && campaignForm.stopConditionParameter.$invalid }">
+                <label for="campaign.stopConditionParameter">
+                  {{'campaign.stopCondition.parameter' | i18n}}
+                </label>
+                <select id="campaign.stopConditionParameter" name="stopConditionParameter" class="form-control input-sm" ng-model="campaign.item.stopConditionParameter"
+                        ng-change="campaign.item.stopConditionValue = null"
+                        ng-required="campaign.item.stopConditionEnabled == true"
+                        ng-disabled="campaign.item.stopConditionEnabled != true || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-options="item.value as item.label for item in campaign.stopConditionParameters" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3" >
+              <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.stopConditionValue.$touched) && campaignForm.stopConditionValue.$invalid }">
+                <label for="campaign.stopConditionValue">
+                  {{'campaign.stopCondition.value' | i18n}}
+                </label>
+                <div ng-switch="campaign.item.stopConditionParameter">
+                  <div ng-switch-when="2">
+                    <select id="campaign.stopConditionValue" name="stopConditionValue" class="form-control input-sm" ng-model="campaign.item.stopConditionValue"
+                            ng-options="item.id as item.name for item in campaign.resultCodeList" ng-required="campaign.item.stopConditionEnabled == true"
+                            ng-disabled="campaign.item.stopConditionEnabled != true || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                      <option value="">{{'input.option.select' | i18n}}</option>
+                    </select>
+                  </div>
+                  <div ng-switch-when="3">
+                    <select id="campaign.stopConditionValue" name="stopConditionValue" class="form-control input-sm" ng-model="campaign.item.stopConditionValue"
+                            ng-options="item.id as item.name for item in campaign.telephonyRcList" ng-required="campaign.item.stopConditionEnabled == true"
+                            ng-disabled="campaign.item.stopConditionEnabled != true || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                      <option value="">{{'input.option.select' | i18n}}</option>
+                    </select>
+                  </div>
+                  <div ng-switch-default>
+                    <input id="campaign.stopConditionValue" name="stopConditionValue" type="number" min="0" class="form-control input-sm" ng-disabled = true />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.stopConditionThreshold.$touched) && campaignForm.stopConditionThreshold.$invalid }">
+                <label for="campaign.stopConditionThreshold">
+                  {{'campaign.stopCondition.threshold' | i18n}}
+                </label>
+                <input id="campaign.stopConditionThreshold" name="stopConditionThreshold" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.stopConditionThreshold"
+                       ng-required="campaign.item.stopConditionEnabled == true" ng-error-messages
+                       ng-disabled="campaign.item.stopConditionEnabled != true || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages/>
+              </div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="{{'campaign.tab.listSource.2' | i18n}}" is-open="campaign.accordions[2].active"
+                             ng-click="loadSortFieldList = true; campaign.refreshDBTables();">
+          <div id="sortConditions">
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="campaign.colSortBy">{{'campaign.colSortBy' | i18n}} </label>
+                  <select id="campaign.colSortBy" class="form-control input-sm" ng-model="campaign.item.colSortBy"
+                          ng-disabled="campaign.item.dbListTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          ng-change="campaign.onColSortByChange()">
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                    <option value="{{campaign.constants.SORT_BY_MULTIPLE}}">{{'campaign.colSortBy.multipleSort' | i18n}}</option>
+                    <option ng-repeat="col in campaign.listSourceColumns"
+                            ng-selected="{{campaign.item.colSortBy == col.fieldName}}" value="{{col.fieldName}}">
+                      {{col.fieldName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDbListSortDirection.$touched) && campaignForm.campaignDbListSortDirection.$invalid }">
+                  <label for="campaign.dbListSortDirection">
+                    {{'campaign.dbListSortDirection' | i18n}}
+                    <span style="color: red;" ng-if="campaign.item.colSortBy != null">*</span>
+                  </label>
+                  <select id="campaign.dbListSortDirection" name="campaignDbListSortDirection" class="form-control input-sm" ng-model="campaign.item.dbListSortDirection"
+                          ng-required="campaign.item.colSortBy != null" ng-options="item.value as item.label for item in campaign.dbListSortDirections"
+                          ng-disabled="campaign.item.colSortBy == null || campaign.item.colSortBy == campaign.constants.SORT_BY_MULTIPLE
+                              || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="height: 270px" ng-hide="campaign.item.colSortBy !== campaign.constants.SORT_BY_MULTIPLE">
+              <div class="col-lg-12" ng-if="loadSortFieldList" ng-controller="sortFieldCtrl as sortField">
+                <div ng-include="'pages/sortFieldList'"
+                     ng-init="sortField.campaign = campaign.item; sortField.listSourceColumns = campaign.listSourceColumns;
+                   sortField.campaignInitial = campaign.itemInitial;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </uib-accordion-group>
+
+         <uib-accordion-group heading="{{'campaign.tab.listSource.3' | i18n}}" is-open="campaign.accordions[3].active"
+          ng-click="loadPhoneNumberColumnList = true; campaign.refreshDBTables();">
+        <div id="phoneNumbers">
+          <div class="row" style="height: 270px">
+            <div class="col-lg-12" ng-if="loadPhoneNumberColumnList" ng-controller="phoneNumberColumnCtrl as phoneNumberColumn">
+              <div ng-include="'pages/phoneNumberColumnList'"
+                ng-init="phoneNumberColumn.campaign = campaign.item; phoneNumberColumn.listSourceColumns = campaign.listSourceColumns; phoneNumberColumn.campaignInitial = campaign.itemInitial; phoneNumberColumn.listSourceColumnsToCreate = campaign.listSourceColumnsToCreate; phoneNumberColumn.delayedCreateTableActions = campaign.delayedCreateTableActions"></div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> <uib-accordion-group heading="{{'campaign.tab.listSource.4' | i18n}}" is-open="campaign.accordions[4].active"
+          ng-click="loadFilterColumnList = true; campaign.refreshDBTables();">
+        <div id="filters">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="campaign.filterJoinType">{{'campaign.filterJoinType' | i18n}} </label>
+                <select id="campaign.filterJoinType" class="form-control input-sm" ng-model="campaign.item.filterJoinType"
+                  ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && (hasCampaignTechnicalFilters(campaign.item) || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignNonTech'))"
+                        ng-options="item.value as item.label for item in campaign.filterJoinTypes">
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="campaign.applyFilterTo">
+                  {{'campaign.applyFilterTo' | i18n}}
+                </label>
+                <select id="campaign.applyFilterTo"
+                        name="campaignFilterApplyTo"
+                        class="form-control input-sm"
+                        ng-model="campaign.item.applyFilterTo"
+                        ng-options="item.value as item.label for item in campaign.applyToList"
+                        ng-disabled="hasSegmentationFilters(campaign.item)
+                    || (!canEditSelectedCampaignByPermission(campaign.item,'EditCampaignTech')
+                        && (hasCampaignTechnicalFilters(campaign.item)
+                            || !canEditSelectedCampaignByPermission(campaign.item,'EditCampaignNonTech')))">
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="height: 270px">
+            <div class="col-lg-12" ng-if="loadFilterColumnList" ng-controller="filterColumnCtrl as filterColumn">
+              <div ng-include="'pages/filterColumnList'"
+                ng-init="filterColumn.campaign = campaign.item; filterColumn.listSourceColumns = campaign.listSourceColumns; filterColumn.callResultColumns = campaign.callResultColumns;
+                   filterColumn.campaignInitial = campaign.itemInitial;"></div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> <uib-accordion-group ng-click="campaign.refreshDBTables();" heading="{{'campaign.tab.listSource.5' | i18n}}" is-open="campaign.accordions[5].active">
+        <div id="callResults">
+          <div class="row">
+            <div class="col-lg-2-5">
+                <label for="campaign.dbResultTable">
+                  {{'campaign.dbResultTable' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+              <div class="row" style="padding-right: inherit; padding-left: inherit">
+                <div class="form-group"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDBResultTable.$touched) && campaignForm.campaignDBResultTable.$invalid }">
+                  <div ng-class="{'col-lg-9 col-xs-11' : campaign.item.connectedToDB, 'col-lg-12' : !campaign.item.connectedToDB}"
+                       style="padding-left: 0; padding-right: 0">
+                    <select id="campaign.dbResultTable" class="form-control input-sm" name="campaignDBResultTable"
+                            ng-model="campaign.item.dbResultTable"
+                            ng-change="campaign.getTableColumnsAndSetDefaultValuesByResultTable(campaign.item.dbResultTable,campaign.callResultColumns)"
+                            ng-options="item as item for item in campaign.listSourceTables" ng-required="true"
+                            ng-disabled ="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                            ng-error-messages>
+                      <option value="">{{'input.option.select' | i18n}}</option>
+                    </select>
+                  </div>
+                  <div style="padding-right:0" ng-if="campaign.item.connectedToDB">
+                    <div class="btn-group" uib-dropdown is-open="status.isopen" style="float: right;">
+                      <button id="single-button" type="button" class="btn btn-success btn-sm" uib-dropdown-toggle
+                              ng-disabled="disabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem" ng-click="campaign.openCreateResultTableDialog()"><a>{{'campaign.createNewResultTable'
+                          | i18n}}</a></li>
+                        <li role="menuitem" ng-if="campaign.item.dbListTable"
+                            ng-click="campaign.addResultColsToSourceTable()"><a>{{'campaign.userSourceTable' |
+                          i18n}}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultUniqueKey.$touched) && campaignForm.campaignColResultUniqueKey.$invalid }">
+                <label for="campaign.colResultUniqueKey">
+                  {{'campaign.colResultUniqueKey' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.dbResultTable != campaign.item.dbListTable" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultUniqueKey" class="form-control input-sm" ng-model="campaign.item.colResultUniqueKey" name="campaignColResultUniqueKey"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.dbResultTable == campaign.item.dbListTable
+                          || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.dbResultTable != campaign.item.dbListTable"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultUniqueKey}}', campaign.item.colResultUniqueKey)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : 'ANY_TYPE':campaign.item.colResultUniqueKey"
+                          ng-selected="{{campaign.item.colResultUniqueKey == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultStartDate.$touched) && campaignForm.campaignColResultStartDate.$invalid }">
+                <label for="campaign.colResultStartDate">
+                  {{'campaign.colResultStartDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultStartDate" class="form-control input-sm" ng-model="campaign.item.colResultStartDate" name="campaignColResultStartDate"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultStartDate}}', campaign.item.colResultStartDate)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.START_DATE:campaign.item.colResultStartDate"
+                          ng-selected="{{campaign.item.colResultStartDate == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultAnswerDate.$touched) && campaignForm.campaignColResultAnswerDate.$invalid }">
+                <label for="campaign.colResultAnswerDate">
+                  {{'campaign.colResultAnswerDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultAnswerDate" class="form-control input-sm" ng-model="campaign.item.colResultAnswerDate" name="campaignColResultAnswerDate"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultAnswerDate}}', campaign.item.colResultAnswerDate)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.ANSWER_DATE:campaign.item.colResultAnswerDate"
+                          ng-selected="{{campaign.item.colResultAnswerDate == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCompleteDate.$touched) && campaignForm.campaignColResultCompleteDate.$invalid }">
+                <label for="campaign.colResultCompleteDate">
+                  {{'campaign.colResultCompleteDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCompleteDate" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCompleteDate"
+                        name="campaignColResultCompleteDate"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCompleteDate}}', campaign.item.colResultCompleteDate)"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.COMPLETE_DATE:campaign.item.colResultCompleteDate"
+                          ng-selected="{{campaign.item.colResultCompleteDate == col.fieldName}}"
+                          value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCalledNumber.$touched) && campaignForm.campaignColResultCalledNumber.$invalid }">
+                <label for="campaign.colResultCalledNumber">
+                  {{'campaign.colResultCalledNumber' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCalledNumber" class="form-control input-sm"
+                        name="campaignColResultCalledNumber"
+                        ng-model="campaign.item.colResultCalledNumber"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCalledNumber}}', campaign.item.colResultCalledNumber)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALLED_NUMBER:campaign.item.colResultCalledNumber"
+                          ng-selected="{{campaign.item.colResultCalledNumber == col.fieldName}}"
+                          value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group">
+                <label for="campaign.colResultCustomerNo">
+                  {{'campaign.colResultCustomerNo' | i18n}}
+                </label>
+                <!-- Müşteri bazlı DNC için opsiyonel mapping (FEAT-318332);
+                     boş bırakılırsa customer-scope akışları satır bazlı
+                     telefon fallback'iyle çalışır. -->
+                <select id="campaign.colResultCustomerNo" class="form-control input-sm"
+                        name="campaignColResultCustomerNo"
+                        ng-model="campaign.item.colResultCustomerNo"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCustomerNo}}', campaign.item.colResultCustomerNo)">
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CUSTOMER_NO:campaign.item.colResultCustomerNo"
+                          ng-selected="{{campaign.item.colResultCustomerNo == col.fieldName}}"
+                          value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group">
+                <label for="campaign.colDateEntered">
+                  {{'campaign.colDateEntered' | i18n}}
+                </label>
+                <!-- Müşteri bazlı DNC delta-sync mapping'i (FEAT-318332);
+                     boş bırakılırsa kampanya date_entered delta senkronuna
+                     girmez (DncDeltaSyncScheduler eligible filtresi). -->
+                <select id="campaign.colDateEntered" class="form-control input-sm"
+                        name="campaignColDateEntered"
+                        ng-model="campaign.item.colDateEntered"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colDateEntered}}', campaign.item.colDateEntered)">
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.DATE_ENTERED:campaign.item.colDateEntered"
+                          ng-selected="{{campaign.item.colDateEntered == col.fieldName}}"
+                          value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultTelephonyRc.$touched) && campaignForm.campaignColResultTelephonyRc.$invalid }">
+                <label for="campaign.colResultTelephonyRc">
+                  {{'campaign.colResultTelephonyRc' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultTelephonyRc" class="form-control input-sm"
+                        ng-model="campaign.item.colResultTelephonyRc" name="campaignColResultTelephonyRc"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultTelephonyRc}}', campaign.item.colResultTelephonyRc)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.TELEPHONY_RC:campaign.item.colResultTelephonyRc"
+                          ng-selected="{{campaign.item.colResultTelephonyRc == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultUserRc.$touched) && campaignForm.campaignColResultUserRc.$invalid }">
+                <label for="campaign.colResultUserRc">
+                  {{'campaign.colResultUserRc' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.type != 4" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultUserRc" class="form-control input-sm"
+                        ng-model="campaign.item.colResultUserRc" name="campaignColResultUserRc"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultUserRc}}', campaign.item.colResultUserRc)"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.type != 4" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.USER_RC:campaign.item.colResultUserRc"
+                          ng-selected="{{campaign.item.colResultUserRc == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultRcSequence.$touched) && campaignForm.campaignColResultRcSequence.$invalid }">
+                <label for="campaign.colResultRcSequence">
+                  {{'campaign.colResultRcSequence' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultRcSequence" class="form-control input-sm"
+                        ng-model="campaign.item.colResultRcSequence" name="campaignColResultRcSequence"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultRcSequence}}', campaign.item.colResultRcSequence)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.RC_SEQUENCE:campaign.item.colResultRcSequence"
+                          ng-selected="{{campaign.item.colResultRcSequence == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultUserId.$touched) && campaignForm.campaignColResultUserId.$invalid }">
+                <label for="campaign.colResultUserId">
+                  {{'campaign.colResultUserId' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.type != 4" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultUserId" class="form-control input-sm"
+                        ng-model="campaign.item.colResultUserId" name="campaignColResultUserId"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultUserId}}', campaign.item.colResultUserId)"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.type != 4 " ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.USER_ID:campaign.item.colResultUserId"
+                          ng-selected="{{campaign.item.colResultUserId == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCallbackNumber.$touched) && campaignForm.campaignColResultCallbackNumber.$invalid }">
+                <label for="campaign.colResultCallbackNumber">
+                  {{'campaign.colResultCallbackNumber' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.type != 4" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCallbackNumber" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCallbackNumber" name="campaignColResultCallbackNumber"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCallbackNumber}}', campaign.item.colResultCallbackNumber)"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.type != 4"
+                  ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALLBACK_NUMBER:campaign.item.colResultCallbackNumber"
+                          ng-selected="{{campaign.item.colResultCallbackNumber == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCallbackDate.$touched) && campaignForm.campaignColResultCallbackDate.$invalid }">
+                <label for="campaign.colResultCallbackDate">
+                  {{'campaign.colResultCallbackDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.type != 4" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCallbackDate" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCallbackDate" name="campaignColResultCallbackDate"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCallbackDate}}', campaign.item.colResultCallbackDate)"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.type != 4"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALLBACK_DATE:campaign.item.colResultCallbackDate"
+                          ng-selected="{{campaign.item.colResultCallbackDate == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultRetryNumber.$touched) && campaignForm.campaignColResultRetryNumber.$invalid }">
+                <label for="campaign.colResultRetryNumber">
+                  {{'campaign.colResultRetryNumber' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultRetryNumber" class="form-control input-sm"
+                        ng-model="campaign.item.colResultRetryNumber" name="campaignColResultRetryNumber"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultRetryNumber}}', campaign.item.colResultRetryNumber)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.RETRY_NUMBER:campaign.item.colResultRetryNumber"
+                          ng-selected="{{campaign.item.colResultRetryNumber == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+			<div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultRetryHistory.$touched) && campaignForm.campaignColResultRetryHistory.$invalid }">
+                <label for="campaign.colResultRetryHistory">
+                  {{'campaign.colResultRetryHistory' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultRetryHistory" class="form-control input-sm"
+                        ng-model="campaign.item.colResultRetryHistory" name="campaignColResultRetryHistory"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultRetryHistory}}', campaign.item.colResultRetryHistory)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.RETRY_HISTORY:campaign.item.colResultRetryHistory"
+                          ng-selected="{{campaign.item.colResultRetryHistory == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultRetryDate.$touched) && campaignForm.campaignColResultRetryDate.$invalid }">
+                <label for="campaign.colResultRetryDate">
+                  {{'campaign.colResultRetryDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultRetryDate" class="form-control input-sm"
+                        ng-model="campaign.item.colResultRetryDate" name="campaignColResultRetryDate"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultRetryDate}}', campaign.item.colResultRetryDate)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.RETRY_DATE:campaign.item.colResultRetryDate"
+                          ng-selected="{{campaign.item.colResultRetryDate == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCbHistory.$touched) && campaignForm.campaignColResultCbHistory.$invalid }">
+                <label for="campaign.colResultCbHistory">
+                  {{'campaign.colResultCbHistory' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCbHistory" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCbHistory" name="campaignColResultCbHistory"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCbHistory}}', campaign.item.colResultCbHistory)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CB_HISTORY:campaign.item.colResultCbHistory"
+                          ng-selected="{{campaign.item.colResultCbHistory == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCallProcess.$touched) && campaignForm.campaignColResultCallProcess.$invalid }">
+                <label for="campaign.colResultCallProcess">
+                  {{'campaign.colResultCallProcess' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultCallProcess" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCallProcess" name="campaignColResultCallProcess"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCallProcess}}', campaign.item.colResultCallProcess)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALL_PROCESS:campaign.item.colResultCallProcess"
+                          ng-selected="{{campaign.item.colResultCallProcess == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <!-- Task 325559: kapanis nedeni kolonu binding'i. ZORUNLU DEGIL (ng-required YOK):
+                 zorunlu yapilirsa close_reason kolonu henuz eklenmemis tum mevcut kampanyalar
+                 kaydedilemez hale gelirdi. Kolon result tablosunda varsa binding otomatik atanir
+                 (bkz. campaignFormCtrl.setDefaultValuesForUndefinedResultTableColumns). -->
+            <div class="col-lg-2-5">
+              <div class="form-group">
+                <label for="campaign.colResultCloseReason">
+                  {{'campaign.colResultCloseReason' | i18n}}
+                </label>
+                <select id="campaign.colResultCloseReason" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCloseReason" name="campaignColResultCloseReason"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCloseReason}}', campaign.item.colResultCloseReason)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CLOSE_REASON:campaign.item.colResultCloseReason"
+                          ng-selected="{{campaign.item.colResultCloseReason == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignFetchedDataFlag.$touched) && campaignForm.campaignFetchedDataFlag.$invalid }">
+                <label for="campaign.colResultFetchedDataFlag">
+                  {{'campaign.colResultFetchedDataFlag' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultFetchedDataFlag" name="campaignFetchedDataFlag" class="form-control input-sm"
+                        ng-model="campaign.item.colResultFetchedDataFlag"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultFetchedDataFlag}}', campaign.item.colResultFetchedDataFlag)"
+                        ng-required="!(campaign.item.dbResultTable == null)" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.FETCHED_DATA_FLAG:campaign.item.colResultFetchedDataFlag"
+                          ng-selected="{{campaign.item.colResultFetchedDataFlag == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultDNCNumbers.$touched) && campaignForm.campaignColResultDNCNumbers.$invalid }">
+                <label for="campaign.colResultDNCNumbers">
+                  {{'campaign.colResultDNCNumbers' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null && campaign.item.type != 4" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultDNCNumbers" class="form-control input-sm"
+                        name="campaignColResultDNCNumbers"
+                        ng-model="campaign.item.colResultDNCNumbers"
+                        ng-disabled="campaign.item.dbResultTable == null || campaign.item.type == 4 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultDNCNumbers}}', campaign.item.colResultDNCNumbers)"
+                        ng-required="campaign.item.dbResultTable != null && campaign.item.type != 4" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.DNC_NUMBERS:campaign.item.colResultDNCNumbers"
+                          ng-selected="{{campaign.item.colResultDNCNumbers == col.fieldName}}"
+                          value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultAttempts.$touched) && campaignForm.campaignColResultAttempts.$invalid }">
+                <label for="campaign.colResultAttempts">
+                  {{'campaign.colResultAttempts' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultAttempts" class="form-control input-sm"
+                        ng-model="campaign.item.colResultAttempts" name="campaignColResultAttempts"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultAttempts}}', campaign.item.colResultAttempts)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.ATTEMPTS:campaign.item.colResultAttempts"
+                          ng-selected="{{campaign.item.colResultAttempts == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultCallbackAttempts.$touched) && campaignForm.campaignColResultCallbackAttempts.$invalid }">
+                <label for="campaign.colResultCallbackAttempts">
+                  {{'campaign.colResultCallbackAttempts' | i18n}}
+                </label>
+                <select id="campaign.colResultCallbackAttempts" class="form-control input-sm"
+                        ng-model="campaign.item.colResultCallbackAttempts" name="campaignColResultCallbackAttempts"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultCallbackAttempts}}', campaign.item.colResultCallbackAttempts)"
+                        ng-required="campaign.item.appointerResetStrategy == campaign.constants.APPOINTER_RESET_STRATEGY.ATTEMPT_COUNT && campaign.item.type != 4 && campaign.item.allowCallback && (campaign.item.callbackToAppointer || campaign.item.allowOverwriteByWebphone)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALLBACK_ATTEMPTS:campaign.item.colResultCallbackAttempts"
+                          ng-selected="{{campaign.item.colResultCallbackAttempts == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColResultUpdateDate.$touched) && campaignForm.campaignColResultUpdateDate.$invalid }">
+                <label for="campaign.colResultUpdateDate">
+                  {{'campaign.colResultUpdateDate' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultUpdateDate" class="form-control input-sm"
+                        ng-model="campaign.item.colResultUpdateDate" name="campaignColResultUpdateDate"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultUpdateDate}}', campaign.item.colResultUpdateDate)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.UPDATE_DATE:campaign.item.colResultUpdateDate"
+                          ng-selected="{{campaign.item.colResultUpdateDate == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-2-5">
+              <div class="form-group"
+              >
+                <label for="campaign.colResultResponseValues">
+                  {{'campaign.colResultResponseValues' | i18n}}
+                  <span ng-if="campaign.item.dbResultTable != null" style="color: red;">*</span>
+                </label>
+                <select id="campaign.colResultResponseValues" class="form-control input-sm"
+                        ng-model="campaign.item.colResultResponseValues" name="campaignColResultResponseValues"
+                        ng-disabled="campaign.item.dbResultTable == null || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        ng-change="campaign.setActualResultColumns('{{campaign.item.colResultResponseValues}}', campaign.item.colResultResponseValues)"
+                        ng-required="campaign.item.dbResultTable != null" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.callResultColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.RESPONSE_VALUES:campaign.item.colResultResponseValues"
+                          ng-selected="{{campaign.item.colResultResponseValues == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> <uib-accordion-group ng-click="campaign.refreshDBTables();" heading="{{'campaign.tab.listSource.6' | i18n}}" is-open="campaign.accordions[6].active">
+        <div id="timezone">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignTimezoneType.$touched) && campaignForm.campaignTimezoneType.$invalid }">
+                <label for="campaign.timezoneType">
+                  {{'campaign.timezoneType' | i18n}}
+                  <span style="color: red;">*</span>
+                </label>
+                <select id="campaign.timezoneType" name="campaignTimezoneType" class="form-control input-sm" ng-model="campaign.item.timezoneType"
+                  ng-change="campaign.getTableColumnsAndSetDefaultValuesForTimezoneOrClear(campaign.item.dbListTable,campaign.listSourceColumns)"
+                  ng-options="item.value as item.label for item in campaign.timezoneTypes" ng-required="true"
+                  ng-disabled ="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColCallFromTime.$touched) && campaignForm.campaignColCallFromTime.$invalid }">
+                <label for="campaign.colCallFromTime">
+                  {{'campaign.colCallFromTime' | i18n}}
+                  <span style="color: red;" ng-if="campaign.item.timezoneType == 1">*</span>
+                </label>
+                <select id="campaign.colCallFromTime" class="form-control input-sm"
+                        ng-model="campaign.item.colCallFromTime" name="campaignColCallFromTime"
+                        ng-disabled="campaign.item.timezoneType != 1 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                        ng-required="campaign.item.timezoneType == 1"
+                        ng-change="campaign.setActualSourceColumns('{{campaign.item.colCallFromTime}}', campaign.item.colCallFromTime)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.listSourceColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALL_FROM_TIME:campaign.item.colCallFromTime"
+                          ng-selected="{{campaign.item.colCallFromTime == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColCallToTime.$touched) && campaignForm.campaignColCallToTime.$invalid }">
+                <label for="campaign.colCallToTime">
+                  {{'campaign.colCallToTime' | i18n}}
+                  <span style="color: red;" ng-if="campaign.item.timezoneType == 1">*</span>
+                </label>
+                <select id="campaign.colCallToTime" class="form-control input-sm"
+                        ng-model="campaign.item.colCallToTime" name="campaignColCallToTime"
+                        ng-disabled="campaign.item.timezoneType != 1 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                        ng-required="campaign.item.timezoneType == 1"
+                        ng-change="campaign.setActualSourceColumns('{{campaign.item.colCallToTime}}', campaign.item.colCallToTime)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.listSourceColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALL_TILL_TIME:campaign.item.colCallToTime"
+                          ng-selected="{{campaign.item.colCallToTime == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group"
+                ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignColTimezoneOffset.$touched) && campaignForm.campaignColTimezoneOffset.$invalid }">
+                <label for="campaign.colTimezoneOffset">
+                  {{'campaign.colTimezoneOffset' | i18n}}
+                  <span style="color: red;" ng-if="campaign.item.timezoneType == 1">*</span>
+                </label>
+                <select id="campaign.colTimezoneOffset" class="form-control input-sm"
+                        ng-model="campaign.item.colTimezoneOffset" name="campaignColTimezoneOffset"
+                        ng-disabled="campaign.item.timezoneType != 1 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                        ng-required="campaign.item.timezoneType == 1"
+                        ng-change="campaign.setActualSourceColumns('{{campaign.item.colTimezoneOffset}}', campaign.item.colTimezoneOffset)"
+                        ng-error-messages>
+                  <option value="">{{'input.option.select' | i18n}}</option>
+                  <option ng-repeat="col in campaign.listSourceColumns | restrictByType : campaign.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.TIMEZONE_OFFSET:campaign.item.colTimezoneOffset"
+                          ng-selected="{{campaign.item.colTimezoneOffset == col.fieldName}}" value="{{col.fieldName}}">
+                    {{col.fieldName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> <uib-accordion-group heading="{{'campaign.tab.listSource.7' | i18n}}" is-open="campaign.accordions[7].active"
+          ng-click="loadAttachedDataColumnList = true; campaign.refreshDBTables();">
+        <div id="attachedDatas">
+          <div class="row" style="height: 280px">
+            <div class="col-lg-12" ng-if="loadAttachedDataColumnList" ng-controller="attachedDataColumnCtrl as attachedDataColumn">
+              <div ng-include="'pages/attachedDataColumnList'"
+                ng-init="attachedDataColumn.campaign = campaign.item; attachedDataColumn.listSourceColumns = campaign.listSourceColumns; attachedDataColumn.campaignInitial = campaign.itemInitial; attachedDataColumn.attachedDataLongTermSave = campaign.item.attachedDataLongTermSave;"></div>
+            </div>
+            <div style="width: 100%">
+              <label for="campaign.attachedDataLongTermSave"
+              style="margin-left: 2%">{{'campaign.attachedDataLongTermSave' | i18n}}</label>
+              <input id="campaign.attachedDataLongTermSave" type="checkbox"
+                     ng-model="campaign.item.attachedDataLongTermSave"/>
+            </div>
+          </div>
+        </div>
+        </uib-accordion-group> </uib-accordion>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.groups' | i18n}}" ng-click="loadCampaignGroupList = true" active="campaign.tabs[2].active" disable="campaign.item.type == 4">
+      <div id="groups">
+        <div class="row" style="height: 270px">
+          <div class="col-lg-12" ng-if="loadCampaignGroupList" ng-controller="campaignGroupCtrl as campaignGroup">
+            <div ng-include="'pages/campaignGroupList'" ng-init="campaignGroup.campaign = campaign.item;campaignGroup.campaignInitial = campaign.itemInitial"></div>
+          </div>
+        </div>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.skills' | i18n}}" ng-click="campaign.onClickSkillTab()" active="campaign.tabs[3].active" disable="campaign.item.type == 4">
+      <div id="skills">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label for="campaign.skills"> {{'campaign.generalSkills' | i18n}} </label>
+              <picklist id="campaign.skills" size="5" data-picklist="" data-pick-model="campaign.item.skills" data-pick-options="item.name for item in campaign.skillsList"
+                        data-pick-disabled="!campaign.item.skillEnabled"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="campaign.colSkill"> {{'campaign.colSkill' | i18n}} </label>
+              <select id="campaign.colSkill" class="form-control input-sm" ng-model="campaign.item.colSkill" name="campaignColSkill" ng-disabled="!campaign.item.skillEnabled"
+                      ng-change="campaign.setActualSourceColumns('{{campaign.item.colSkill}}', campaign.item.colSkill)">
+                <option value="">{{'input.option.select' | i18n}}</option>
+                <option ng-repeat="col in campaign.listSourceColumns | restrictByType : 'ANY_TYPE':campaign.item.colSkill"
+                        ng-selected="{{campaign.item.colSkill == col.fieldName}}" value="{{col.fieldName}}">
+                  {{col.fieldName}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="campaign.skillEnabled">{{'campaign.skillEnabled' | i18n}} </label>
+              <input id="campaign.skillEnabled" type="checkbox" ng-model="campaign.item.skillEnabled"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.dialingOptions' | i18n}}"
+                  ng-click="campaign.onDialingOptionsTabClick()"
+                  onclick="addTooltips()"
+                  active="campaign.tabs[4].active">
+      <div id="dialingOptions">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignContext.$touched) && campaignForm.campaignContext.$invalid }">
+                  <label for="campaign.context">
+                    {{'campaign.context' | i18n}}
+                    <span style="color: red;">*</span>
+                  </label>
+                  <input id="campaign.context" name="campaignContext" type="text" class="form-control input-sm" ng-model="campaign.item.context" ng-required="true"
+                   ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages />
+                </div>
+              </div>
+              <div ng-if="canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                    ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignConcurrentLines.$touched) && campaignForm.campaignConcurrentLines.$invalid }">
+                    <label for="campaign.concurrentLines">
+                      {{'campaign.concurrentLines' | i18n}}
+                      <span style="color: red;">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input id="campaign.concurrentLines" name="campaignConcurrentLines" type="number" class="form-control input-sm pull-left"
+                             ng-model="campaign.item.concurrentLines" ng-required="true"
+                             min='{{campaign.getColumnRange(campaign.concurrentLinesMax, campaign.concurrentLinesMin).min || 0}}'
+                             max='{{campaign.getColumnRange(campaign.concurrentLinesMax, campaign.concurrentLinesMin).max}}'
+                             ng-disabled ="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')
+                              && !campaign.columnRangeEnabled(campaign.concurrentLinesMax, campaign.concurrentLinesMin)" ng-error-messages />
+                       <span class="input-group-btn vertical-top">
+                          <button class="btn btn-success btn-sm pull-right"
+                                  ng-click="campaign.openRangePredefinedValueDialog(campaign.concurrentLinesMax,campaign.concurrentLinesMin)" tooltip-append-to-body="true"
+                                  uib-tooltip="{{'campaign.rangePredefinedValue' | i18n}}" type="button">
+                            <i class="fa fa-pencil-square-o"></i>
+                          </button>
+                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignNonTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignConcurrentLines.$touched) && campaignForm.campaignConcurrentLines.$invalid }">
+                    <label for="campaign.concurrentLines1">
+                      {{'campaign.concurrentLines' | i18n}}
+                      <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.concurrentLines1" name="campaignConcurrentLines" type="number" class="form-control input-sm pull-left"
+                           ng-model="campaign.item.concurrentLines" ng-required="true"
+                           min='{{campaign.getColumnRange(campaign.concurrentLinesMax, campaign.concurrentLinesMin).min || 0}}'
+                           max='{{campaign.getColumnRange(campaign.concurrentLinesMax, campaign.concurrentLinesMin).max}}'
+                           ng-disabled ="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')
+                            && !campaign.columnRangeEnabled(campaign.concurrentLinesMax, campaign.concurrentLinesMin)" ng-error-messages />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group"
+                  ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignCallsPerSecond.$touched) && campaignForm.campaignCallsPerSecond.$invalid }">
+                  <label for="campaign.callsPerSecond">
+                    {{'campaign.callsPerSecond' | i18n}}
+                    <span style="color: red;">*</span>
+                  </label>
+                  <input id="campaign.callsPerSecond" name="campaignCallsPerSecond" ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                         type="number" min="0" class="form-control input-sm" ng-model="campaign.item.callsPerSecond" ng-required="true" ng-error-messages />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div ng-if="canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                    ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRingTimeout.$touched) && campaignForm.campaignRingTimeout.$invalid }">
+                    <label for="campaign.ringTimeout">
+                      {{'campaign.ringTimeout' | i18n}}
+                      <span style="color: red;">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input id="campaign.ringTimeout" name="campaignRingTimeout" type="number" class="form-control input-sm"
+                             min='{{campaign.getColumnRange(campaign.ringTimeoutMax,campaign.ringTimeoutMin).min || 1}}'
+                             max='{{campaign.getColumnRange(campaign.ringTimeoutMax,campaign.ringTimeoutMin).max}}'
+                             ng-model="campaign.item.ringTimeout" ng-required="true" ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')
+                              && !campaign.columnRangeEnabled(campaign.ringTimeoutMax, campaign.ringTimeoutMin)" ng-error-messages />
+                      <span class="input-group-btn vertical-top">
+                        <button class="btn btn-success btn-sm pull-left" ng-click="campaign.openRangePredefinedValueDialog(campaign.ringTimeoutMax,campaign.ringTimeoutMin)"
+                                tooltip-append-to-body="true" uib-tooltip="{{'campaign.rangePredefinedValue' | i18n}}" type="button">
+                          <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignNonTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRingTimeout.$touched) && campaignForm.campaignRingTimeout.$invalid }">
+                    <label for="campaign.ringTimeout1">
+                      {{'campaign.ringTimeout' | i18n}}
+                      <span style="color: red;">*</span>
+                    </label>
+                      <input id="campaign.ringTimeout1" name="campaignRingTimeout" type="number" class="form-control input-sm"
+                             ng-model="campaign.item.ringTimeout"
+                             min='{{campaign.getColumnRange(campaign.ringTimeoutMax,campaign.ringTimeoutMin).min || 1}}'
+                             max='{{campaign.getColumnRange(campaign.ringTimeoutMax,campaign.ringTimeoutMin).max}}'
+                             ng-required="true" ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')
+                              && !campaign.columnRangeEnabled(campaign.ringTimeoutMax, campaign.ringTimeoutMin)" ng-error-messages />
+                  </div>
+                </div>
+              </div>
+              <div ng-if="canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                    ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignAbandonTimeout.$touched) && campaignForm.campaignAbandonTimeout.$invalid }">
+                    <label for="campaign.abandonTimeout">
+                      {{'campaign.abandonTimeout' | i18n}}
+                      <span ng-if="!campaign.isAbandonTimeoutDisabled()" style="color: red;">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input id="campaign.abandonTimeout" name="campaignAbandonTimeout" type="number" class="form-control input-sm" ng-model="campaign.item.abandonTimeout"
+                        min='{{campaign.getColumnRange(campaign.abandonTimeoutMax,campaign.abandonTimeoutMin).min || 0}}'
+                        max='{{campaign.getColumnRange(campaign.abandonTimeoutMax,campaign.abandonTimeoutMin).max}}'
+                        ng-required="!campaign.isAbandonTimeoutDisabled()"
+                        ng-disabled="campaign.isAbandonTimeoutDisabled() || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')
+                         && !campaign.columnRangeEnabled(campaign.abandonTimeoutMax, campaign.abandonTimeoutMin)" ng-error-messages />
+                      <span class="input-group-btn vertical-top">
+                        <button class="btn btn-success btn-sm pull-left"
+                                ng-click="campaign.openRangePredefinedValueDialog(campaign.abandonTimeoutMax,campaign.abandonTimeoutMin)" tooltip-append-to-body="true"
+                                uib-tooltip="{{'campaign.rangePredefinedValue' | i18n}}" type="button"
+                                ng-disabled="campaign.isAbandonTimeoutDisabled()">
+                          <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignNonTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignAbandonTimeout.$touched) && campaignForm.campaignAbandonTimeout.$invalid }">
+                    <label for="campaign.abandonTimeout1">
+                      {{'campaign.abandonTimeout' | i18n}}
+                      <span ng-if="!campaign.isAbandonTimeoutDisabled()" style="color: red;">*</span>
+                    </label>
+                      <input id="campaign.abandonTimeout1" name="campaignAbandonTimeout" type="number" class="form-control input-sm" ng-model="campaign.item.abandonTimeout"
+                             min='{{campaign.getColumnRange(campaign.abandonTimeoutMax,campaign.abandonTimeoutMin).min || 0}}'
+                             max='{{campaign.getColumnRange(campaign.abandonTimeoutMax,campaign.abandonTimeoutMin).max}}'
+                             ng-required="!campaign.isAbandonTimeoutDisabled()"
+                             ng-disabled="campaign.isAbandonTimeoutDisabled() || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && !campaign.columnRangeEnabled(campaign.abandonTimeoutMax, campaign.abandonTimeoutMin)" ng-error-messages />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="campaign.abandonIvr">{{'campaign.abandonIvr' | i18n}} </label>
+                  <input id="campaign.abandonIvr" type="text" class="form-control input-sm" ng-model="campaign.item.abandonIvr" maxlength="255"
+                         ng-disabled="campaign.isAbandonTimeoutDisabled() || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div ng-if="canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDialingBoost.$touched) && campaignForm.campaignDialingBoost.$invalid }">
+                    <label for="campaign.dialingBoost">
+                      {{'campaign.dialingBoost' | i18n}}
+                      <span ng-if="!campaign.isDialingBoostDisabled()" style="color: red;">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input id="campaign.dialingBoost" name="campaignDialingBoost" type="number" step="0.01"
+                             class="form-control input-sm" ng-model="campaign.item.dialingBoost"
+                             min='{{campaign.getColumnRange(campaign.dialingBoostMax,campaign.dialingBoostMin).min || 0.01}}'
+                             max='{{campaign.getColumnRange(campaign.dialingBoostMax,campaign.dialingBoostMin).max || 100}}'
+                             ng-required="!campaign.isDialingBoostDisabled()"
+                             ng-disabled="campaign.isDialingBoostDisabled() || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && !campaign.columnRangeEnabled(campaign.dialingBoostMax, campaign.dialingBoostMin)"
+                             ng-error-messages/>
+                      <span class="input-group-btn vertical-top">
+                          <button class="btn btn-success btn-sm pull-left"
+                                  ng-click="campaign.openRangePredefinedValueDialog(campaign.dialingBoostMax,campaign.dialingBoostMin, 100, 0.01)"
+                                  tooltip-append-to-body="true" uib-tooltip="{{'campaign.rangePredefinedValue' | i18n}}"
+                                  type="button"
+                                  ng-disabled="campaign.isDialingBoostDisabled()">
+                            <i class="fa fa-pencil-square-o"></i>
+                          </button>
+                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignNonTech')">
+                <div class="col-lg-4">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignDialingBoost.$touched) && campaignForm.campaignDialingBoost.$invalid }">
+                    <label for="campaign.dialingBoost1">
+                      {{'campaign.dialingBoost' | i18n}}
+                      <span ng-if="!campaign.isDialingBoostDisabled()" style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.dialingBoost1" name="campaignDialingBoost" type="number" step="0.01"
+                           class="form-control input-sm"
+                           ng-model="campaign.item.dialingBoost" ng-required="!campaign.isDialingBoostDisabled()"
+                           min='{{campaign.getColumnRange(campaign.dialingBoostMax,campaign.dialingBoostMin).min || 0.01}}'
+                           max='{{campaign.getColumnRange(campaign.dialingBoostMax,campaign.dialingBoostMin).max || 100}}'
+                           ng-disabled="campaign.isDialingBoostDisabled() ||  !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech') && !campaign.columnRangeEnabled(campaign.dialingBoostMax, campaign.dialingBoostMin)"
+                           ng-error-messages/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignCallerIdBehaviour.$touched) && campaignForm.campaignCallerIdBehaviour.$invalid }">
+                  <label for="campaign.callerIdBehaviour">
+                    {{'campaign.callerIdBehaviour' | i18n}}
+                  </label>
+                  <select id="campaign.callerIdBehaviour" name="campaignCallerIdBehaviour" class="form-control input-sm"
+                          ng-model="campaign.item.callerIdBehaviour"
+                          ng-options="item.value as item.label for item in campaign.callerIdBehaviours"
+                          ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          ng-required="true" ng-error-messages>
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group"
+                     ng-if="campaign.item.callerIdBehaviour == 0 || campaign.item.callerIdBehaviour == 1">
+                  <label for="campaign.callerId">{{'campaign.callerId' | i18n}} </label>
+                  <input id="campaign.callerId" type="text" class="form-control input-sm"
+                         ng-model="campaign.item.callerId" maxlength="255"
+                         ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+                </div>
+                <!--
+                  FCT routing acik POOL kampanyalarda ayni caller_id kolonu, FCT listesi tukendiginde
+                  kullanilacak sabit hat olarak gosterilir. Etiket ayridir: FIXED/DYNAMIC anlamiyla
+                  karismasin. Bos birakilmasi "fallback kapali" demektir (guvenli varsayilan).
+                -->
+                <div class="form-group"
+                     ng-if="campaign.item.callerIdBehaviour == 3 && campaign.item.fctRoutingEnabled">
+                  <label for="campaign.fctFixedLineCallerId">{{'campaign.fctFixedLineCallerId' | i18n}} </label>
+                  <input id="campaign.fctFixedLineCallerId" type="text" class="form-control input-sm"
+                         ng-model="campaign.item.callerId" maxlength="255"
+                         ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+                </div>
+                <div class="form-group" ng-if="campaign.item.callerIdBehaviour == 3"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignCallerIdPool.$touched) && campaignForm.campaignCallerIdPool.$invalid }">
+                  <label for="campaign.callerIdPool">
+                    {{'campaign.callerIdPool' | i18n}}
+                  </label>
+                  <select id="campaign.callerIdPool" name="campaignCallerIdPool" class="form-control input-sm"
+                          ng-model="campaign.item.callerIdPool"
+                          ng-options="item.id as item.name for item in campaign.callerIdPools"
+                          ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          ng-required="true" ng-error-messages>
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="campaign.mohClassCallingParty">{{'campaign.mohClass' | i18n}} </label>
+                  <input id="campaign.mohClassCallingParty" type="text" class="form-control input-sm"
+                         ng-model="campaign.item.mohClassCallingParty" maxlength="255"
+                         ng-disabled="campaign.item.type != 0 && campaign.item.type != 1 && campaign.item.type != 5 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <a href="{{campaign.rdsStaticLink}}"
+                     ng-show="campaign.rdsStaticLink && campaign.item.callerIdBehaviour == 3"
+                     target="_blank"
+                     class="btn btn-primary mt-2"
+                     style="width: 100%; padding: 4px; align-content: center; margin-top: 15px;">
+                    {{ 'campaign.rdsOpenPool' | i18n }}
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group"
+                     ng-if="campaign.item.callerIdBehaviour == 3"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.retryCallerIdBehavior.$touched) && campaignForm.retryCallerIdBehavior.$invalid }">
+                  <label for="campaign.retryCallerIdBehavior">{{'campaign.retryCallerIdBehavior' | i18n}} </label>
+                  <select id="campaign.retryCallerIdBehavior"
+                          name="retryCallerIdBehavior"
+                          ng-model="campaign.item.retryCallerIdBehavior"
+                          ng-options="retryBehavior.value as retryBehavior.displayValue for retryBehavior in campaign.constants.RETRY_CALLER_ID_BEHAVIOR"
+                          ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          ng-required="true"
+                          class="form-control input-sm"
+                          ng-error-messages>
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group" ng-if="campaign.item.callerIdBehaviour == 3">
+                  <label for="campaign.fctRoutingEnabled">{{'campaign.fctRoutingEnabled' | i18n}} </label>
+                  <input id="campaign.fctRoutingEnabled"
+                         name="fctRoutingEnabled"
+                         type="checkbox"
+                         ng-model="campaign.item.fctRoutingEnabled"
+                         ng-disabled="!campaign.item.callerIdPool || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="campaign.locations">
+                {{'campaign.locations' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <picklist id="campaign.locations" size="9" data-picklist="true" data-pick-model="campaign.item.locations"
+                        data-pick-options="item.name for item in campaign.locationsList"
+                        data-pick-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.retryRules' | i18n}}" ng-click="loadResultCodeScheduleList = true;" active="campaign.tabs[5].active">
+      <div id="retryRules">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRetryStrategy.$touched) && campaignForm.campaignRetryStrategy.$invalid }">
+              <label for="campaign.retryStrategy">
+                {{'campaign.retryStrategy' | i18n}}
+                <span ng-if="campaign.item.retryScheduleEnabled" style="color: red;">*</span>
+              </label>
+              <select id="campaign.retryStrategy" name="campaignRetryStrategy" class="form-control input-sm" ng-model="campaign.item.retryStrategy"
+                ng-options="item.value as item.label for item in campaign.retryStrategies" ng-required="campaign.item.retryScheduleEnabled"
+                ng-change="campaign.onRetryStrategyChange()"
+                      ng-disabled="!campaign.item.retryScheduleEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" ng-error-messages>
+                <option value="">{{'input.option.select' | i18n}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRetryOveralAttempt.$touched) && campaignForm.campaignRetryOveralAttempt.$invalid }">
+              <label for="campaign.retryOveralAttempt">
+                {{'campaign.retryOveralAttempt' | i18n}}
+                <span ng-if="campaign.item.retryScheduleEnabled" style="color: red;">*</span>
+              </label>
+              <input id="campaign.retryOveralAttempt" name="campaignRetryOveralAttempt" type="number" min="1" class="form-control input-sm"
+                ng-model="campaign.item.retryOveralAttempt" ng-change="campaign.synchronizeAttempts('{{campaign.item.retryOveralAttempt}}')" ng-required="campaign.item.retryScheduleEnabled"
+                     ng-disabled="!campaign.item.retryScheduleEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" ng-error-messages />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignMacroInterval.$touched) && campaignForm.campaignMacroInterval.$invalid }">
+              <label for="campaign.macroInterval">
+                {{'campaign.macroInterval' | i18n}}
+                <span ng-if="campaign.item.retryScheduleEnabled" style="color: red;">*</span>
+              </label>
+              <input id="campaign.macroInterval" name="campaignMacroInterval" type="number" min="1" class="form-control input-sm" ng-model="campaign.item.macroInterval"
+                ng-required="campaign.item.retryScheduleEnabled"
+                     ng-disabled="!campaign.item.retryScheduleEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" ng-error-messages />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="form-group">
+              <label for="campaign.countAllCallTypes">{{'campaign.countAllCallTypes' | i18n}}</label>
+              <input id="campaign.countAllCallTypes" type="checkbox" ng-model="campaign.item.countAllCallTypes"
+                     ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignMacroMaxAttempt.$touched) && campaignForm.campaignMacroMaxAttempt.$invalid }">
+              <label for="campaign.macroMaxAttempt">
+                {{'campaign.macroMaxAttempt' | i18n}}
+                <span ng-if="campaign.item.retryScheduleEnabled" style="color: red;">*</span>
+              </label>
+              <input id="campaign.macroMaxAttempt" name="campaignMacroMaxAttempt" type="number" min="1" max="{{campaign.item.retryOveralAttempt}}" class="form-control input-sm" ng-model="campaign.item.macroMaxAttempt"
+                ng-required="campaign.item.retryScheduleEnabled"
+                     ng-disabled="!campaign.item.retryScheduleEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" ng-error-messages />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRetryRatio.$touched) && campaignForm.campaignRetryRatio.$invalid }">
+              <label for="campaign.retryRatio">
+                {{'campaign.retryRatio' | i18n}}
+                <span style="color: red;">*</span>
+              </label>
+              <input id="campaign.retryRatio" name="campaignRetryRatio" type="number" min="1" max="100" class="form-control input-sm" ng-model="campaign.item.retryRatio"
+                ng-required="true" ng-error-messages ng-disabled = "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"/>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group" ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignRetryDelay.$touched) && campaignForm.campaignRetryDelay.$invalid }">
+              <label for="campaign.retryDelay">
+                {{'campaign.retryDelay' | i18n}}
+                <span ng-if="campaign.item.retryScheduleEnabled" style="color: red;">*</span>
+              </label>
+              <input id="campaign.retryDelay" name="campaignRetryDelay" type="number" min="0" class="form-control input-sm" ng-model="campaign.item.retryDelay"
+              ng-required="campaign.item.retryScheduleEnabled"
+                     ng-disabled="!campaign.item.retryScheduleEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                     ng-error-messages />
+            </div>
+          </div>
+        </div>
+        <!-- Task 325559: Numara basina azami arama limiti. Alan bir checkbox ile BILINCLI olarak
+             etkinlestirilir; kampanya yoneticisi rastgele deger girip davranisi bozmasin.
+             Checkbox yalniz arayuz durumudur (DB kolonu yok): durumu alanin degerinden turetilir,
+             isaret kaldirilinca deger temizlenir ve ozellik kapanir (bos alan = mevcut davranis
+             birebir). Isaretliyken alan zorunludur. Alan checkbox'in hemen altinda, ayni kolonda
+             durur. REACH_RETRY_LIMIT_FOR_SINGLE_NUMBER (ordinal 0) ve
+             REACH_RETRY_LIMIT_BEFORE_NEXT_NUMBER (ordinal 1) stratejilerinde checkbox da alan da
+             her durumda pasiftir; iki strateji de numara basina siniri zaten retryOveralAttempt
+             ile uyguluyor. -->
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="campaign.maxAttemptPerNumberEnabled">{{'campaign.maxAttemptPerNumberEnabled' | i18n}}</label>
+              <input id="campaign.maxAttemptPerNumberEnabled" type="checkbox" ng-model="campaign.maxAttemptPerNumberEnabled"
+                     ng-change="campaign.onMaxAttemptPerNumberEnabledChange()"
+                     ng-disabled="!campaign.item.retryScheduleEnabled || campaign.item.retryStrategy == 0 || campaign.item.retryStrategy == 1 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" />
+            </div>
+            <div class="form-group"
+              ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignMaxAttemptPerNumber.$touched) && campaignForm.campaignMaxAttemptPerNumber.$invalid }">
+              <label for="campaign.maxAttemptPerNumber">
+                {{'campaign.maxAttemptPerNumber' | i18n}}
+                <span ng-if="campaign.maxAttemptPerNumberEnabled && campaign.item.retryScheduleEnabled && campaign.item.retryStrategy != 0 && campaign.item.retryStrategy != 1" style="color: red;">*</span>
+              </label>
+              <input id="campaign.maxAttemptPerNumber" name="campaignMaxAttemptPerNumber" type="number" min="1" class="form-control input-sm"
+                ng-model="campaign.item.maxAttemptPerNumber"
+                     ng-required="campaign.maxAttemptPerNumberEnabled && campaign.item.retryScheduleEnabled && campaign.item.retryStrategy != 0 && campaign.item.retryStrategy != 1"
+                     ng-disabled="!campaign.maxAttemptPerNumberEnabled || !campaign.item.retryScheduleEnabled || campaign.item.retryStrategy == 0 || campaign.item.retryStrategy == 1 || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                     ng-error-messages />
+              <span class="help-block" ng-if="campaign.item.retryStrategy == 0 || campaign.item.retryStrategy == 1">{{'campaign.maxAttemptPerNumber.frozenForStrategy' | i18n}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12" ng-if="loadResultCodeScheduleList" ng-controller="resultCodeScheduleCtrl as resultCodeSchedule">
+            <div ng-include="'pages/resultCodeScheduleList'"
+              ng-init="resultCodeSchedule.campaign = campaign.item; resultCodeSchedule.listSourceColumns = campaign.listSourceColumns;resultCodeSchedule.campaignInitial = campaign.itemInitial"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="campaign.retryScheduleEnabled">{{'campaign.retryScheduleEnabled' | i18n}} </label>
+              <input id="campaign.retryScheduleEnabled" type="checkbox" ng-model="campaign.item.retryScheduleEnabled" ng-disabled =
+                      "!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" />
+            </div>
+          </div>
+        </div>
+      </div>
+      </tab> <tab heading="{{'campaign.tab.schedule' | i18n}}" ng-click="loadSchedule = true" active="campaign.tabs[6].active">
+      <div id="schedule">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-lg-12" ng-controller="campaignScheduleCtrl as campaignSchedule" ng-if="loadSchedule">
+              <div ng-include="'pages/campaignSchedule'" ng-init="campaignSchedule.campaign = campaign.item;campaignSchedule.campaignInitial = campaign.itemInitial"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="campaign.scheduleEnabled">{{'campaign.scheduleEnabled' | i18n}} </label>
+              <input id="campaign.scheduleEnabled" type="checkbox" ng-model="campaign.item.scheduleEnabled"
+                     ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+
+            <div style="cursor:pointer; font-weight:bold; font-size:16px; padding:8px 0;"
+                 ng-click="leaveDaysPanelOpen = !leaveDaysPanelOpen">
+              <i class="fa" ng-class="{'fa-chevron-down': leaveDaysPanelOpen, 'fa-chevron-right': !leaveDaysPanelOpen}" style="margin-right:6px"></i>
+              {{'campaign.tab.leaveDays' | i18n}}
+            </div>
+
+            <div ng-show="leaveDaysPanelOpen" style="margin-top:5px;">
+              <div ng-controller="scheduleLeaveDaysCtrl as leaveDays" ng-init="leaveDays.campaign = campaign.item;leaveDays.campaignInitial = campaign.itemInitial">
+                <div ng-include="'pages/scheduleLeaveDaysPanel'"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      </tab> <tab heading="{{'campaign.tab.schedule.automation' | i18n}}" ng-click="loadScheduleAutomaton = true" active="campaign.tabs[7].active">
+        <div id="scheduleAutomation">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-lg-12" ng-controller="campaignScheduleAutomationCtrl as campaignScheduleAutomation" ng-if="loadScheduleAutomaton">
+                <div ng-include="'pages/campaignScheduleAutomationList'" ng-init="campaignScheduleAutomation.campaign = campaign.item; campaignScheduleAutomation.campaignInitial = campaign.itemInitial"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="campaign.scheduleAutomationEnabled">{{'campaign.scheduleAutomationEnabled' | i18n}} </label>
+                <input id="campaign.scheduleAutomationEnabled" type="checkbox" ng-model="campaign.item.scheduleAutomationEnabled"
+                       ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab> <tab heading="{{'campaign.tab.dnc' | i18n}}" ng-click="campaign.loadAvailableDncsLists();campaign.loadCampaignDncsLists()" active="campaign.tabs[8].active">
+      <div id="dnc">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <picklist id="campaign.dncs" size="5" data-picklist="" data-pick-model="campaign.item.dncs" data-pick-options="item.name for item in campaign.dncsList"
+                        data-pick-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                        data-pick-locked="campaign.isDefaultDncItem(item)"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="campaign.dncEnabled">{{'campaign.dncEnabled' | i18n}} </label>
+              <input id="campaign.dncEnabled" type="checkbox" ng-model="campaign.item.dncEnabled" ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      </tab> <tab  heading="{{'campaign.tab.lsc' | i18n}}"
+                  ng-click="campaign.loadAvailableLscServices();campaign.loadCampaignLscServices()"
+                  active="campaign.tabs[9].active">
+      <div id="lsc">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <picklist id="campaign.lscs" size="5" data-picklist="" data-pick-model="campaign.item.lscs" data-pick-options="item.name for item in campaign.lscsList"
+                        data-pick-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')" show-arrows="true"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="campaign.lscTimeoutBehavior">{{'campaign.lscTimeoutBehavior' | i18n}} </label>
+              <select id="campaign.lscTimeoutBehavior" name="lscTimeoutBehavior" class="form-control input-sm" ng-model="campaign.item.lscTimeoutBehavior"
+                      ng-options="item.value as item.label for item in campaign.lscTimeoutBehaviors" ng-error-messages
+                      ng-disabled="!campaign.item.lscEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')">
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="campaign.lscEnabled">{{'campaign.lscEnabled' | i18n}} </label>
+              <input id="campaign.lscEnabled" type="checkbox" ng-model="campaign.item.lscEnabled"
+                     ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+            </div>
+            <div class="form-group">
+              <label for="campaign.fullContactListCheckEnabled">{{'campaign.fullContactListCheckEnabled' | i18n}} </label>
+              <input id="campaign.fullContactListCheckEnabled" type="checkbox" ng-model="campaign.item.fullContactListCheckEnabled"
+                     ng-disabled="!campaign.item.lscEnabled || !canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      </tab>
+        <tab heading="{{'campaign.tab.prediction' | i18n}}"
+             ng-if="campaign.item.type === 5 && canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+             active="campaign.tabs[10].active">
+          <div id="prediction">
+
+            <!-- Predictive Strategy -->
+            <div class="row">
+              <div class="col-lg-2">
+                <div class="form-group"
+                     ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.campaignPredictiveStrategy.$touched) && campaignForm.campaignPredictiveStrategy.$invalid }">
+                  <label for="campaign.predictiveStrategy">
+                    {{'campaign.predictiveStrategy' | i18n}} <span style="color: red;">*</span>
+                  </label>
+                  <select id="campaign.predictiveStrategy" name="campaignPredictiveStrategy" class="form-control input-sm"
+                          ng-model="campaign.item.predictiveStrategy"
+                          ng-change="campaign.predictiveStrategy; campaign.clearOrSetDefaultValues()"
+                          ng-options="item.value as item.label for item in campaign.predictiveStrategies"
+                          ng-required="true"
+                          ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaign')"
+                          ng-error-messages>
+                    <option value="">{{'input.option.select' | i18n}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- ALPHA PARAMETERS -->
+            <div ng-if="campaign.item.predictiveStrategy === 0">
+              <hr class="divider" />
+              <div class="row">
+
+                <!-- Max Answer Rate -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.maxAnswerRate.$touched) && campaignForm.maxAnswerRate.$invalid }">
+                    <label for="campaign.maxAnswerRate">
+                      {{'campaign.maxAnswerRate' | i18n}} <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.maxAnswerRate" name="maxAnswerRate" type="number" step="0.01"
+                           class="form-control input-sm" ng-model="campaign.item.maxAnswerRate" min="0.01" max="1"
+                           ng-required="campaign.item.predictiveStrategy === 0"
+                           ng-error-messages />
+                  </div>
+                </div>
+
+                <!-- Max Abandon Rate -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.maxAbandonRate.$touched) && campaignForm.maxAbandonRate.$invalid }">
+                    <label for="campaign.maxAbandonRate">
+                      {{'campaign.maxAbandonRate' | i18n}} <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.maxAbandonRate" name="maxAbandonRate" type="number" step="0.01"
+                           class="form-control input-sm" ng-model="campaign.item.maxAbandonRate" min="0.01" max="1"
+                           ng-required="campaign.item.predictiveStrategy === 0"
+                           ng-error-messages />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GAMMA PARAMETERS -->
+            <div ng-if="campaign.item.predictiveStrategy === 2">
+              <hr class="divider" />
+              <div class="row">
+
+                <!-- Correction Factor -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.gammaCorrectionFactor.$touched) && campaignForm.gammaCorrectionFactor.$invalid }">
+                    <label for="campaign.gammaCorrectionFactor">
+                      {{'campaign.gammaCorrectionFactor' | i18n}} <span style="color: red;">*</span>
+                      <i class="fa fa-info-circle" style="color:#5a9bd5;margin-left:6px;font-size:13px;cursor:pointer;"
+                         uib-popover-template="'pages/help/gammaCorrectionFactorHelp.html'"
+                         popover-title="{{'campaign.gammaCorrectionFactor' | i18n}}"
+                         popover-trigger="none"
+                         popover-is-open="campaign.gammaCfHelpOpen"
+                         popover-placement="right"
+                         popover-class="gamma-help-popover"
+                         popover-append-to-body="true"
+                         ng-click="campaign.toggleGammaCfHelp()"></i>
+                    </label>
+                    <input id="campaign.gammaCorrectionFactor" name="gammaCorrectionFactor" type="number" step="0.01"
+                           class="form-control input-sm" ng-model="campaign.item.gammaCorrectionFactor"
+                           min="0.0" max="3.0"
+                           ng-required="campaign.item.predictiveStrategy === 2"
+                           ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                           ng-focus="campaign.openGammaCfHelp()"
+                           ng-blur="campaign.scheduleGammaCfHelpClose()"
+                           ng-error-messages />
+                  </div>
+                </div>
+
+                <!-- Abandon Sensitivity -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.gammaAbandonSensitivity.$touched) && campaignForm.gammaAbandonSensitivity.$invalid }">
+                    <label for="campaign.gammaAbandonSensitivity">
+                      {{'campaign.gammaAbandonSensitivity' | i18n}} <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.gammaAbandonSensitivity" name="gammaAbandonSensitivity" type="number" step="0.1"
+                           class="form-control input-sm" ng-model="campaign.item.gammaAbandonSensitivity"
+                           min="0.0" max="10.0"
+                           ng-required="campaign.item.predictiveStrategy === 2"
+                           ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                           ng-error-messages />
+                  </div>
+                </div>
+
+                <!-- Window Capacity -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.gammaWindowCapacity.$touched) && campaignForm.gammaWindowCapacity.$invalid }">
+                    <label for="campaign.gammaWindowCapacity">
+                      {{'campaign.gammaWindowCapacity' | i18n}} <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.gammaWindowCapacity" name="gammaWindowCapacity" type="number" step="1"
+                           class="form-control input-sm" ng-model="campaign.item.gammaWindowCapacity"
+                           min="100" max="1000"
+                           ng-required="campaign.item.predictiveStrategy === 2"
+                           ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                           ng-error-messages />
+                  </div>
+                </div>
+
+                <!-- Required Window Size -->
+                <div class="col-lg-2">
+                  <div class="form-group"
+                       ng-class="{ 'has-error' : (campaignForm.$submitted || campaignForm.gammaRequiredWindowSize.$touched) && campaignForm.gammaRequiredWindowSize.$invalid }">
+                    <label for="campaign.gammaRequiredWindowSize">
+                      {{'campaign.gammaRequiredWindowSize' | i18n}} <span style="color: red;">*</span>
+                    </label>
+                    <input id="campaign.gammaRequiredWindowSize" name="gammaRequiredWindowSize" type="number" step="1"
+                           class="form-control input-sm" ng-model="campaign.item.gammaRequiredWindowSize"
+                           min="10" ng-max="campaign.item.gammaWindowCapacity - 1"
+                           ng-required="campaign.item.predictiveStrategy === 2"
+                           ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')"
+                           ng-error-messages />
+                  </div>
+                </div>
+
+                <!-- Gamma Plus - yalnız süperadmin görür. Kampanya çalışırken değiştirilmez;
+                     stop/start ile devreye alınır. İşaretsizken gamma hesabı bugünküyle aynıdır. -->
+                <div class="col-lg-2" ng-if="hasAnyRole(['ROLE_SUPERADMIN'])">
+                  <div class="form-group">
+                    <label for="campaign.gammaPlus">{{'campaign.gammaPlus' | i18n}}</label>
+                    <input id="campaign.gammaPlus" name="gammaPlus" type="checkbox"
+                           class="form-control input-sm" style="width:auto;height:auto;box-shadow:none;"
+                           ng-model="campaign.item.gammaPlus"
+                           ng-disabled="!canEditSelectedCampaignByPermission(campaign.item, 'EditCampaignTech')" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </tab>
+
+      </tabset>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-show="campaign.shouldShowConfirmDialog()"  ng-really-message="{{'campaignScheduleAutomation.confirm' | i18n}}" ng-really-click="campaign.processConfirmationSave(campaignForm.$valid)">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-primary" type="submit" ng-show="!campaign.shouldShowConfirmDialog()">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="campaign.cancel()">
+        <i class="fa fa-close"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

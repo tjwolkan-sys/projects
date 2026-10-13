@@ -1,0 +1,27 @@
+<div>
+    Insert campaign data from JSON file
+    <form method="POST" enctype="multipart/form-data" ng-submit="multipartUpload.saveForm()">
+        <table>
+            <tr>
+                <td>Username :</td>
+                <td><input type="text" ng-model="multipartUpload.username"/></td>
+            </tr>
+            <tr>
+                <td>Password :</td>
+                <td><input type="text" ng-model="multipartUpload.password"/></td>
+            </tr>
+            <tr>
+                <td>File to upload:</td>
+                <td><input type="file" file-model="multipartUpload.file"/></td>
+            </tr>
+            <tr>
+                <td>Url :</td>
+                <td><input type="text" ng-model="multipartUpload.url"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Upload"/></td>
+            </tr>
+        </table>
+    </form>
+</div>

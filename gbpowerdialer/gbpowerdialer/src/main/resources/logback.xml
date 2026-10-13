@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-5X{username} [%thread] %logger{0} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+						class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/gbpowerdialer.log</file>
+		<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/gbpowerdialer.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<maxHistory>${loggingFilesAmount:-3}</maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-5X{username} [%thread] %logger{0} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- Task 325469 (A4-5): Uretim dump'inda 84 thread FILE+CONSOLE senkron appender
+	     kilidinde (CachingDateFormatter) bekliyordu. Uretici thread'ler artik yalniz
+	     kuyruga birakir; yazimi tek async worker yapar. discardingThreshold=0 => hicbir
+	     seviye discard edilmez, kuyruk dolarsa uretici bekler (kayipsiz). Log icerigi,
+	     formati ve hedef dosyalar birebir aynidir. -->
+	<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>8192</queueSize>
+		<appender-ref ref="FILE"/>
+	</appender>
+
+	<appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>8192</queueSize>
+		<appender-ref ref="CONSOLE"/>
+	</appender>
+
+	<!-- ASYNC_CONSOLE root'tan cikarildi. Her appender kendi pattern'ini bagimsiz formatladigi
+	     icin console referansi her log satirini ikinci kez isliyordu: ikinci kez
+	     %d{...} tarih formatlama (task 325469'da CPU kokeni olarak tespit edilen
+	     CachingDateFormatter), ikinci 8192'lik kuyruk + worker thread ve ikinci disk yazimi.
+	     Uretimde kayip yok: konsol System.out'a, yani rotate EDILMEYEN catalina.out'a yaziyordu;
+	     ayni satirlarin tamami rotate'li gbpowerdialer.log'da mevcut ve Elastic o dosyayi okuyor.
+	     CONSOLE/ASYNC_CONSOLE tanimlari bilerek dosyada birakildi: lokalde terminalde canli log
+	     akisi isteyen gelistirici asagidaki ref'i tek satirla geri ekler. -->
+	<root level="INFO">
+		<appender-ref ref="ASYNC_FILE"/>
+		<!-- <appender-ref ref="ASYNC_CONSOLE"/> -->
+	</root>
+
+	<logger name="com.powerdialer.engine.boost.DynamicBoostCalculator" level="DEBUG" additivity="false">
+		<appender-ref ref="ASYNC_FILE"/>
+	</logger>
+
+
+</configuration>

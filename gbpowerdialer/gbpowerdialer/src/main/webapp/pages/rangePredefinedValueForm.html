@@ -1,0 +1,39 @@
+<div>
+	<div class="modal-header">
+		<h3 class="modal-title">{{'campaign.rangePredefinedValue.form' | i18n}}</h3>
+	</div>
+	<form name="predefinedNumber" ng-submit="rangePredefinedValue.$valid && rangePredefinedValue.save()" novalidate>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group" ng-class="{ 'has-error' : (rangePredefinedValue.$submitted || rangePredefinedValue.$touched) && rangePredefinedValue }">
+						<label for="rangePredefinedValue.min"> {{'campaign.rangePredefinedValue.min' | i18n}}<span style="color: red;">*</span>
+						</label> <input type="number" id="rangePredefinedValue.min" name="rangePredefinedValue.min" class="form-control input-sm" ng-model="rangePredefinedValue.minPredefinedValue.value"
+							ng-required="true" maxlength="255" ng-error-messages ng-attr-min="{{rangePredefinedValue.systemMin ? rangePredefinedValue.systemMin : 0}}">
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="form-group"
+						ng-class="{ 'has-error' : (rangePredefinedValue.$submitted || rangePredefinedValue.$touched) && (rangePredefinedValue.predefinedValue.$invalid || rangePredefinedValue.predefinedValue) }">
+						<label for="rangePredefinedValue.max"> {{'campaign.rangePredefinedValue.max' | i18n}}<span style="color: red;">*</span>
+						</label> <input type="number" id="rangePredefinedValue.max" name="rangePredefinedValue.max" class="form-control input-sm" ng-model="rangePredefinedValue.maxPredefinedValue.value"
+							ng-required="true" maxlength="255" ng-error-messages ng-attr-max="{{rangePredefinedValue.systemMax}}" min="{{rangePredefinedValue.minPredefinedValue.value}}">
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label for="rangeEnabled.enabled">{{'label.enabled' | i18n}}</label> <input id="rangeEnabled.enabled" type="checkbox" ng-model="rangePredefinedValue.rangeEnabled" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="rangePredefinedValue.save()" ng-disabled="!rangePredefinedValue.isRangeValid()">
+				<i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+			</button>
+			<button class="btn btn-warning" type="button" ng-click="rangePredefinedValue.cancel()">
+				<i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+			</button>
+		</div>
+	</form>
+</div>

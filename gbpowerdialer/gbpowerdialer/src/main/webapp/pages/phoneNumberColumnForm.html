@@ -1,0 +1,125 @@
+<div>
+  <div class="modal-header">
+    <h3 class="modal-title">{{'phoneNumberColumn.form' | i18n}}</h3>
+  </div>
+  <form name="phoneNumberColumnForm" ng-submit="phoneNumberColumnForm.$valid && phoneNumberColumn.save()" novalidate>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColNumber.$touched) && phoneNumberColumnForm.columnColNumber.$invalid }">
+            <label for="phoneNumberColumn.colNumber">
+              {{'phoneNumberColumn.colNumber' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <select id="phoneNumberColumn.colNumber" name="columnColNumber" class="form-control input-sm"
+                    ng-model="phoneNumberColumn.item.colNumber"
+                    ng-required="true" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in phoneNumberColumn.listSourceColumns | restrictByType : phoneNumberColumn.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.PHONE_NUMBER"
+                      ng-selected="{{phoneNumberColumn.item.colNumber == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group" ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColCallerId.$touched) && phoneNumberColumnForm.columnColCallerId.$invalid }">
+            <label for="phoneNumberColumn.colCallerId">
+              {{'phoneNumberColumn.colCallerId' | i18n}} <span style="color: red;" ng-if="phoneNumberColumn.campaign.callerIdBehaviour == 1">*</span>
+            </label>
+            <select id="phoneNumberColumn.colCallerId" name="columnColCallerId" class="form-control input-sm"
+                    ng-model="phoneNumberColumn.item.colCallerId"
+                    ng-disabled="phoneNumberColumn.campaign.callerIdBehaviour != 1"
+                    ng-required="phoneNumberColumn.campaign.callerIdBehaviour == 1" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in phoneNumberColumn.listSourceColumns | restrictByType : phoneNumberColumn.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALLER_ID"
+                      ng-selected="{{phoneNumberColumn.item.colCallerId == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group" ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColCallFromTime.$touched) && phoneNumberColumnForm.columnColCallFromTime.$invalid }">
+            <label for="phoneNumberColumn.colCallFromTime">
+              {{'phoneNumberColumn.colCallFromTime' | i18n}} <span style="color: red;" ng-if="phoneNumberColumn.campaign.timezoneType == 2">*</span>
+            </label>
+            <select id="phoneNumberColumn.colCallFromTime" name="columnColCallFromTime" class="form-control input-sm"
+                    ng-model="phoneNumberColumn.item.colCallFromTime"
+                    ng-disabled="phoneNumberColumn.campaign.timezoneType != 2"
+                    ng-required="phoneNumberColumn.campaign.timezoneType == 2" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in phoneNumberColumn.listSourceColumns | restrictByType : phoneNumberColumn.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALL_FROM_TIME"
+                      ng-selected="{{phoneNumberColumn.item.colCallFromTime == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group" ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColCallTillTime.$touched) && phoneNumberColumnForm.columnColCallTillTime.$invalid }">
+            <label for="phoneNumberColumn.colCallTillTime">
+              {{'phoneNumberColumn.colCallTillTime' | i18n}} <span style="color: red;" ng-if="phoneNumberColumn.campaign.timezoneType == 2">*</span>
+            </label>
+            <select id="phoneNumberColumn.colCallTillTime" name="columnColCallTillTime" class="form-control input-sm"
+                    ng-model="phoneNumberColumn.item.colCallTillTime"
+                    ng-disabled="phoneNumberColumn.campaign.timezoneType != 2"
+                    ng-required="phoneNumberColumn.campaign.timezoneType == 2" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in phoneNumberColumn.listSourceColumns | restrictByType : phoneNumberColumn.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.CALL_TILL_TIME"
+                      ng-selected="{{phoneNumberColumn.item.colCallTillTime == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group" ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColTimezoneOffset.$touched) && phoneNumberColumnForm.columnColTimezoneOffset.$invalid }">
+            <label for="phoneNumberColumn.colTimezoneOffset">
+              {{'phoneNumberColumn.colTimezoneOffset' | i18n}} <span style="color: red;" ng-if="phoneNumberColumn.campaign.timezoneType == 2">*</span>
+            </label>
+            <select id="phoneNumberColumn.colTimezoneOffset" name="columnColTimezoneOffset"
+                    class="form-control input-sm"
+                    ng-model="phoneNumberColumn.item.colTimezoneOffset"
+                    ng-disabled="phoneNumberColumn.campaign.timezoneType != 2"
+                    ng-required="phoneNumberColumn.campaign.timezoneType == 2" ng-error-messages>
+              <option value="">{{'input.option.select' | i18n}}</option>
+              <option ng-repeat="col in phoneNumberColumn.listSourceColumns | restrictByType : phoneNumberColumn.constants.DEFAULT_CAMPAIGN_COLUMN_NAMES.TIMEZONE_OFFSET"
+                      ng-selected="{{phoneNumberColumn.item.colTimezoneOffset == col.fieldName}}" value="{{col.fieldName}}">
+                {{col.fieldName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group"
+            ng-class="{ 'has-error' : (phoneNumberColumnForm.$submitted || phoneNumberColumnForm.columnColSort.$touched) && phoneNumberColumnForm.columnColSort.$invalid }">
+            <label for="phoneNumberColumn.colSort">
+              {{'phoneNumberColumn.colSort' | i18n}} <span style="color: red;">*</span>
+            </label>
+            <input id="phoneNumberColumn.colSort" name="columnColSort" type="number" min="0" class="form-control input-sm" ng-model="phoneNumberColumn.item.colSort" 
+              ng-required="true" ng-error-messages />
+          </div>
+        </div>
+        <div class="col-lg-12">
+	      <div class="form-group">
+            <label for="phoneNumberColumn.enabled">{{'label.enabled' | i18n}} </label>
+            <input id="phoneNumberColumn.enabled" type="checkbox" ng-model="phoneNumberColumn.item.enabled" />
+          </div>
+	    </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">
+        <i class="fa fa-floppy-o"></i> {{'label.save' | i18n}}
+      </button>
+      <button class="btn btn-warning" type="button" ng-click="phoneNumberColumn.cancel()">
+        <i class="fa fa-times"></i> {{'label.cancel' | i18n}}
+      </button>
+    </div>
+  </form>
+</div>

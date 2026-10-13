@@ -1,0 +1,1032 @@
+<style>
+/* FCT Kanal Monitörü — açık tema, flat kart düzeni (images/FctChannelRegistry.png).
+   Renkler tek yerde CSS değişkeni olarak tanımlıdır; tema kararı değişirse buradan dönülür. */
+.fct-monitor {
+  --fct-bg: #f5f6f8;
+  --fct-card: #ffffff;
+  --fct-border: #e8eaed;
+  --fct-text: #1f2937;
+  --fct-muted: #8a94a6;
+  --fct-amber: #f5a623;
+  --fct-green: #22c55e;
+  --fct-red: #ef4444;
+  --fct-cyan: #38bdf8;
+  --fct-purple: #a78bfa;
+  --fct-slot: #d7dbe0;
+  background: var(--fct-bg);
+  color: var(--fct-text);
+  padding: 18px;
+  font-size: 13px;
+}
+
+.fct-monitor .fct-mono {
+  font-family: Consolas, "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.fct-monitor .fct-card {
+  background: var(--fct-card);
+  border: 1px solid var(--fct-border);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+}
+
+/* --- header --- */
+.fct-monitor .fct-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fct-monitor .fct-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.fct-monitor .fct-subtitle {
+  color: var(--fct-muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.fct-monitor .fct-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e9f9ef;
+  color: #15803d;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.fct-monitor .fct-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fct-green);
+  animation: fct-pulse 1.6s ease-in-out infinite;
+}
+
+.fct-monitor .fct-live-paused .fct-live-dot {
+  background: var(--fct-muted);
+  animation: none;
+}
+
+.fct-monitor .fct-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fct-monitor .fct-control-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--fct-card);
+  border: 1px solid var(--fct-border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.fct-monitor .fct-switch {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  border-radius: 999px;
+  border: none;
+  background: #cfd4db;
+  cursor: pointer;
+  padding: 0;
+  transition: background .2s ease;
+}
+
+.fct-monitor .fct-switch.fct-switch-on {
+  background: var(--fct-green);
+}
+
+.fct-monitor .fct-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .2s ease;
+}
+
+.fct-monitor .fct-switch.fct-switch-on::after {
+  transform: translateX(18px);
+}
+
+.fct-monitor .fct-switch-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fct-muted);
+}
+
+.fct-monitor .fct-clock {
+  text-align: right;
+  line-height: 1.2;
+}
+
+.fct-monitor .fct-clock-time {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.fct-monitor .fct-clock-date {
+  font-size: 11px;
+  color: var(--fct-muted);
+}
+
+/* --- aggregate --- */
+.fct-monitor .fct-aggregate {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr)) minmax(260px, 1.6fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fct-monitor .fct-agg-cell {
+  padding: 14px 16px;
+}
+
+.fct-monitor .fct-agg-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fct-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.fct-monitor .fct-agg-value {
+  font-size: 26px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.fct-monitor .fct-agg-unit {
+  color: var(--fct-muted);
+  font-size: 11px;
+}
+
+.fct-monitor .fct-value-warning {
+  color: var(--fct-amber);
+}
+
+.fct-monitor .fct-value-danger {
+  color: var(--fct-red);
+}
+
+.fct-monitor .fct-spark-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.fct-monitor .fct-spark-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 56px;
+  font-size: 9px;
+  color: var(--fct-muted);
+}
+
+/* --- panels --- */
+.fct-monitor .fct-main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 12px;
+  align-items: start;
+}
+
+.fct-monitor .fct-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--fct-border);
+  flex-wrap: wrap;
+}
+
+.fct-monitor .fct-panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.fct-monitor .fct-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fct-monitor .fct-search {
+  position: relative;
+}
+
+.fct-monitor .fct-search input {
+  border: 1px solid var(--fct-border);
+  border-radius: 8px;
+  padding: 5px 10px 5px 28px;
+  font-size: 12px;
+  width: 170px;
+}
+
+.fct-monitor .fct-search .fa {
+  position: absolute;
+  left: 9px;
+  top: 7px;
+  color: var(--fct-muted);
+  font-size: 11px;
+}
+
+.fct-monitor select.fct-select {
+  border: 1px solid var(--fct-border);
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+  background: #fff;
+}
+
+.fct-monitor .fct-icon-btn {
+  border: 1px solid var(--fct-border);
+  background: #fff;
+  border-radius: 8px;
+  width: 30px;
+  height: 28px;
+  color: var(--fct-muted);
+  cursor: pointer;
+}
+
+.fct-monitor .fct-icon-btn.fct-icon-btn-active {
+  background: #eef2f7;
+  color: var(--fct-text);
+}
+
+/* --- table --- */
+.fct-monitor .fct-table-wrap {
+  overflow-x: auto;
+}
+
+.fct-monitor table.fct-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fct-monitor table.fct-table th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--fct-muted);
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--fct-border);
+  white-space: nowrap;
+}
+
+.fct-monitor table.fct-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+}
+
+.fct-monitor .fct-row-cooldown td {
+  background: #fdf2f2;
+}
+
+.fct-monitor .fct-row-cooldown td:first-child {
+  box-shadow: inset 3px 0 0 var(--fct-red);
+}
+
+.fct-monitor .fct-number {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fct-monitor .fct-type-badge {
+  display: inline-block;
+  margin-top: 4px;
+  margin-right: 4px;
+  font-size: 9px;
+  letter-spacing: .04em;
+  color: #4f5b6d;
+  background: #eef1f5;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.fct-monitor .fct-lamp-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  max-width: 220px;
+}
+
+.fct-monitor .fct-lamp {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--fct-slot);
+  display: inline-block;
+}
+
+.fct-monitor .fct-lamp-free {
+  background: var(--fct-green);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, .18);
+}
+
+.fct-monitor .fct-lamp-busy {
+  background: var(--fct-amber);
+  box-shadow: 0 0 0 2px rgba(245, 166, 35, .2);
+  animation: fct-breathe 2.4s ease-in-out infinite;
+}
+
+.fct-monitor .fct-lamp-full {
+  background: var(--fct-red);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, .2);
+}
+
+.fct-monitor .fct-lamp-cooldown {
+  background: var(--fct-red);
+  animation: fct-blink 1s step-start infinite;
+}
+
+.fct-monitor .fct-lamp-unknown {
+  background: #b9c0c9;
+}
+
+.fct-monitor .fct-chip {
+  display: inline-block;
+  font-size: 10px;
+  color: #4f5b6d;
+  background: #f1f3f5;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin: 2px 3px 0 0;
+}
+
+.fct-monitor .fct-chip-stale {
+  background: #fdeaea;
+  color: var(--fct-red);
+  font-weight: 600;
+}
+
+.fct-monitor .fct-bar {
+  height: 4px;
+  width: 90px;
+  background: #eef1f5;
+  border-radius: 999px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.fct-monitor .fct-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.fct-monitor .fct-bar-success {
+  background: var(--fct-green);
+}
+
+.fct-monitor .fct-bar-medium {
+  background: var(--fct-amber);
+}
+
+.fct-monitor .fct-bar-warning {
+  background: var(--fct-amber);
+}
+
+.fct-monitor .fct-bar-danger {
+  background: var(--fct-red);
+}
+
+.fct-monitor .fct-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  border-radius: 5px;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+.fct-monitor .fct-badge-success {
+  background: #e9f9ef;
+  color: #15803d;
+}
+
+.fct-monitor .fct-badge-medium {
+  background: #fff5e6;
+  color: #b45309;
+}
+
+.fct-monitor .fct-badge-warning {
+  background: #fff2df;
+  color: #b45309;
+}
+
+.fct-monitor .fct-badge-danger {
+  background: #fdeaea;
+  color: #b91c1c;
+}
+
+.fct-monitor .fct-badge-idle {
+  background: #f1f3f5;
+  color: #6b7280;
+}
+
+.fct-monitor .fct-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fct-green);
+  margin-left: 6px;
+}
+
+.fct-monitor .fct-dot-danger {
+  background: var(--fct-red);
+}
+
+.fct-monitor .fct-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  font-size: 11px;
+  color: #4f5b6d;
+  border-top: 1px solid var(--fct-border);
+}
+
+.fct-monitor .fct-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.fct-monitor .fct-total {
+  text-align: center;
+  font-size: 11px;
+  color: var(--fct-muted);
+  padding: 8px 0 12px;
+}
+
+/* --- cards --- */
+.fct-monitor .fct-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.fct-monitor .fct-entry-card {
+  border: 1px solid var(--fct-border);
+  border-radius: 10px;
+  padding: 12px;
+  transition: transform .15s ease;
+}
+
+.fct-monitor .fct-entry-card:hover {
+  transform: translateY(-2px);
+}
+
+.fct-monitor .fct-entry-card.fct-row-cooldown {
+  background: #fdf2f2;
+  border-color: #f7c9c9;
+}
+
+.fct-monitor .fct-entry-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.fct-monitor .fct-inflight-list {
+  margin-top: 8px;
+  border-top: 1px dashed var(--fct-border);
+  padding-top: 6px;
+}
+
+.fct-monitor .fct-inflight-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 2px 0;
+  color: #4f5b6d;
+}
+
+/* --- feed --- */
+.fct-monitor .fct-feed {
+  position: sticky;
+  top: 12px;
+}
+
+.fct-monitor .fct-feed-list {
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.fct-monitor .fct-feed-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f3f5;
+  animation: fct-slide-in .25s ease;
+}
+
+.fct-monitor .fct-feed-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex: 0 0 26px;
+}
+
+.fct-monitor .fct-event-acquire .fct-feed-icon {
+  background: #fff5e6;
+  color: #b45309;
+}
+
+.fct-monitor .fct-event-release .fct-feed-icon {
+  background: #e9f9ef;
+  color: #15803d;
+}
+
+.fct-monitor .fct-event-skip .fct-feed-icon {
+  background: #e8f6fd;
+  color: #0369a1;
+}
+
+.fct-monitor .fct-event-prune .fct-feed-icon {
+  background: #f2edfd;
+  color: #6d28d9;
+}
+
+.fct-monitor .fct-event-danger .fct-feed-icon {
+  background: #fdeaea;
+  color: #b91c1c;
+}
+
+.fct-monitor .fct-event-danger {
+  box-shadow: inset 3px 0 0 var(--fct-red);
+}
+
+.fct-monitor .fct-feed-time {
+  font-size: 10px;
+  color: var(--fct-muted);
+}
+
+.fct-monitor .fct-feed-label {
+  font-size: 11px;
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.fct-monitor .fct-feed-meta {
+  font-size: 11px;
+  color: #4f5b6d;
+}
+
+.fct-monitor .fct-feed-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--fct-border);
+  font-size: 11px;
+}
+
+/* --- kpi --- */
+.fct-monitor .fct-kpi {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.fct-monitor .fct-kpi-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.fct-monitor .fct-kpi-icon {
+  color: var(--fct-muted);
+  font-size: 16px;
+}
+
+.fct-monitor .fct-kpi-label {
+  font-size: 11px;
+  color: var(--fct-muted);
+}
+
+.fct-monitor .fct-kpi-value {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.fct-monitor .fct-banner {
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.fct-monitor .fct-banner-warning {
+  background: #fff8e6;
+  border: 1px solid #f7e2b0;
+  color: #92400e;
+}
+
+.fct-monitor .fct-banner-danger {
+  background: #fdeaea;
+  border: 1px solid #f7c9c9;
+  color: #b91c1c;
+}
+
+.fct-monitor .fct-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--fct-muted);
+}
+
+.fct-monitor button:focus-visible,
+.fct-monitor input:focus-visible,
+.fct-monitor select:focus-visible,
+.fct-monitor a:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+@keyframes fct-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+@keyframes fct-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .62; }
+}
+
+@keyframes fct-blink {
+  50% { opacity: .25; }
+}
+
+@keyframes fct-slide-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 1050px) {
+  .fct-monitor .fct-main {
+    grid-template-columns: 1fr;
+  }
+  .fct-monitor .fct-aggregate {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+  .fct-monitor .fct-kpi {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+  .fct-monitor .fct-feed {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fct-monitor * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+
+<div class="fct-monitor">
+
+  <div class="fct-header">
+    <div>
+      <h2 class="fct-title">
+        FCT Channel Monitor
+        <span class="fct-live" ng-class="{'fct-live-paused': fctMonitor.paused || !fctMonitor.autoRefresh}">
+          <span class="fct-live-dot"></span>
+          <span ng-if="!fctMonitor.paused">{{'fct.monitor.live' | i18n}}</span>
+          <span ng-if="fctMonitor.paused">{{'fct.monitor.paused' | i18n}}</span>
+        </span>
+      </h2>
+      <div class="fct-subtitle">{{'fct.monitor.subtitle' | i18n}}</div>
+    </div>
+
+    <div class="fct-controls">
+      <span class="fct-control-box">
+        {{'fct.monitor.auto.refresh' | i18n}}
+        <button type="button" class="fct-switch" ng-class="{'fct-switch-on': fctMonitor.autoRefresh}"
+                ng-click="fctMonitor.toggleAutoRefresh()"
+                title="{{'fct.monitor.auto.refresh' | i18n}}"></button>
+        <span class="fct-switch-label">{{fctMonitor.autoRefresh ? 'ON' : 'OFF'}}</span>
+      </span>
+      <select class="fct-select" ng-model="fctMonitor.intervalSeconds" ng-change="fctMonitor.changeInterval()"
+              ng-options="option as (option + 's') for option in fctMonitor.intervalOptions"></select>
+      <button type="button" class="fct-control-box" ng-click="fctMonitor.togglePause()">
+        <i class="fa" ng-class="fctMonitor.paused ? 'fa-play' : 'fa-pause'"></i>
+        <span ng-if="!fctMonitor.paused">{{'fct.monitor.pause' | i18n}}</span>
+        <span ng-if="fctMonitor.paused">{{'fct.monitor.resume' | i18n}}</span>
+      </button>
+      <div class="fct-clock">
+        <div class="fct-clock-time fct-mono">{{fctMonitor.clock | date:'HH:mm:ss'}}</div>
+        <div class="fct-clock-date">{{fctMonitor.clock | date:'dd MMM yyyy'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fct-banner fct-banner-danger" ng-if="fctMonitor.loadError">
+    <i class="fa fa-exclamation-triangle"></i> {{'fct.monitor.load.error' | i18n}}
+  </div>
+
+  <div class="fct-banner fct-banner-warning" ng-if="fctMonitor.snapshot && !fctMonitor.snapshot.gateEnabled">
+    <i class="fa fa-info-circle"></i> {{'fct.monitor.gate.disabled' | i18n}}
+  </div>
+
+  <div class="fct-banner fct-banner-warning"
+       ng-if="fctMonitor.capacityMissing && fctMonitor.snapshot.gateEnabled">
+    <i class="fa fa-info-circle"></i> {{'fct.monitor.capacity.missing' | i18n}}
+  </div>
+
+  <div class="fct-aggregate">
+    <div class="fct-card fct-agg-cell">
+      <div class="fct-agg-head"><i class="fa fa-server"></i> {{'fct.monitor.total.capacity' | i18n}}</div>
+      <div class="fct-agg-value fct-mono">{{fctMonitor.aggregate.totalCapacity | number}}</div>
+      <div class="fct-agg-unit">{{'fct.monitor.unit.channel' | i18n}}</div>
+    </div>
+    <div class="fct-card fct-agg-cell">
+      <div class="fct-agg-head"><i class="fa fa-phone"></i> {{'fct.monitor.in.flight' | i18n}}</div>
+      <div class="fct-agg-value fct-mono">{{fctMonitor.aggregate.totalInFlight | number}}</div>
+      <div class="fct-agg-unit">{{'fct.monitor.unit.channel' | i18n}}</div>
+    </div>
+    <div class="fct-card fct-agg-cell">
+      <div class="fct-agg-head"><i class="fa fa-pie-chart"></i> {{'fct.monitor.occupancy.rate' | i18n}}</div>
+      <div class="fct-agg-value fct-mono" ng-class="fctMonitor.occupancyClass(fctMonitor.aggregate.occupancyRate)">
+        {{fctMonitor.aggregate.occupancyRate}}%
+      </div>
+      <div class="fct-agg-unit">%</div>
+    </div>
+    <div class="fct-card fct-agg-cell">
+      <div class="fct-agg-head"><i class="fa fa-clock-o"></i> {{'fct.monitor.cooldown.count' | i18n}}</div>
+      <div class="fct-agg-value fct-mono" ng-class="{'fct-value-danger': fctMonitor.aggregate.cooldownCount > 0}">
+        {{fctMonitor.aggregate.cooldownCount}}
+      </div>
+      <div class="fct-agg-unit">{{'fct.monitor.unit.number' | i18n}}</div>
+    </div>
+    <div class="fct-card fct-agg-cell">
+      <div class="fct-agg-head">{{'fct.monitor.occupancy.last60' | i18n}}</div>
+      <div class="fct-spark-wrap">
+        <svg width="100%" height="56" viewBox="0 0 220 56" preserveAspectRatio="none" focusable="false">
+          <defs>
+            <linearGradient id="fctSparkFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5a623" stop-opacity="0.28"></stop>
+              <stop offset="100%" stop-color="#f5a623" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path ng-attr-d="{{fctMonitor.sparkline.area}}" fill="url(#fctSparkFill)"></path>
+          <polyline ng-attr-points="{{fctMonitor.sparkline.points}}" fill="none" stroke="#f5a623" stroke-width="1.6"></polyline>
+        </svg>
+        <div class="fct-spark-axis">
+          <span>100%</span><span>50%</span><span>0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fct-main">
+
+    <div class="fct-card">
+      <div class="fct-panel-head">
+        <span class="fct-panel-title">{{'fct.monitor.numbers.title' | i18n}}</span>
+        <div class="fct-toolbar">
+          <span class="fct-search">
+            <i class="fa fa-search"></i>
+            <input type="text" ng-model="fctMonitor.search" ng-change="fctMonitor.applyFilters()"
+                   placeholder="{{'fct.monitor.search.placeholder' | i18n}}" />
+          </span>
+          <select class="fct-select" ng-model="fctMonitor.typeFilter" ng-change="fctMonitor.applyFilters()">
+            <option value="">{{'fct.monitor.filter.all' | i18n}}</option>
+            <option ng-repeat="type in fctMonitor.typeOptions track by type" value="{{type}}">{{type}}</option>
+          </select>
+          <button type="button" class="fct-icon-btn" ng-class="{'fct-icon-btn-active': fctMonitor.viewMode === 'table'}"
+                  ng-click="fctMonitor.setViewMode('table')" title="{{'fct.monitor.view.table' | i18n}}">
+            <i class="fa fa-list"></i>
+          </button>
+          <button type="button" class="fct-icon-btn" ng-class="{'fct-icon-btn-active': fctMonitor.viewMode === 'card'}"
+                  ng-click="fctMonitor.setViewMode('card')" title="{{'fct.monitor.view.card' | i18n}}">
+            <i class="fa fa-th-large"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="fct-empty" ng-if="fctMonitor.loaded && !fctMonitor.visibleEntries.length">
+        {{'fct.monitor.empty' | i18n}}
+      </div>
+
+      <div class="fct-table-wrap" ng-if="fctMonitor.viewMode === 'table' && fctMonitor.visibleEntries.length">
+        <table class="fct-table">
+          <thead>
+            <tr>
+              <th>{{'fct.monitor.col.number' | i18n}}</th>
+              <th>{{'fct.monitor.col.trunk' | i18n}}</th>
+              <th>{{'fct.monitor.col.capacity' | i18n}}</th>
+              <th>{{'fct.monitor.col.channels' | i18n}}</th>
+              <th>{{'fct.monitor.col.inflight' | i18n}}</th>
+              <th>{{'fct.monitor.col.occupancy' | i18n}}</th>
+              <th>{{'fct.monitor.col.status' | i18n}}</th>
+              <th>{{'fct.monitor.col.lastUpdate' | i18n}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="entry in fctMonitor.visibleEntries track by entry.phoneNumber" ng-class="entry.rowClass">
+              <td>
+                <div class="fct-number fct-mono">{{entry.phoneNumber}}</div>
+                <span class="fct-type-badge" ng-repeat="token in entry.typeTokens track by token">{{token}}</span>
+              </td>
+              <td class="fct-mono">
+                <span ng-if="entry.trunk">{{entry.trunk}}</span>
+                <span class="fct-agg-unit" ng-if="!entry.trunk"
+                      title="{{'fct.monitor.trunk.default.hint' | i18n}}">{{'fct.monitor.trunk.default' | i18n}}</span>
+              </td>
+              <td class="fct-mono">
+                {{entry.capacity}}
+                <div class="fct-agg-unit" ng-if="entry.headroomApplied"
+                     title="{{'fct.monitor.effective.capacity' | i18n}}">({{entry.effectiveCapacity}})</div>
+              </td>
+              <td>
+                <div class="fct-lamp-row">
+                  <span ng-repeat="lamp in entry.lamps track by $index" ng-class="lamp.cssClass"></span>
+                </div>
+              </td>
+              <td>
+                <div class="fct-mono">{{entry.inFlightCount}}</div>
+                <div>
+                  <span class="fct-chip fct-mono" ng-repeat="chip in entry.ageChips track by chip.callId"
+                        ng-class="{'fct-chip-stale': chip.stale}" title="{{chip.callId}}">{{chip.ageSeconds}}s</span>
+                  <span class="fct-chip fct-mono" ng-if="entry.overflowCount > 0">+{{entry.overflowCount}}</span>
+                  <span class="fct-chip fct-mono" ng-if="!entry.inFlightCount">&mdash;</span>
+                </div>
+              </td>
+              <td>
+                <div class="fct-mono">{{entry.occupancyPercent}}%</div>
+                <div class="fct-bar">
+                  <div ng-class="fctMonitor.barClass(entry.occupancyPercent)"
+                       ng-style="{width: (entry.occupancyPercent > 100 ? 100 : entry.occupancyPercent) + '%'}"></div>
+                </div>
+              </td>
+              <td>
+                <span ng-class="entry.status.cssClass">
+                  {{entry.status.label}}
+                  <span class="fct-mono" ng-if="entry.status.showRemaining">{{entry.status.remaining}}</span>
+                </span>
+              </td>
+              <td class="fct-mono">
+                {{entry.lastEventLabel}}
+                <span class="fct-dot" ng-class="{'fct-dot-danger': !entry.lastEventHealthy}"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="fct-card-grid" ng-if="fctMonitor.viewMode === 'card' && fctMonitor.visibleEntries.length">
+        <div class="fct-entry-card" ng-repeat="entry in fctMonitor.visibleEntries track by entry.phoneNumber"
+             ng-class="entry.rowClass">
+          <div class="fct-entry-card-head">
+            <div>
+              <div class="fct-number fct-mono">{{entry.phoneNumber}}</div>
+              <span class="fct-type-badge" ng-repeat="token in entry.typeTokens track by token">{{token}}</span>
+            </div>
+            <span ng-class="entry.status.cssClass">
+              {{entry.status.label}}
+              <span class="fct-mono" ng-if="entry.status.showRemaining">{{entry.status.remaining}}</span>
+            </span>
+          </div>
+          <div class="fct-lamp-row">
+            <span ng-repeat="lamp in entry.lamps track by $index" ng-class="lamp.cssClass"></span>
+          </div>
+          <div class="fct-bar">
+            <div ng-class="fctMonitor.barClass(entry.occupancyPercent)"
+                 ng-style="{width: (entry.occupancyPercent > 100 ? 100 : entry.occupancyPercent) + '%'}"></div>
+          </div>
+          <div class="fct-agg-unit fct-mono">
+            {{entry.inFlightCount}}/{{entry.limit}} &middot; {{entry.occupancyPercent}}%
+            <span ng-if="entry.attemptsSummary" title="{{entry.attempts}}">&middot; attempts {{entry.attemptsSummary}}</span>
+            <span ng-if="entry.trunk">&middot; {{'fct.monitor.col.trunk' | i18n}} {{entry.trunk}}</span>
+            <span ng-if="!entry.trunk" title="{{'fct.monitor.trunk.default.hint' | i18n}}">&middot; {{'fct.monitor.col.trunk' | i18n}} {{'fct.monitor.trunk.default' | i18n}}</span>
+          </div>
+          <div class="fct-inflight-list" ng-if="entry.inFlightCount">
+            <div class="fct-inflight-item" ng-repeat="chip in entry.ageChips track by chip.callId">
+              <span class="fct-mono" title="{{chip.callId}}">{{chip.shortCallId}}</span>
+              <span class="fct-mono" ng-class="{'fct-chip-stale': chip.stale}">{{chip.ageSeconds}}s</span>
+            </div>
+            <div class="fct-inflight-item" ng-if="entry.overflowCount > 0">
+              <span>+{{entry.overflowCount}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fct-legend">
+        <span><i class="fct-legend-dot" style="background:#22c55e"></i>{{'fct.monitor.legend.low' | i18n}}</span>
+        <span><i class="fct-legend-dot" style="background:#f5a623"></i>{{'fct.monitor.legend.busy' | i18n}}</span>
+        <span><i class="fct-legend-dot" style="background:#ef4444"></i>{{'fct.monitor.legend.full' | i18n}}</span>
+        <span><i class="fct-legend-dot" style="background:#d7dbe0"></i>{{'fct.monitor.legend.empty.slot' | i18n}}</span>
+        <span><i class="fa fa-clock-o" style="color:#ef4444"></i> {{'fct.monitor.legend.cooldown' | i18n}}</span>
+      </div>
+      <div class="fct-total">{{'fct.monitor.total.numbers' | i18n}}: {{fctMonitor.entries.length}}</div>
+    </div>
+
+    <div class="fct-card fct-feed">
+      <div class="fct-panel-head">
+        <span class="fct-panel-title">{{'fct.monitor.feed.title' | i18n}}</span>
+        <i class="fa fa-filter" style="color:#8a94a6"></i>
+      </div>
+      <div class="fct-feed-list">
+        <div class="fct-feed-item" ng-repeat="event in fctMonitor.visibleEvents track by event.id"
+             ng-class="event.cssClass">
+          <span class="fct-feed-icon"><i ng-class="event.iconClass"></i></span>
+          <div>
+            <div class="fct-feed-time fct-mono">{{event.time}}</div>
+            <div class="fct-feed-label">{{event.label}}</div>
+            <div class="fct-feed-meta fct-mono">{{event.phoneNumber}}</div>
+            <div class="fct-feed-meta fct-mono" ng-if="event.shortCallId">CallId: {{event.shortCallId}}</div>
+            <div class="fct-feed-meta" ng-if="event.detail">{{event.detail}}</div>
+          </div>
+        </div>
+        <div class="fct-empty" ng-if="!fctMonitor.visibleEvents.length">{{'fct.monitor.feed.empty' | i18n}}</div>
+      </div>
+      <div class="fct-feed-footer">
+        <a href="javascript:void(0)" ng-click="fctMonitor.toggleShowAllEvents()">
+          <span ng-if="!fctMonitor.showAllEvents">{{'fct.monitor.feed.showall' | i18n}}</span>
+          <span ng-if="fctMonitor.showAllEvents">{{'fct.monitor.feed.showless' | i18n}}</span>
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fct-kpi">
+    <div class="fct-card fct-kpi-cell">
+      <i class="fa fa-hourglass-half fct-kpi-icon"></i>
+      <div>
+        <div class="fct-kpi-label">{{'fct.monitor.kpi.ttl' | i18n}}</div>
+        <div class="fct-kpi-value fct-mono">{{fctMonitor.kpi.ttlSeconds}} {{'fct.monitor.unit.second' | i18n}}</div>
+      </div>
+    </div>
+    <div class="fct-card fct-kpi-cell">
+      <i class="fa fa-tachometer fct-kpi-icon"></i>
+      <div>
+        <div class="fct-kpi-label">{{'fct.monitor.kpi.avg.age' | i18n}}</div>
+        <div class="fct-kpi-value fct-mono">{{fctMonitor.kpi.avgAgeSeconds}} {{'fct.monitor.unit.second' | i18n}}</div>
+      </div>
+    </div>
+    <div class="fct-card fct-kpi-cell">
+      <i class="fa fa-scissors fct-kpi-icon"></i>
+      <div>
+        <div class="fct-kpi-label">{{'fct.monitor.kpi.pruned' | i18n}}</div>
+        <div class="fct-kpi-value fct-mono" ng-class="{'fct-value-danger': fctMonitor.kpi.pruned > 0}">{{fctMonitor.kpi.pruned}}</div>
+      </div>
+    </div>
+    <div class="fct-card fct-kpi-cell">
+      <i class="fa fa-clock-o fct-kpi-icon"></i>
+      <div>
+        <div class="fct-kpi-label">{{'fct.monitor.kpi.skipped' | i18n}}</div>
+        <div class="fct-kpi-value fct-mono">{{fctMonitor.kpi.skipped}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>

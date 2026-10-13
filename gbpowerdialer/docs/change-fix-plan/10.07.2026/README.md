@@ -1,0 +1,4 @@
+# 10.07.2026 Change/Fix Planları
+
+- [REFACTOR-318332-DNC-MUSTERI-ILISKI-TABLOSU.md](REFACTOR-318332-DNC-MUSTERI-ILISKI-TABLOSU.md): FEAT-318332 customer-scope DNC depolamasını yeniden yapılandırma; customer_no↔phone ilişkisini yeni `pd_dnc_customer` tablosuna taşıma, `pd_dnc_pn`'i saf telefon block-list'e indirme (marker + `dnc_type`/`customer_no` kolonları kaldırılır), delta-sync'i yeni tablodan besleme. Dial-time engelleme davranışı korunur.
+- [FEAT-318332-DNC-PROD-DDL.sql](FEAT-318332-DNC-PROD-DDL.sql): Refactor sonrası **CANLI (PROD)** için güncel/temiz DDL — yalnız additive: `pd_dnc_customer` + `pd_campaign` mapping kolonları + `pd_dnc_sync_log` (PD DB) + kampanya data tablolarına customer_no/date_entered (camp DB). pd_dnc_pn'e dokunmaz. Eski `docs/analyse/03.06.2026/FEAT-318332-...-DDL.sql` prod için geçersiz (deprecation notu eklendi).
