@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Environment {
+  id       Int                 @id @default(autoincrement())
+  name     String              @unique // TCELL, NONTCELL, MHRS, SET2
+  requests DeploymentRequest[]
+}
+
+model Application {
+  id       Int                 @id @default(autoincrement())
+  name     String              @unique
+  mhrsOnly Boolean             @default(false)
+  requests DeploymentRequest[]
+}
+
+model Assignee {
+  id       Int                 @id @default(autoincrement())
+  name     String
+  email    String              @unique
+  active   Boolean             @default(true)
+  requests DeploymentRequest[]
+}
+
+model DeploymentRequest {
+  id             Int          @id @default(autoincrement())
+  environmentId  Int
+  environment    Environment  @relation(fields: [environmentId], references: [id])
+  applicationId  Int
+  application    Application  @relation(fields: [applicationId], references: [id])
+  releaseDate    DateTime
+  branch         String
+  hasScript      Boolean      @default(false)
+  status         String       @default("PENDING") // PENDING, APPROVED, IN_PROGRESS, REJECTED, TIMED_OUT, COMPLETED
+  rejectReason   String?
+  requester      String       @default("volkan")
+  cabRequired    Boolean      @default(false)
+  cabApproved    Boolean      @default(false)
+  emergencyCab   Boolean      @default(false)
+  approvalToken  String?      @unique
+  approvedBy     String?
+  approvedAt     DateTime?
+  assigneeId     Int?
+  assignee       Assignee?    @relation(fields: [assigneeId], references: [id])
+  assignmentNote String?
+  assignedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  scripts        ScriptFile[]
+}
+
+model ScriptFile {
+  id         Int               @id @default(autoincrement())
+  requestId  Int
+  request    DeploymentRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  dbType     String            // MAIN, CAMP
+  fileName   String
+  storedName String
+  uploadedAt DateTime          @default(now())
+}

@@ -1,0 +1,12 @@
+# Binaries
+/bin/
+gbcdr-api
+*.exe
+
+# Env / secrets
+.env
+
+# Go
+*.test
+*.out
+vendor/

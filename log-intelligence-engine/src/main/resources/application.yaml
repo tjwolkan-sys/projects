@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: Log Intelligence Engine
+ai:
+  enabled: true
+  provider: openai
+  openai:
+    api-key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+    timeout-ms: 3000
+
+failure-detector:
+  windows:
+    - duration: 30s
+    - duration: 1m
+    - duration: 5m
+
+  baselines:
+    ASTERISK_CONN_REFUSED:
+      normalRatePerMinute: 2
+      burstThreshold: 10
+      severity: CRITICAL
+
+    DB_TIMEOUT:
+      normalRatePerMinute: 1
+      burstThreshold: 5
+      severity: HIGH
+
+    REDIS_BLOCK:
+      normalRatePerMinute: 0
+      burstThreshold: 3
+      severity: HIGH
+
+    CALL_PRODUCER_WARN:
+      normalRatePerMinute: 3
+      burstThreshold: 15
+      severity: MEDIUM
+
+burst:
+  window: 30s
+  min-failures: 5
+  min-avg-confidence: 0.7
+
+llm:
+  enabled: true
+  provider: openai        # primary
+  fallback:
+    - claude              # secondary
+    - gemini              # tertiary
+
+  openai:
+    apiKey: ${OPENAI_KEY}
+    model: gpt-4o-mini
+    baseUrl: https://api.openai.com/v1
+    timeout: 4000
+
+  claude:
+    apiKey: ${ANTHROPIC_KEY}
+    model: claude-3-sonnet-20240229
+    baseUrl: https://api.anthropic.com
+    timeout: 4000
+
+  gemini:
+    apiKey: ${GOOGLE_API_KEY}
+    model: gemini-pro
+    baseUrl: https://generativelanguage.googleapis.com
+    timeout: 4000
+

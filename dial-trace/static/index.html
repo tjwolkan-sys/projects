@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Powerdialer AMI Trace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1b2a; --panel:#142536; --panel2:#0f1e2e; --line:#22384f;
+    --txt:#e6eef6; --muted:#8aa0b6; --faint:#5d7a92;
+    --accent:#2dd4bf; --accent-dim:#1b7a72;
+    --connected:#34d399; --ringing:#fbbf24; --dropped:#f87171;
+    --mono:'IBM Plex Mono',monospace; --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--body);font-size:14px;
+       background-image:radial-gradient(900px 500px at 80% -10%, rgba(45,212,191,.06), transparent);}
+  .app{display:grid;grid-template-columns:320px 1fr;min-height:100vh}
+
+  /* ---- Sidebar ---- */
+  aside{background:var(--panel2);border-right:1px solid var(--line);padding:20px 18px;display:flex;flex-direction:column;gap:22px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--connected);box-shadow:0 0 0 4px rgba(52,211,153,.15),0 0 12px var(--connected)}
+  .brand h1{font-family:var(--disp);font-size:16px;font-weight:700;margin:0;letter-spacing:.2px}
+  .brand p{margin:1px 0 0;font-size:11px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+
+  .group{display:flex;flex-direction:column;gap:9px}
+  .eyebrow{font-family:var(--disp);font-size:10.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent)}
+  label{font-size:11px;color:var(--muted)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  select,input{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    border-radius:8px;padding:9px 11px;font-size:13px;font-family:var(--body)}
+  select:focus,input:focus{outline:none;border-color:var(--accent-dim)}
+  input::placeholder{color:#52708c}
+  input.mono{font-family:var(--mono);font-size:12px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  button{font-family:var(--disp);cursor:pointer;border:none;border-radius:8px;font-weight:600;font-size:13px;letter-spacing:.3px}
+  button:disabled{opacity:.5;cursor:default}
+  .btn-primary{background:var(--accent);color:#06302c;padding:10px}
+  .btn-ghost{background:transparent;border:1px solid var(--accent-dim);color:var(--accent);padding:9px}
+  .with-btn{display:flex;gap:8px}
+  .with-btn input{flex:1}
+  .with-btn button{padding:0 16px}
+
+  .recent{display:flex;flex-direction:column;gap:7px}
+  .recent:empty{display:none}
+  .chip{font-family:var(--mono);font-size:11.5px;background:var(--panel);border:1px solid var(--line);
+        border-radius:7px;padding:7px 9px;cursor:pointer;color:#bcd0e2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .chip:hover{border-color:var(--accent-dim);color:#fff}
+  aside .foot{margin-top:auto;font-size:10.5px;color:#4f6a82}
+
+  /* ---- Main ---- */
+  main{padding:22px 26px;overflow:auto}
+  .topline{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+  .idblock{display:flex;align-items:center;gap:14px;min-height:42px}
+  .status-pill{display:flex;align-items:center;gap:9px;padding:8px 14px;border-radius:999px;font-family:var(--disp);
+    font-weight:700;font-size:13px;letter-spacing:.5px;border:1px solid}
+  .status-pill.ok{background:rgba(52,211,153,.12);color:var(--connected);border-color:rgba(52,211,153,.3)}
+  .status-pill.warn{background:rgba(251,191,36,.12);color:var(--ringing);border-color:rgba(251,191,36,.3)}
+  .status-pill.err{background:rgba(248,113,113,.12);color:var(--dropped);border-color:rgba(248,113,113,.3)}
+  .status-pill.muted{background:rgba(138,160,182,.12);color:var(--muted);border-color:rgba(138,160,182,.3)}
+  .status-pill.muted .live{box-shadow:none;animation:none}
+  .status-pill .live{width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor;animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .idblock .iid{font-family:var(--mono);font-size:14px;color:var(--txt)}
+  .idblock .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .tools{display:flex;gap:7px;flex-wrap:wrap}
+  .tools button{background:var(--panel);border:1px solid var(--line);color:#c8d8e6;font-family:var(--body);font-weight:500;padding:7px 12px;font-size:12px}
+  .tools button:hover{border-color:var(--accent-dim);color:#fff}
+  .tools .toolsel{background:var(--panel);border:1px solid var(--line);color:#c8d8e6;border-radius:7px;padding:7px 10px;font-size:12px;font-family:var(--body);cursor:pointer}
+
+  .status{font-size:12.5px;color:var(--muted);min-height:18px;margin-bottom:12px}
+  .status.err{color:var(--dropped)}
+
+  .readouts{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:20px}
+  .readouts:empty{display:none}
+  .readout{flex:1;padding:13px 16px;border-right:1px solid var(--line)}
+  .readout:last-child{border-right:none}
+  .readout .k{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .readout .v{font-family:var(--disp);font-size:20px;font-weight:600;margin-top:4px;color:var(--txt)}
+  .readout.warn .v{color:var(--ringing)}
+
+  .flow{margin-bottom:20px}
+  .flow:empty{display:none}
+  .flowrow{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+  .fstep{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);background:var(--panel2);color:var(--muted)}
+  .fstep .fi{font-weight:700;font-size:11px}
+  .fstep.ok{color:var(--connected);border-color:rgba(52,211,153,.35)}
+  .fstep.gap{color:var(--dropped);border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.08)}
+  .fstep.stopped{color:var(--ringing);border-color:rgba(251,191,36,.4)}
+  .fstep.skip{color:var(--faint);opacity:.65}
+  .farrow{color:var(--faint);font-size:11px}
+  .fnote{font-size:12px;color:var(--muted);margin-top:8px}
+
+  .logfilters{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .logfilters #logSearch{background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:7px 10px;font-size:12.5px;width:220px;font-family:var(--body)}
+  .logfilters select{background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:7px 10px;font-size:12.5px;font-family:var(--body)}
+  .lf-check{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer}
+  .lf-count{font-size:11.5px;color:var(--faint);margin-left:auto}
+
+  /* search results */
+  .results{margin-bottom:20px}
+  .results:empty{display:none}
+  .results .rhdr{font-family:var(--disp);font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .results table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .results th,.results td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+  .results tr:last-child td{border-bottom:none}
+  .results th{color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.4px;text-transform:uppercase}
+  .results tr.hit{cursor:pointer}
+  .results tr.hit:hover td{background:var(--panel)}
+  .results .iidc{font-family:var(--mono);color:var(--accent)}
+
+  .canvas{background:linear-gradient(180deg,#f1f6fa,#e9f0f6);border-radius:16px;padding:20px;
+          border:1px solid #d4e0ea;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 1px 2px rgba(13,27,42,.04);min-height:120px}
+  .canvas svg{max-width:100%;height:auto}
+  .canvas rect.actor{rx:11px;ry:11px;filter:drop-shadow(0 4px 8px rgba(13,27,42,.22))}
+  .canvas text.actor{font-weight:600;letter-spacing:.3px}
+  .canvas text.actor,.canvas .actor tspan,.canvas g.actor text{fill:#eef6f4 !important}
+  .canvas .actor-line{stroke:#b6c6d3;stroke-width:1.2px}
+  .canvas .messageText{cursor:pointer}
+  .canvas .messageText:hover{fill:#0d9488 !important;text-decoration:underline}
+  .canvas .sequenceNumber{cursor:pointer}
+  .placeholder{display:flex;align-items:center;justify-content:center;height:120px;color:#7d93a6;font-size:13px}
+
+  .hint{font-size:11.5px;color:var(--muted);margin:10px 0 0}
+  .panel-title{font-family:var(--disp);font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:24px 0 10px}
+  table.log{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.log th,table.log td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line)}
+  table.log th{color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+  td.ev{font-family:var(--mono);color:#bcd0e2;white-space:nowrap}
+  td.ev.miss{color:var(--faint)}
+  td.msg{font-family:var(--mono);font-size:11px;color:var(--muted);max-width:480px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lvl{font-size:10px;padding:1px 7px;border-radius:5px;background:var(--panel);color:var(--muted)}
+  .lvl.WARN{color:var(--ringing)} .lvl.ERROR{color:var(--dropped)}
+
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50}
+  .modal-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;width:min(820px,100%);max-height:80vh;display:flex;flex-direction:column}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--disp);font-weight:600}
+  .modal-x{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;padding:0 4px;cursor:pointer}
+  .modal-meta{padding:10px 18px;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line);font-family:var(--mono)}
+  .modal-body{margin:0;padding:16px 18px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:12.5px;color:var(--txt)}
+
+  /* toast */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#06302c;
+         padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+  .toast.show{opacity:1}
+
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr}
+    aside{border-right:none;border-bottom:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">
+      <span class="dot"></span>
+      <div><h1>AMI Trace</h1><p>Powerdıaler · Swıtchboard</p></div>
+    </div>
+
+    <div class="group">
+      <span class="eyebrow">Kapsam</span>
+      <div class="row2">
+        <div class="field"><label for="idx">Set</label>
+          <select id="idx"><option value="nonturkcell-*">NONTCELL</option><option value="turkcell-*">TCELL</option></select></div>
+        <div class="field"><label for="preset">Zaman</label>
+          <select id="preset">
+            <option value="now-1h">Son 1 saat</option>
+            <option value="now-24h">Son 24 saat</option>
+            <option value="now/d">Bugun</option>
+            <option value="now/d+9h|now/d+18h">Bugun (09-18)</option>
+            <option value="now-1d/d|now/d">Dun</option>
+            <option value="now-1d/d+9h|now-1d/d+18h">Dun (09-18)</option>
+            <option value="now-7d">Son 7 gun</option>
+            <option value="now-30d" selected>Son 30 gun</option>
+            <option value="custom">Ozel (gte)...</option>
+          </select></div>
+      </div>
+      <div class="field" id="customWrap" style="display:none"><label for="win">Ozel gte</label>
+        <input id="win" value="now-30d" /></div>
+    </div>
+
+    <div class="group">
+      <span class="eyebrow">Çağrı bul</span>
+      <label for="q">Numara · agent id · kampanya</label>
+      <div class="with-btn">
+        <input id="q" class="mono" placeholder="05363305974" />
+        <button id="goSearch" class="btn-ghost">Ara</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <span class="eyebrow">Doğrudan trace</span>
+      <label for="iid">Interaction ID</label>
+      <input id="iid" class="mono" placeholder="dl-25fa42b9-91ec-4cb7-aa1e-8a9d419de8de" />
+      <button id="go" class="btn-primary">Trace çalıştır</button>
+    </div>
+
+    <div class="group">
+      <span class="eyebrow">Son bakılanlar</span>
+      <div id="recent" class="recent"></div>
+    </div>
+
+    <div class="foot">v0 · localhost:8000</div>
+  </aside>
+
+  <main>
+    <div class="topline">
+      <div class="idblock">
+        <span id="outcomeWrap"></span>
+        <div id="idLine"><div class="sub">Bir numara/agent/kampanya ara ya da interaction id ile Trace çalıştır.</div></div>
+      </div>
+      <div class="tools" id="toolbar" style="display:none">
+        <button id="btnPng">PNG 2.5x</button>
+        <button id="btnSvg">SVG</button>
+        <button id="btnMmd">Mermaid</button>
+        <button id="btnCsv">CSV</button>
+        <button id="btnLink">Link</button>
+        <select id="promptLog" class="toolsel" title="Prompt'a girecek log kapsamı">
+          <option value="warn">Log: WARN/ERROR</option>
+          <option value="matched">Log: tüm event'ler</option>
+        </select>
+        <button id="btnPrompt">Claude prompt</button>
+      </div>
+    </div>
+
+    <div id="status" class="status"></div>
+    <div id="readouts" class="readouts"></div>
+    <div id="flow" class="flow"></div>
+    <div id="results" class="results"></div>
+
+    <div class="canvas" id="canvas"><div class="placeholder">Henüz bir akış yok.</div></div>
+    <p id="hint" class="hint" style="display:none">Bir numaraya veya ok etiketine tıklayarak o event'in ham log'unu gör.</p>
+
+    <div class="panel-title" id="logTitle" style="display:none">Event log</div>
+    <div id="logFilters" class="logfilters" style="display:none">
+      <input id="logSearch" placeholder="log içinde ara..." />
+      <select id="logLevel">
+        <option value="">Tüm seviyeler</option>
+        <option value="WARN">WARN + ERROR</option>
+        <option value="ERROR">Sadece ERROR</option>
+      </select>
+      <label class="lf-check"><input type="checkbox" id="logOnlyEvents" /> sadece event'ler</label>
+      <span id="logCount" class="lf-count"></span>
+    </div>
+    <table class="log" id="tbl" style="display:none">
+      <thead><tr><th style="width:170px">Zaman</th><th style="width:50px">Lvl</th><th style="width:220px">Event</th><th>Mesaj</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </main>
+</div>
+
+<div id="modal" class="modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-head"><span id="mTitle"></span><button id="mClose" class="modal-x" title="Kapat">&times;</button></div>
+    <div id="mMeta" class="modal-meta"></div>
+    <pre id="mBody" class="modal-body"></pre>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({startOnLoad:false, theme:'base', securityLevel:'loose', themeVariables:{
+    fontFamily:'IBM Plex Mono, monospace',
+    primaryColor:'#102a40', primaryBorderColor:'#2dd4bf', primaryTextColor:'#eef6f4',
+    actorBkg:'#102a40', actorBorder:'#2dd4bf', actorTextColor:'#eef6f4', actorLineColor:'#aebfcd',
+    signalColor:'#5a7a93', signalTextColor:'#16344a', sequenceNumberColor:'#06302c',
+    noteBkgColor:'#fff7e0', noteBorderColor:'#e6c258', noteTextColor:'#5a4a10'
+  }});
+
+  const $ = (id) => document.getElementById(id);
+  const diagramEl = $("canvas");
+  const tbl = $("tbl");
+  const tbody = tbl.querySelector("tbody");
+  let currentData = null;
+
+  function setStatus(msg, isErr=false){ const s=$("status"); s.textContent=msg; s.className="status"+(isErr?" err":""); }
+  function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function shortId(iid){ return iid.length>24 ? iid.slice(0,11)+"…"+iid.slice(-8) : iid; }
+  function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
+
+  // ---- modal ----
+  function showLog(step){
+    $("mTitle").textContent=`#${step.n}  ${step.event}`;
+    $("mMeta").textContent=`${step.ts}   ${step.level||""}   ${step.logger||""}`.trim();
+    $("mBody").textContent=step.message||"(mesaj alani bos)";
+    $("modal").style.display="flex";
+  }
+  function closeLog(){ $("modal").style.display="none"; }
+  $("mClose").addEventListener("click",closeLog);
+  $("modal").addEventListener("click",(e)=>{ if(e.target.id==="modal") closeLog(); });
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeLog(); });
+
+  // ---- summary (outcome pill + readouts) ----
+  function renderSummary(data){
+    const o=data.outcome;
+    const wrap=$("outcomeWrap"); wrap.innerHTML="";
+    if(o){
+      const tone=["ok","warn","err","muted"].includes(o.tone)?o.tone:"err";
+      wrap.innerHTML=`<span class="status-pill ${tone}"><span class="live"></span>${esc(o.status)}</span>`;
+    }
+    $("idLine").innerHTML=`<div class="iid">${esc(data.interaction_id)}</div>`+
+      `<div class="sub">${data.count} kayıt · ${esc(data.index)}${o&&o.detail?" · "+esc(o.detail):""}</div>`;
+    const r=$("readouts"); r.innerHTML="";
+    (data.metrics||[]).forEach(m=>{
+      const hot=m.label.startsWith("Agent");
+      r.innerHTML+=`<div class="readout ${hot?"warn":""}"><div class="k">${esc(m.label)}</div><div class="v">${esc(m.value)}</div></div>`;
+    });
+  }
+
+  // ---- mutlu-yol seridi ----
+  function renderFlow(flow){
+    const el=$("flow"); el.innerHTML="";
+    if(!flow||!flow.items||!flow.items.length) return;
+    const icon={ok:"✓",gap:"✕",stopped:"◌",skip:"·"};
+    let html='<div class="flowrow">';
+    flow.items.forEach((it,i)=>{
+      html+=`<span class="fstep ${it.status}"><span class="fi">${icon[it.status]||""}</span>${esc(it.label)}</span>`;
+      if(i<flow.items.length-1) html+='<span class="farrow">→</span>';
+    });
+    html+='</div>';
+    if(flow.note) html+=`<div class="fnote">${esc(flow.note)}</div>`;
+    el.innerHTML=html;
+  }
+
+  // ---- event log tablosu + filtreler ----
+  function renderTable(){
+    const events=(currentData&&currentData.events)||[];
+    const term=$("logSearch").value.trim().toLowerCase();
+    const lvl=$("logLevel").value;
+    const onlyEv=$("logOnlyEvents").checked;
+    tbody.innerHTML="";
+    let shown=0;
+    for(const e of events){
+      if(onlyEv && e.event==="-") continue;
+      const L=(e.level||"").toUpperCase();
+      if(lvl==="ERROR" && L!=="ERROR") continue;
+      if(lvl==="WARN" && !(L==="WARN"||L==="ERROR")) continue;
+      if(term && !((e.message||"").toLowerCase().includes(term) || (e.event||"").toLowerCase().includes(term))) continue;
+      const tr=document.createElement("tr"); const miss=e.event==="-";
+      tr.innerHTML=`<td>${esc(e.ts)}</td><td><span class="lvl ${esc(e.level)}">${esc(e.level)}</span></td>`+
+        `<td class="ev ${miss?"miss":""}">${esc(e.event)}</td><td class="msg" title="${esc(e.message)}">${esc(e.message)}</td>`;
+      tbody.appendChild(tr); shown++;
+    }
+    $("logCount").textContent=`${shown}/${events.length} satır`;
+  }
+  ["logSearch","logLevel","logOnlyEvents"].forEach(id=>{
+    $(id).addEventListener(id==="logSearch"?"input":"change",renderTable);
+  });
+
+  // ---- diagram tiklama ----
+  function bindSteps(svgEl, steps){
+    if(!svgEl||!steps||!steps.length) return;
+    const open=(i)=>{ if(steps[i]) showLog(steps[i]); };
+    const addTip=(el,i)=>{ const t=document.createElementNS("http://www.w3.org/2000/svg","title"); t.textContent=`#${steps[i].n} ${steps[i].event} — log icin tikla`; el.appendChild(t); };
+    svgEl.querySelectorAll(".messageText").forEach((el,i)=>{ if(i<steps.length){ el.addEventListener("click",()=>open(i)); addTip(el,i);} });
+    svgEl.querySelectorAll(".sequenceNumber").forEach((el,i)=>{ if(i<steps.length){ el.addEventListener("click",()=>open(i)); } });
+  }
+
+  // ---- zaman preset ----
+  function timeParams(){
+    const p=$("preset").value;
+    if(p==="custom") return {gte:$("win").value.trim()||"now-30d", lt:""};
+    const [gte,lt]=p.split("|"); return {gte, lt:lt||""};
+  }
+  $("preset").addEventListener("change",()=>{ $("customWrap").style.display=$("preset").value==="custom"?"":"none"; });
+
+  // ---- permalink ----
+  function writeUrl(iid,idx,preset,customGte){
+    const u=new URL(location.href);
+    u.searchParams.set("id",iid); u.searchParams.set("index",idx); u.searchParams.set("preset",preset);
+    if(preset==="custom") u.searchParams.set("gte",customGte); else u.searchParams.delete("gte");
+    history.replaceState(null,"",u);
+  }
+  function readUrl(){
+    const u=new URL(location.href);
+    const iid=u.searchParams.get("id"), idx=u.searchParams.get("index"), preset=u.searchParams.get("preset"), gte=u.searchParams.get("gte");
+    if(idx) $("idx").value=idx;
+    if(preset){ $("preset").value=preset; $("customWrap").style.display=preset==="custom"?"":"none"; if(preset==="custom"&&gte) $("win").value=gte; }
+    if(iid){ $("iid").value=iid; return true; }
+    return false;
+  }
+
+  // ---- export ----
+  function fileBase(){ return "ami-"+((currentData&&currentData.interaction_id)||"trace"); }
+  function download(blob,filename){ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
+  function exportSvg(){ const svg=diagramEl.querySelector("svg"); if(!svg) return; download(new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml"}), fileBase()+".svg"); }
+  function exportPng(scale){
+    const svg=diagramEl.querySelector("svg"); if(!svg) return;
+    const clone=svg.cloneNode(true); const vb=svg.viewBox.baseVal;
+    const w=(vb&&vb.width)?vb.width:svg.getBBox().width, h=(vb&&vb.height)?vb.height:svg.getBBox().height;
+    clone.setAttribute("width",w); clone.setAttribute("height",h);
+    const url="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(new XMLSerializer().serializeToString(clone))));
+    const img=new Image();
+    img.onload=()=>{ const c=document.createElement("canvas"); c.width=Math.ceil(w*scale); c.height=Math.ceil(h*scale);
+      const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,c.width,c.height); ctx.drawImage(img,0,0,c.width,c.height);
+      c.toBlob((b)=>download(b,fileBase()+".png"),"image/png"); };
+    img.onerror=()=>toast("PNG olusturulamadi"); img.src=url;
+  }
+  function exportCsv(){
+    if(!currentData||!currentData.steps) return;
+    const head=["n","ts","event","level","logger","message"];
+    const q=(v)=>`"${String(v==null?"":v).replace(/"/g,'""')}"`;
+    const rows=currentData.steps.map(s=>head.map(k=>q(s[k])).join(","));
+    download(new Blob(["\uFEFF"+head.join(",")+"\n"+rows.join("\n")],{type:"text/csv;charset=utf-8"}), fileBase()+".csv");
+  }
+  async function copyText(text,okMsg){ try{ await navigator.clipboard.writeText(text); toast(okMsg); }catch{ toast("Kopyalanamadi (izin/HTTPS gerekebilir)"); } }
+  $("btnPng").addEventListener("click",()=>exportPng(2.5));
+  $("btnSvg").addEventListener("click",exportSvg);
+  $("btnMmd").addEventListener("click",()=>copyText(currentData?currentData.mermaid:"","Mermaid kopyalandi"));
+  $("btnCsv").addEventListener("click",exportCsv);
+  $("btnLink").addEventListener("click",()=>copyText(location.href,"Link kopyalandi"));
+
+  // ---- Claude Code analiz prompt'u ----
+  function buildPrompt(mode){
+    const d=currentData; if(!d) return "";
+    const flowLines=(d.mermaid||"").split("\n").filter(l=>l.includes("->>")).map((l,i)=>`${i+1}. ${l.trim()}`);
+    const metrics=(d.metrics||[]).map(m=>`${m.label}: ${m.value}`).join(" · ");
+    const outcome=d.outcome?`${d.outcome.status}${d.outcome.detail?" — "+d.outcome.detail:""}`:"-";
+    const flowNote=(d.flow&&d.flow.note)?d.flow.note:"-";
+
+    let logRows, modeLabel;
+    if(mode==="matched"){
+      modeLabel="Tüm matched event'lerin ham log'u";
+      logRows=(d.steps||[]).map(s=>`${s.ts} ${s.level||""} ${s.logger||""} - ${s.message||""}`);
+    }else{
+      modeLabel="Sadece WARN/ERROR satırları";
+      logRows=(d.events||[]).filter(e=>["WARN","ERROR"].includes((e.level||"").toUpperCase()))
+        .map(e=>`${e.ts} ${e.level} ${e.logger||""} - ${e.message||""}`);
+    }
+    const CAP=80; let extra="";
+    if(logRows.length>CAP){ extra=`\n... (${logRows.length-CAP} satır daha kırpıldı)`; logRows=logRows.slice(0,CAP); }
+    const logBlock=logRows.length?logRows.join("\n")+extra:"(bu modda satır yok)";
+
+    return `# Powerdialer interaction analizi
+
+## Görev
+Aşağıdaki powerdialer AMI çağrı akışını incele. Çağrıda ne olduğunu, akışın nerede ve neden saptığını, olası kök nedeni açıkla; ilgili kod/konfigürasyon noktalarını işaret et.
+
+## Bağlam
+- Interaction ID: ${d.interaction_id}
+- Set / index: ${d.index}
+- Zaman penceresi (gte): ${d.window}
+- Sonuç: ${outcome}
+- Mutlu-yol kontrolü: ${flowNote}
+- Metrikler: ${metrics||"-"}
+
+## AMI akışı (sıralı)
+${flowLines.join("\n")||"(adım yok)"}
+
+## Ham log — ${modeLabel}
+\`\`\`
+${logBlock}
+\`\`\`
+
+## Soru
+Bu çağrıda kök neden ne olabilir? Akışın hangi noktada/niçin saptığını, ilgili kod yolunu (örn. ManagerConnectionDecorator, WebphoneSubscriber) ve kontrol edilmesi gereken konfig/DB alanlarını belirt.`;
+  }
+  $("btnPrompt").addEventListener("click",()=>copyText(buildPrompt($("promptLog").value),"Claude Code prompt'u kopyalandı"));
+
+  // ---- son bakilanlar ----
+  const RECENT_KEY="ami_recent";
+  function getRecent(){ try{ return JSON.parse(localStorage.getItem(RECENT_KEY))||[]; }catch{ return []; } }
+  function addRecent(iid){ let r=getRecent().filter(x=>x!==iid); r.unshift(iid); r=r.slice(0,10); try{ localStorage.setItem(RECENT_KEY,JSON.stringify(r)); }catch{} renderRecent(); }
+  function renderRecent(){
+    const el=$("recent"); el.innerHTML=""; const r=getRecent();
+    r.forEach(iid=>{ const s=document.createElement("span"); s.className="chip"; s.textContent=shortId(iid); s.title=iid;
+      s.addEventListener("click",()=>{ $("iid").value=iid; run(); }); el.appendChild(s); });
+  }
+
+  // ---- arama ----
+  function renderResults(results){
+    const el=$("results"); el.innerHTML="";
+    if(!results.length) return;
+    const fmt=(ts)=>(ts||"").replace("T"," ").slice(0,19);
+    let html=`<div class="rhdr">Bulunan interaction'lar (${results.length})</div><table>`+
+      `<thead><tr><th>Interaction ID</th><th style="width:70px">Kayıt</th><th style="width:160px">İlk</th><th style="width:160px">Son</th></tr></thead><tbody>`;
+    results.forEach(r=>{ html+=`<tr class="hit" data-id="${esc(r.interaction_id)}"><td class="iidc">${esc(r.interaction_id)}</td><td>${r.count}</td><td>${esc(fmt(r.first_ts))}</td><td>${esc(fmt(r.last_ts))}</td></tr>`; });
+    html+="</tbody></table>"; el.innerHTML=html;
+    el.querySelectorAll("tr.hit").forEach(tr=>tr.addEventListener("click",()=>{ $("iid").value=tr.dataset.id; run(); }));
+  }
+  async function runSearch(){
+    const term=$("q").value.trim(); const idx=$("idx").value; const {gte,lt}=timeParams();
+    if(!term){ setStatus("Arama terimi gir.",true); return; }
+    $("goSearch").disabled=true; setStatus("Araniyor..."); $("results").innerHTML="";
+    try{
+      const qs=`q=${encodeURIComponent(term)}&index=${encodeURIComponent(idx)}&window=${encodeURIComponent(gte)}&lt=${encodeURIComponent(lt)}`;
+      const res=await fetch(`/api/search?${qs}`);
+      if(!res.ok){ const b=await res.json().catch(()=>({})); throw new Error(b.detail||`HTTP ${res.status}`); }
+      const data=await res.json();
+      setStatus(`"${data.q}" için ${data.results.length} interaction bulundu (${data.total_hits} kayıt tarandı).`);
+      renderResults(data.results);
+    }catch(err){ setStatus("Hata: "+err.message,true); }
+    finally{ $("goSearch").disabled=false; }
+  }
+  $("goSearch").addEventListener("click",runSearch);
+  $("q").addEventListener("keydown",(e)=>{ if(e.key==="Enter") runSearch(); });
+
+  // ---- trace ----
+  async function run(){
+    const iid=$("iid").value.trim(); const idx=$("idx").value; const {gte,lt}=timeParams();
+    if(!iid){ setStatus("Interaction id gir.",true); return; }
+    $("go").disabled=true; setStatus("ELK sorgulaniyor...");
+    $("outcomeWrap").innerHTML=""; $("readouts").innerHTML="";
+    $("idLine").innerHTML=`<div class="iid">${esc(iid)}</div>`;
+    diagramEl.innerHTML=`<div class="placeholder">Yükleniyor…</div>`;
+    $("toolbar").style.display="none"; $("hint").style.display="none";
+    $("flow").innerHTML=""; $("logFilters").style.display="none";
+    $("logTitle").style.display="none"; tbl.style.display="none"; tbody.innerHTML="";
+    try{
+      const qs=`index=${encodeURIComponent(idx)}&window=${encodeURIComponent(gte)}&lt=${encodeURIComponent(lt)}`;
+      const res=await fetch(`/api/trace/${encodeURIComponent(iid)}?${qs}`);
+      if(!res.ok){ const b=await res.json().catch(()=>({})); throw new Error(b.detail||`HTTP ${res.status}`); }
+      const data=await res.json(); currentData=data;
+      setStatus(`${data.count} kayıt bulundu.`);
+      renderSummary(data);
+      renderFlow(data.flow);
+      const {svg}=await mermaid.render("amiDiagram",data.mermaid);
+      diagramEl.innerHTML=svg;
+      bindSteps(diagramEl.querySelector("svg"),data.steps);
+      if(data.steps&&data.steps.length){ $("hint").style.display=""; $("toolbar").style.display=""; }
+      if(data.events.length){
+        $("logTitle").style.display=""; $("logFilters").style.display="flex"; tbl.style.display="";
+        renderTable();
+      }
+      writeUrl(iid,idx,$("preset").value,$("win").value.trim());
+      addRecent(iid);
+    }catch(err){ setStatus("Hata: "+err.message,true); diagramEl.innerHTML=`<div class="placeholder">Akış yüklenemedi.</div>`; }
+    finally{ $("go").disabled=false; }
+  }
+  $("go").addEventListener("click",run);
+  $("iid").addEventListener("keydown",(e)=>{ if(e.key==="Enter") run(); });
+
+  renderRecent();
+  if(readUrl()) run();
+</script>
+</body>
+</html> 
